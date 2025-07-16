@@ -1,5 +1,12 @@
-import { TextField, TextFieldProps, TextFieldVariants } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  TextField,
+  TextFieldProps,
+  TextFieldVariants
+} from '@mui/material';
+import {
+  Controller,
+  useFormContext
+} from 'react-hook-form';
 
 type TypeProps = {
   name: string;
@@ -27,6 +34,7 @@ export const Input = ({
             value={field.value}
             type={type}
             variant={variant}
+            onChange={field.onChange}
             error={!!methods.formState.errors[name]}
             helperText={<>{methods.formState.errors[name]?.message}</>}
             {...rest}

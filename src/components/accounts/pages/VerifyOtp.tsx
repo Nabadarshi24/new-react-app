@@ -73,8 +73,9 @@ export const VerifyOtp = () => {
             <div className="row">
               <div className="col-12">
                 <Input
-                  name="passwor"
+                  name="password"
                   label="OTP"
+                // type='password'
                 />
               </div>
             </div>
