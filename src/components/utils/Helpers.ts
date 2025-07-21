@@ -17,8 +17,8 @@ const covertToTitleCase = (str: string) => {
   return finalStr;
 };
 
-export const composeInitialState = (obj: Record<string, any>) => {
-  let initialState = {};
+export const composeInitialState = <T extends object>(obj: T) => {
+  let initialState = {} as T;
   let names = {};
   let labels = {};
 
