@@ -1,5 +1,5 @@
 export type TypeLogin = {
-  username: string;
+  userName: string;
   password: string;
 };
 

@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { TextField } from '@mui/material';
 import { Input } from '../../form/Input';
+import { Form } from '../../form/Form';
 
 export const VerifyOtp = () => {
 
@@ -65,24 +66,22 @@ export const VerifyOtp = () => {
       <div className="tw-text-black tw-text-18px tw-pt-10px">Two Factor Authentication</div>
       <div>{displayInstructions}</div>
       <div className='login-container'>
-        <FormProvider {...methods}>
-          <form
-            className='login-form'
-            onSubmit={methods.handleSubmit(onSubmit)}
-          >
-            <div className="row">
-              <div className="col-12">
-                <Input
-                  name="password"
-                  label="OTP"
-                // type='password'
-                />
-              </div>
+        <Form
+          methods={methods}
+          onSubmit={onSubmit}
+        >
+          <div className="row">
+            <div className="col-12">
+              <Input
+                name="password"
+                label="OTP"
+              // type='password'
+              />
             </div>
+          </div>
 
-            <button type="submit">Login</button>
-          </form>
-        </FormProvider>
+          <button type="submit">Login</button>
+        </Form>
       </div>
     </>
   )

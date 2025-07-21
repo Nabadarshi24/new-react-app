@@ -5,6 +5,10 @@ import { useForm } from 'react-hook-form';
 import { TypeLogin } from '../types';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Form } from '../../form/Form';
+import { Input } from '../../form/Input';
+import { SubmitButton } from '../../form/SubmitButton';
+import { titleCase } from 'text-case';
 
 export const Login = () => {
 
@@ -13,20 +17,20 @@ export const Login = () => {
   // const [userName, setUserName] = useState("");
   // const [password, setPassword] = useState("");
 
+  const initialState: TypeLogin = {
+    userName: "",
+    password: ""
+  };
+
+  console.log(titleCase("userName"))
+  
   const schema = yup.object<TypeLogin>().shape({
-    username: yup.string().required("Username is required"),
-    password: yup.string().required("Password is required")
+    userName: yup.string().required().label("User Name"),
+    password: yup.string().required().label("Password")
   })
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<TypeLogin>({
-    defaultValues: {
-      username: "",
-      password: ""
-    },
+  const methods = useForm<TypeLogin>({
+    defaultValues: initialState,
     resolver: yupResolver(schema)
   });
 
@@ -54,41 +58,32 @@ export const Login = () => {
 
   return (
     <div className='login-container'>
-      <form
-        className='login-form'
-        onSubmit={handleSubmit(onSubmit)}
+      <h1>Login Form</h1>
+      <Form
+        methods={methods}
+        onSubmit={onSubmit}
       >
         <div className="row">
           <div className="col-12">
-            <label><b>Username</b></label>
-            <input
-              type="text"
-              placeholder="Enter Username"
-              {...register("username", { required: true })}
-            // onChange={(e) => setUserName(e.target.value)}
+            <Input
+              name="userName"
+              label="User Name"
             />
-            {
-              errors.username?.message &&
-              <p className='color-error'>{errors.username?.message}</p>
-            }
           </div>
           <div className="col-12">
-            <label><b>Password</b></label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              {...register("password", { required: true })}
-            // onChange={(e) => setPassword(e.target.value)}
+            <Input
+              name="password"
+              label="Password"
+              type='password'
             />
-            {
-              errors.password?.message &&
-              <p className='color-error'>{errors.password?.message}</p>
-            }
           </div>
         </div>
 
-        <button type="submit">Login</button>
-      </form>
+        <SubmitButton
+          label="Login"
+          variant="contained"
+        />
+      </Form>
     </div>
   )
 };

@@ -1,4 +1,9 @@
 import {
+  memo,
+  useEffect,
+  useState
+} from 'react';
+import {
   TextField,
   TextFieldProps,
   TextFieldVariants
@@ -14,27 +19,40 @@ type TypeProps = {
   variant?: TextFieldVariants;
 } & Omit<TextFieldProps, "type" | "variant">;
 
-export const Input = ({
+export const Input = memo(({
   name,
   type = "text",
   variant = "outlined",
   ...rest
 }: TypeProps) => {
+  console.log("dddd");
+
+
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const methods = useFormContext();
+
+  // useEffect(() => {
+  //   setIsFocused(true)
+  // }, []);
 
   return (
     <Controller
       name={name}
       control={methods.control}
       render={({ field }) => {
-        console.log({ field })
         return (
           <TextField
             value={field.value}
             type={type}
+            focused={isFocused}
             variant={variant}
             onChange={field.onChange}
+            onBlur={(e) => {
+              field.onBlur();
+              setIsFocused(false);
+            }}
+            onFocus={(e) => setIsFocused(true)}
             error={!!methods.formState.errors[name]}
             helperText={<>{methods.formState.errors[name]?.message}</>}
             {...rest}
@@ -43,4 +61,11 @@ export const Input = ({
       }}
     />
   )
-};
+}, (prevProps, nextProps) => {
+
+  console.log({ prevProps, nextProps })
+
+  return (
+    false
+  );
+});
