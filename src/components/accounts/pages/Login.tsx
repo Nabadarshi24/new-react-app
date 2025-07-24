@@ -22,8 +22,6 @@ export const Login = () => {
     password: ""
   };
 
-  console.log(titleCase("userName"))
-  
   const schema = yup.object<TypeLogin>().shape({
     userName: yup.string().required().label("User Name"),
     password: yup.string().required().label("Password")
