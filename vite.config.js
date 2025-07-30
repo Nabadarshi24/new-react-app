@@ -10,9 +10,13 @@ export default defineConfig({
       plugins: [
         [
           "babel-plugin-react-compiler",
-           ReactCompilerConfig
-          ]
-        ],
+          ReactCompilerConfig
+        ]
+      ],
     },
   })],
+  server: {
+    open: true
+    // open: "/login"
+  }
 })

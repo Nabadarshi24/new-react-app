@@ -45,9 +45,10 @@ export const Input = memo(({
           <TextField
             value={field.value}
             type={type}
+            ref={field.ref}
             focused={isFocused}
             variant={variant}
-            onChange={field.onChange}
+            onChange={(e) => field.onChange(e)}
             onBlur={(e) => {
               field.onBlur();
               setIsFocused(false);

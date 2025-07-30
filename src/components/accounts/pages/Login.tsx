@@ -9,6 +9,7 @@ import { Form } from '../../form/Form';
 import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
 import { titleCase } from 'text-case';
+import { composeInitialState } from '../../utils/Helpers';
 
 export const Login = () => {
 
@@ -17,19 +18,20 @@ export const Login = () => {
   // const [userName, setUserName] = useState("");
   // const [password, setPassword] = useState("");
 
-  const initialState: TypeLogin = {
-    userName: "",
+  const [initialState, names, labels] = composeInitialState<TypeLogin>({
+    userName: [undefined, "Username"],
     password: ""
-  };
+  });
 
   const schema = yup.object<TypeLogin>().shape({
-    userName: yup.string().required().label("User Name"),
-    password: yup.string().required().label("Password")
+    userName: yup.string().required().label(labels.userName),
+    password: yup.string().required().label(labels.password)
   })
 
   const methods = useForm<TypeLogin>({
     defaultValues: initialState,
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    mode:"onChange"
   });
 
   const onSubmit = async (data: TypeLogin) => {
@@ -64,15 +66,17 @@ export const Login = () => {
         <div className="row">
           <div className="col-12">
             <Input
-              name="userName"
-              label="User Name"
+              name={names.userName}
+              label={labels.userName}
+              required
             />
           </div>
           <div className="col-12">
             <Input
-              name="password"
-              label="Password"
+              name={names.password}
+              label={labels.password}
               type='password'
+              required
             />
           </div>
         </div>

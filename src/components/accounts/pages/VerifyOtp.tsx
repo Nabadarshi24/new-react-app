@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router';
 import { useAccountStore } from '../../stores/GlobalStore';
 import { verifyOtp } from '../api';
 import { FormProvider, useForm } from 'react-hook-form';
-import { TypeSignInOtpPayload } from '../types';
+import { TypeLogin, TypeSignInOtpPayload } from '../types';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { TextField } from '@mui/material';
 import { Input } from '../../form/Input';
 import { Form } from '../../form/Form';
+import { composeInitialState } from '../../utils/Helpers';
 
 export const VerifyOtp = () => {
 
@@ -18,14 +19,19 @@ export const VerifyOtp = () => {
   const authKey = localStorage.getItem("authKey");
   // console.log({ authKey });
 
-  const initialState: TypeSignInOtpPayload = {
+  // const initialState: TypeSignInOtpPayload = {
+  //   authKey: authKey,
+  //   password: ""
+  // };
+
+  const [initialState, names, labels] = composeInitialState<TypeSignInOtpPayload>({
     authKey: authKey,
-    password: ""
-  };
+    password: ["", "OTP"]
+  });
 
   const schema = yup.object<TypeSignInOtpPayload>().shape({
-    authKey: yup.string().required().label("Auth key"),
-    password: yup.string().required().label("Password")
+    authKey: yup.string().required().label(labels.authKey),
+    password: yup.string().required().label(labels.password)
   });
 
   const methods = useForm<TypeSignInOtpPayload>({
@@ -73,8 +79,9 @@ export const VerifyOtp = () => {
           <div className="row">
             <div className="col-12">
               <Input
-                name="password"
-                label="OTP"
+                name={names.password}
+                label={labels.password}
+                required
               // type='password'
               />
             </div>

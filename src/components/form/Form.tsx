@@ -21,6 +21,7 @@ export const Form = <TFieldValues extends FieldValues, TContext = any, TTransfor
       <form
         className='login-form'
         onSubmit={methods.handleSubmit(onSubmit)}
+        noValidate
       >
         {children}
       </form>
