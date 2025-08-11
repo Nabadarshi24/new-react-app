@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 
-export const Private = ({ children }) => {
+type TypeProps = {
+  children: ReactNode;
+};
+
+export const Private = ({ children }: TypeProps) => {
 
   const navigate = useNavigate();
 
@@ -31,8 +35,10 @@ export const Private = ({ children }) => {
         <button onClick={handleLogout}>Logout</button>
       </div>
 
-      <div className="content">
-        {children}
+      <div className="sidebar-with-content">
+        <div className="content">
+          {children}
+        </div>
       </div>
     </>
   )

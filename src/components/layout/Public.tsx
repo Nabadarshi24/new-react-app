@@ -1,8 +1,12 @@
-import React, { Children, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 
-export const Public = ({ children }) => {
+type TypeProps = {
+  children: ReactNode;
+};
+
+export const Public = ({ children }: TypeProps) => {
 
   const navigate = useNavigate();
   const location = useLocation();

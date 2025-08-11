@@ -10,6 +10,7 @@ import { TextField } from '@mui/material';
 import { Input } from '../../form/Input';
 import { Form } from '../../form/Form';
 import { composeInitialState } from '../../utils/Helpers';
+import { useHookForm } from '../../libs/HookForm';
 
 export const VerifyOtp = () => {
 
@@ -34,9 +35,9 @@ export const VerifyOtp = () => {
     password: yup.string().required().label(labels.password)
   });
 
-  const methods = useForm<TypeSignInOtpPayload>({
-    defaultValues: initialState,
-    resolver: yupResolver(schema)
+  const methods = useHookForm<TypeSignInOtpPayload>({
+    initialState,
+    schema
   })
 
   const setIsSignIn = useAccountStore(store => store?.setIsSignIn);

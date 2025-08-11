@@ -27,6 +27,7 @@ export const SubmitButton = ({
   onClick,
   ...rest
 }: TypeButtonProps) => {
+
   const methods = useFormContext();
 
   return (

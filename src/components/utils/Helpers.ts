@@ -17,9 +17,9 @@ const covertToTitleCase = (str: string) => {
   return finalStr;
 };
 
-type TypeAgrgs<T extends object> = ({
-  [property in keyof T]: T[property] | [T[property], string];
-})
+// type TypeAgrgs<T extends object> = ({
+//   [property in keyof T]: T[property] | [T[property], string];
+// })
 
 // export const composeInitialState = <T extends object>(obj: T): { [property in keyof T]: T[property] | [T[property], string]} => {
 // export const composeInitialState = <T extends object>(obj: TypeAgrgs<T>) => {

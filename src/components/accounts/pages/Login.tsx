@@ -10,6 +10,7 @@ import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
 import { titleCase } from 'text-case';
 import { composeInitialState } from '../../utils/Helpers';
+import { useHookForm } from '../../libs/HookForm';
 
 export const Login = () => {
 
@@ -28,10 +29,9 @@ export const Login = () => {
     password: yup.string().required().label(labels.password)
   })
 
-  const methods = useForm<TypeLogin>({
-    defaultValues: initialState,
-    resolver: yupResolver(schema),
-    mode:"onChange"
+  const methods = useHookForm<TypeLogin>({
+    initialState,
+    schema
   });
 
   const onSubmit = async (data: TypeLogin) => {

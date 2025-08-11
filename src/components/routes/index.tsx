@@ -10,11 +10,17 @@ import { VerifyOtp } from "../accounts/pages/VerifyOtp";
 import { ForgotPassword } from "../accounts/pages/ForgotPassword";
 import { Layout } from "../layout/Index";
 import { Public } from "../layout/Public";
+import { AgencyList } from "../agency/pages/List";
 
 const privateRoute = [
   {
     path: "dashboard",
     element: <Dashboard />,
+    isSignIn: true
+  },
+  {
+    path: "agency/list",
+    element: <AgencyList />,
     isSignIn: true
   },
   {
