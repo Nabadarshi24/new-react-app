@@ -1,4 +1,10 @@
-import { ReactElement, useEffect, useState } from 'react';
+import {
+  ReactElement,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import Draggable from 'react-draggable';
 import {
   Breakpoint,
   Button,
@@ -6,8 +12,25 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Paper,
+  PaperProps
 } from '@mui/material';
+
+function PaperComponent(props: PaperProps) {
+  const nodeRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <Draggable
+      nodeRef={nodeRef as React.RefObject<HTMLDivElement>}
+      handle=".draggable-dialog-title"
+      cancel={'[class*="MuiDialogContent-root"]'}
+      bounds="parent"
+    >
+      <Paper {...props} ref={nodeRef} />
+    </Draggable>
+  );
+}
 
 export type TypeGenericModalProps = {
   title: string;
@@ -46,9 +69,15 @@ export const GenericModal = ({
       fullWidth={true}
       maxWidth={size}
       open={open}
+      PaperComponent={PaperComponent}
     // onClose={onClose}
     >
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle
+        style={{ cursor: 'move' }}
+        className='draggable-dialog-title'
+      >
+        {title}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>{content}</DialogContentText>
       </DialogContent>
