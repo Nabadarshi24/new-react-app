@@ -1,5 +1,7 @@
-import { createBrowserRouter, Navigate } from "react-router";
-import { useAccountStore } from "../stores/GlobalStore";
+import {
+  createBrowserRouter,
+  Navigate
+} from "react-router";
 
 import { Private } from "../layout/Private";
 import { Dashboard } from "../dashboard/pages/Dashboard";
@@ -11,6 +13,7 @@ import { ForgotPassword } from "../accounts/pages/ForgotPassword";
 import { Layout } from "../layout/Index";
 import { Public } from "../layout/Public";
 import { AgencyList } from "../agency/pages/List";
+import { SignUp } from "../accounts/pages/SignUp";
 
 const privateRoute = [
   {
@@ -55,6 +58,11 @@ const publicRoute = [
   {
     path: "forgot-password",
     element: <ForgotPassword />,
+    isSignIn: false
+  },
+  {
+    path: "sign-up",
+    element: <SignUp />,
     isSignIn: false
   }
 ];

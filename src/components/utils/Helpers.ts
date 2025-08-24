@@ -1,3 +1,5 @@
+import { TypeSignUp, TypeUserData } from "../accounts/types";
+
 const covertToTitleCase = (str: string) => {
   let strArr = [];
   let startPos = 0;
@@ -70,3 +72,36 @@ export const composeInitialState = <T extends object>(obj: { [property in keyof 
     labels
   ];
 };
+
+export const createUser = (formData: TypeSignUp) => {
+  const userData: TypeUserData[] = [];
+  let userObject: TypeUserData = {
+    id: "",
+    // email: "",
+    // firstName: "",
+    // lastName: "",
+    // password: "",
+    // role: "",
+    ...formData,
+    isVerified: false,
+    isDeleted: false
+  }
+
+  // userObject["email"] = formData.email;
+  // userObject["firstName"] = formData.firstName;
+  // userObject["lastName"] = formData.lastName;
+  // userObject["password"] = formData.password;
+  // userObject["role"] = formData.role;
+
+  userData.push(userObject);
+
+  console.log({ userData });
+  const userDataJson = JSON.stringify(userData);
+
+  localStorage.setItem("userData", userDataJson)
+
+  return {
+    success: true,
+    message: "User created"
+  };
+}

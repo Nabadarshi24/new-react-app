@@ -1,3 +1,36 @@
+.public-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.login-container {
+  color: #000000;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  background-color: #FFF;
+  border-radius: 15px;
+  padding: 30px;
+}
+
+.login-form {
+  margin-top: 30px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MuiFormControl-root.MuiTextField-root {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
 .header {
   display: flex;
   align-items: center;

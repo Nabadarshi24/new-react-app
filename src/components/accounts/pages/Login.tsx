@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { login } from '../api';
 import { useForm } from 'react-hook-form';
 import { TypeLogin } from '../types';
@@ -20,7 +20,7 @@ export const Login = () => {
   // const [password, setPassword] = useState("");
 
   const [initialState, names, labels] = composeInitialState<TypeLogin>({
-    userName: [undefined, "Username"],
+    userName: ["", "Username"],
     password: ""
   });
 
@@ -57,35 +57,42 @@ export const Login = () => {
   };
 
   return (
-    <div className='login-container'>
-      <h1>Login Form</h1>
-      <Form
-        methods={methods}
-        onSubmit={onSubmit}
-      >
-        <div className="row">
-          <div className="col-12">
-            <Input
-              name={names.userName}
-              label={labels.userName}
-              required
-            />
-          </div>
-          <div className="col-12">
-            <Input
-              name={names.password}
-              label={labels.password}
-              type='password'
-              required
-            />
-          </div>
-        </div>
+    <div className="public-card">
+      <div className='login-container'>
+        <h1>Login Form</h1>
 
-        <SubmitButton
-          label="Login"
-          variant="contained"
-        />
-      </Form>
+        <Form
+          methods={methods}
+          onSubmit={onSubmit}
+        >
+          <div className="row">
+            <div className="col-12">
+              <Input
+                name={names.userName}
+                label={labels.userName}
+                required
+              />
+            </div>
+            <div className="col-12">
+              <Input
+                name={names.password}
+                label={labels.password}
+                type='password'
+                required
+              />
+            </div>
+          </div>
+
+          <SubmitButton
+            label="Login"
+            variant="contained"
+          />
+        </Form>
+
+        <div className="card-footer">
+          <Link to="/sign-up">Sign Up</Link>
+        </div>
+      </div>
     </div>
   )
 };

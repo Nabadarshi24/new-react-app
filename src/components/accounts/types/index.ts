@@ -3,6 +3,25 @@ export type TypeLogin = {
   password: string;
 };
 
+export type TypeSignUp = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  role: string;
+};
+
+export type TypeUserData = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  role: string;
+  isVerified: boolean;
+  isDeleted: boolean;
+}
+
 export type TypeSignInOtpPayload = {
   authKey: string;
   password: string;
