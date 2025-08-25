@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+// import * as yup from "yup";
+import * as Yup from "yup";
+import {
+  Link,
+  useNavigate
+} from 'react-router';
 import { login } from '../api';
-import { useForm } from 'react-hook-form';
 import { TypeLogin } from '../types';
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { Form } from '../../form/Form';
 import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
-import { titleCase } from 'text-case';
 import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 
@@ -24,9 +25,9 @@ export const Login = () => {
     password: ""
   });
 
-  const schema = yup.object<TypeLogin>().shape({
-    userName: yup.string().required().label(labels.userName),
-    password: yup.string().required().label(labels.password)
+  const schema = Yup.object<TypeLogin>().shape({
+    userName: Yup.string().required().label(labels.userName),
+    password: Yup.string().required().label(labels.password)
   })
 
   const methods = useHookForm<TypeLogin>({

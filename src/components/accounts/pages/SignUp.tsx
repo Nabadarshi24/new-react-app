@@ -3,8 +3,7 @@ import {
   Link,
   useNavigate
 } from 'react-router';
-import * as yup from "yup";
-import { login } from '../api';
+import * as Yup from "yup";
 import { TypeSignUp, TypeUserData } from '../types';
 import { Form } from '../../form/Form';
 import { Input } from '../../form/Input';
@@ -27,12 +26,12 @@ export const SignUp = () => {
     password: ""
   });
 
-  const schema = yup.object<TypeSignUp>().shape({
-    email: yup.string().required().label(labels.email),
-    firstName: yup.string().required().label(labels.firstName),
-    lastName: yup.string().required().label(labels.lastName),
-    password: yup.string().required().label(labels.password),
-    role: yup.string().required().label(labels.role)
+  const schema = Yup.object<TypeSignUp>().shape({
+    email: Yup.string().required().label(labels.email),
+    firstName: Yup.string().required().label(labels.firstName),
+    lastName: Yup.string().required().label(labels.lastName),
+    password: Yup.string().required().label(labels.password),
+    role: Yup.string().label(labels.role)
   })
 
   const methods = useHookForm<TypeSignUp>({

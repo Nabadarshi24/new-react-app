@@ -5,7 +5,7 @@ import { verifyOtp } from '../api';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TypeLogin, TypeSignInOtpPayload } from '../types';
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { TextField } from '@mui/material';
 import { Input } from '../../form/Input';
 import { Form } from '../../form/Form';
@@ -30,9 +30,9 @@ export const VerifyOtp = () => {
     password: ["", "OTP"]
   });
 
-  const schema = yup.object<TypeSignInOtpPayload>().shape({
-    authKey: yup.string().required().label(labels.authKey),
-    password: yup.string().required().label(labels.password)
+  const schema = Yup.object<TypeSignInOtpPayload>().shape({
+    authKey: Yup.string().required().label(labels.authKey),
+    password: Yup.string().required().label(labels.password)
   });
 
   const methods = useHookForm<TypeSignInOtpPayload>({
@@ -69,10 +69,11 @@ export const VerifyOtp = () => {
   };
 
   return (
-    <>
-      <div className="tw-text-black tw-text-18px tw-pt-10px">Two Factor Authentication</div>
-      <div>{displayInstructions}</div>
+    <div className="public-card">
       <div className='login-container'>
+        <div className="tw-text-black tw-text-18px tw-pt-10px">Two Factor Authentication</div>
+        <div>{displayInstructions}</div>
+
         <Form
           methods={methods}
           onSubmit={onSubmit}
@@ -91,6 +92,6 @@ export const VerifyOtp = () => {
           <button type="submit">Login</button>
         </Form>
       </div>
-    </>
+    </div>
   )
 };
