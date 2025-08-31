@@ -11,6 +11,14 @@ export type TypeSignUp = {
   role: string;
 };
 
+export type TypeLoginUserData = {
+  userId: string;
+  userLabel: string;
+  roleLabel: string;
+  isVerified: boolean;
+  isDeleted: boolean;
+};
+
 export type TypeUserData = {
   id: string;
   email: string;

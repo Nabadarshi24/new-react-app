@@ -25,6 +25,10 @@
   align-items: center;
 }
 
+.MuiFormControl-root {
+  width: 100%;
+}
+
 .MuiFormControl-root.MuiTextField-root {
   width: 100%;
   margin-top: 0;

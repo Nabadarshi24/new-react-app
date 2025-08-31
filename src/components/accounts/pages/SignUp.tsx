@@ -10,13 +10,27 @@ import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
 import { composeInitialState, createUser } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
+import { Select, TypeDropdownOptions } from '../../form/Select';
 
 export const SignUp = () => {
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // const [userData, setUserData] = useState<TypeUserData[]>();
   // const [password, setPassword] = useState("");
+
+  const roles: TypeDropdownOptions[] = [
+    {
+      text: "Admin",
+      value: "admin",
+      isDisabled: false
+    },
+    {
+      text: "User",
+      value: "user",
+      isDisabled: false
+    }
+  ];
 
   const [initialState, names, labels] = composeInitialState<TypeSignUp>({
     email: "",
@@ -27,11 +41,11 @@ export const SignUp = () => {
   });
 
   const schema = Yup.object<TypeSignUp>().shape({
-    email: Yup.string().required().label(labels.email),
+    email: Yup.string().email().required().label(labels.email),
     firstName: Yup.string().required().label(labels.firstName),
     lastName: Yup.string().required().label(labels.lastName),
     password: Yup.string().required().label(labels.password),
-    role: Yup.string().label(labels.role)
+    role: Yup.string().required().label(labels.role)
   })
 
   const methods = useHookForm<TypeSignUp>({
@@ -40,14 +54,19 @@ export const SignUp = () => {
   });
 
   const onSubmit = async () => {
-    debugger;
     try {
       const data = methods.getValues();
       console.log({ data });
 
-      // const resp = createUser(data);
+      const response = createUser(data);
 
-      // console.log({resp});
+      if (response.success && response.message) {
+        window.alert(response.message);
+
+        navigate("/login");
+      } else {
+        window.alert(response.message);
+      }
 
     } catch (error) {
 
@@ -91,6 +110,14 @@ export const SignUp = () => {
                 name={names.password}
                 label={labels.password}
                 type='password'
+                required
+              />
+            </div>
+            <div className="col-12">
+              <Select
+                name={names.role}
+                label={labels.role}
+                options={roles}
                 required
               />
             </div>

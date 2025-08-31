@@ -15,7 +15,7 @@ export const Private = ({ children }: TypeProps) => {
 
   const handleLogout = () => {
 
-    localStorage.clear();
+    localStorage.removeItem("loggedUser");
     setIsSignIn(false);
     navigate("/login");
   };

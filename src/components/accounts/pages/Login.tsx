@@ -6,16 +6,19 @@ import {
   useNavigate
 } from 'react-router';
 import { login } from '../api';
-import { TypeLogin } from '../types';
+import { TypeLogin, TypeLoginUserData } from '../types';
 import { Form } from '../../form/Form';
 import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
-import { composeInitialState } from '../../utils/Helpers';
+import { composeInitialState, loginUser } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
+import { useAccountStore } from '../../stores/GlobalStore';
 
 export const Login = () => {
 
   const navigate = useNavigate();
+
+  const setIsSignIn = useAccountStore(store => store?.setIsSignIn);
 
   // const [userName, setUserName] = useState("");
   // const [password, setPassword] = useState("");
@@ -37,21 +40,40 @@ export const Login = () => {
 
   const onSubmit = async (data: TypeLogin) => {
     try {
-      const response = await login(data);
+      // const response = await login(data);
+
+      const response = loginUser(data);
 
       console.log({ response })
       if (response.success && response.data) {
-        console.log("aa")
-        // const data = response.data.data;
-        if (response.data.isTwoFactorAuthRequired && response.data.isTwoFactorAuthEnabled) {
-          console.log("bb")
-          localStorage.setItem("displayInstructions", response.data.twoFactorAuthInstructions);
-          localStorage.setItem("authKey", response.data.authData.tempAuthKey);
+        const loggedUser: TypeLoginUserData = {
+          userId: response.data.id,
+          userLabel: response.data.firstName + " " + response.data.lastName,
+          roleLabel: response.data.role,
+          isVerified: response.data.isVerified,
+          isDeleted: response.data.isDeleted
+        };
 
-          // setIsSignIn(true);
-          navigate("/verify-otp");
-        }
+        localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+        setIsSignIn(true);
+        navigate("/dashboard");
+        window.alert(response.message);
+      } else {
+        window.alert(response.message);
       }
+
+      // if (response.success && response.data) {
+      //   console.log("aa")
+      //   // const data = response.data.data;
+      //   if (response.data.isTwoFactorAuthRequired && response.data.isTwoFactorAuthEnabled) {
+      //     console.log("bb")
+      //     localStorage.setItem("displayInstructions", response.data.twoFactorAuthInstructions);
+      //     localStorage.setItem("authKey", response.data.authData.tempAuthKey);
+
+      //     // setIsSignIn(true);
+      //     navigate("/verify-otp");
+      //   }
+      // }
     } catch (error) {
 
     }

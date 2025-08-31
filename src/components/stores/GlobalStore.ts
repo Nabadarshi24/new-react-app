@@ -5,7 +5,7 @@ import { Prettify } from "../globalTypes/GlobalTypes";
 
 
 const initialtate: TypeAccountState = {
-  isSignIn: !!localStorage.getItem("accessToken")
+  isSignIn: !!localStorage.getItem("loggedUser")
 };
 
 type TypeActions = {

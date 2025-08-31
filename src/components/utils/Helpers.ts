@@ -1,4 +1,7 @@
-import { TypeSignUp, TypeUserData } from "../accounts/types";
+import { json } from "stream/consumers";
+import { TypeLogin, TypeSignUp, TypeUserData } from "../accounts/types";
+import { v4 as uuidv4 } from 'uuid';
+import { console } from "inspector";
 
 const covertToTitleCase = (str: string) => {
   let strArr = [];
@@ -73,35 +76,65 @@ export const composeInitialState = <T extends object>(obj: { [property in keyof 
   ];
 };
 
+const uuidTo8DigitString = (uuid: string) => {
+  // Remove hyphens from the UUID
+  const cleanUuid = uuid.replace(/[-a-zA-Z]/g, '');
+
+  // Take the first 8 characters
+  const shortString = cleanUuid.substring(0, 8);
+
+  return shortString;
+};
+
 export const createUser = (formData: TypeSignUp) => {
-  const userData: TypeUserData[] = [];
-  let userObject: TypeUserData = {
-    id: "",
-    // email: "",
-    // firstName: "",
-    // lastName: "",
-    // password: "",
-    // role: "",
-    ...formData,
-    isVerified: false,
-    isDeleted: false
+  const user = localStorage.getItem("userData");
+
+  const userData: TypeUserData[] = JSON.parse(user) ?? [];
+
+  if (userData.length > 0 &&
+    userData.find((x: TypeUserData) => x.email == formData.email)
+  ) {
+    return {
+      success: false,
+      message: "User already exists"
+    };
   }
 
-  // userObject["email"] = formData.email;
-  // userObject["firstName"] = formData.firstName;
-  // userObject["lastName"] = formData.lastName;
-  // userObject["password"] = formData.password;
-  // userObject["role"] = formData.role;
+  let userObject: TypeUserData = {
+    id: uuidTo8DigitString(uuidv4()),
+    isVerified: formData.role == "admin" ? true : false,
+    isDeleted: false,
+    ...formData
+  };
 
   userData.push(userObject);
-
-  console.log({ userData });
   const userDataJson = JSON.stringify(userData);
+
+  // console.log({ userDataJson })
 
   localStorage.setItem("userData", userDataJson)
 
   return {
     success: true,
-    message: "User created"
+    message: "User created successfully"
   };
+}
+
+export const loginUser = (payload: TypeLogin) => {
+  const userData = localStorage.getItem("userData");
+  const user: TypeUserData = JSON.parse(userData).find((x: TypeUserData) => x.email == payload.userName && x.password == payload.password);
+
+  if (user) {
+    return {
+      success: true,
+      message: "User logged in successfully",
+      data: user
+    };
+  } else {
+    return {
+      success: false,
+      message: "Invalid username or password"
+    };
+  }
+
 }
