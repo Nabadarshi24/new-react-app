@@ -17,7 +17,7 @@ type TypeStore = Prettify<{ state: TypeAccountState } & TypeActions>;
 export const useAccountStore = create<TypeStore>(set => ({
   state: initialtate,
   setIsSignIn: (isSignIn: boolean) => set((store) => {
-    console.log({ store });
+    // console.log({ store });
 
     return ({
       state: {
@@ -28,4 +28,4 @@ export const useAccountStore = create<TypeStore>(set => ({
   })
 }));
 
-console.log(useAccountStore);
+// console.log(useAccountStore);

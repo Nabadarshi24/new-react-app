@@ -1,5 +1,5 @@
 import { json } from "stream/consumers";
-import { TypeLogin, TypeSignUp, TypeUserData } from "../accounts/types";
+import { TypeLogin, TypeLoginUserData, TypeSignUp, TypeUserData, TypeUserProfile } from "../accounts/types";
 import { v4 as uuidv4 } from 'uuid';
 import { console } from "inspector";
 
@@ -69,11 +69,11 @@ export const composeInitialState = <T extends object>(obj: { [property in keyof 
     labels[key] = property == "" ? covertToTitleCase(newKey) : property;
   });
 
-  return [
+  return {
     initialState,
     names,
     labels
-  ];
+  };
 };
 
 const uuidTo8DigitString = (uuid: string) => {
@@ -104,6 +104,7 @@ export const createUser = (formData: TypeSignUp) => {
     id: uuidTo8DigitString(uuidv4()),
     isVerified: formData.role == "admin" ? true : false,
     isDeleted: false,
+    userName: formData.firstName.toLocaleLowerCase() + "." + formData.lastName.toLocaleLowerCase(),
     ...formData
   };
 
@@ -138,3 +139,25 @@ export const loginUser = (payload: TypeLogin) => {
   }
 
 }
+
+// export const updateUser = (payload: TypeUserProfile) => {
+//   const loggedUser = localStorage.getItem("loggedUser");
+//   const user: TypeLoginUserData = JSON.parse(loggedUser);
+
+//   user.firstName = payload.firstName;
+//   user.lastName = payload.lastName;
+//   user.email = payload.email;
+//   user.roleLabel = payload.userRole;
+//   user.isVerified = payload.isVerified;
+//   user.isDeleted = payload.isDeleted;
+
+//   console.log({ user })
+
+//   localStorage.setItem("loggedUser", JSON.stringify(user));
+
+//   return {
+//     success: true,
+//     message: "User updated successfully"
+//   };
+// };
+

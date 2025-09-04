@@ -23,7 +23,7 @@ export const Login = () => {
   // const [userName, setUserName] = useState("");
   // const [password, setPassword] = useState("");
 
-  const [initialState, names, labels] = composeInitialState<TypeLogin>({
+  const { initialState, names, labels } = composeInitialState<TypeLogin>({
     userName: ["", "Username"],
     password: ""
   });
@@ -49,6 +49,9 @@ export const Login = () => {
         const loggedUser: TypeLoginUserData = {
           userId: response.data.id,
           userLabel: response.data.firstName + " " + response.data.lastName,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          email: response.data.email,
           roleLabel: response.data.role,
           isVerified: response.data.isVerified,
           isDeleted: response.data.isDeleted

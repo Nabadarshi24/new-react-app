@@ -25,7 +25,7 @@ export const Input = memo(({
   variant = "outlined",
   ...rest
 }: TypeProps) => {
-  console.log("dddd");
+  // console.log("dddd");
 
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -64,7 +64,7 @@ export const Input = memo(({
   )
 }, (prevProps, nextProps) => {
 
-  console.log({ prevProps, nextProps })
+  // console.log({ prevProps, nextProps })
 
   return (
     false

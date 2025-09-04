@@ -26,7 +26,7 @@ export const useHookForm = <TFieldValues extends FieldValues = FieldValues>({
       abortEarly: false
     }),
     mode: "onChange",
-    shouldUnregister: false
+    shouldUnregister: false,
     // ...restOptions
   });
 };

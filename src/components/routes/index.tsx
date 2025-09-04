@@ -14,11 +14,17 @@ import { Layout } from "../layout/Index";
 import { Public } from "../layout/Public";
 import { AgencyList } from "../agency/pages/List";
 import { SignUp } from "../accounts/pages/SignUp";
+import { Profile } from "../accounts/pages/Profile";
 
 const privateRoute = [
   {
     path: "dashboard",
     element: <Dashboard />,
+    isSignIn: true
+  },
+  {
+    path: "account/profile",
+    element: <Profile />,
     isSignIn: true
   },
   {

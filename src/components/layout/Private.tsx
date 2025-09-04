@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
+import { Header } from './Header';
 
 type TypeProps = {
   children: ReactNode;
@@ -11,14 +12,14 @@ export const Private = ({ children }: TypeProps) => {
   const navigate = useNavigate();
 
   const isSignIn = useAccountStore(stroe => stroe?.state?.isSignIn);
-  const setIsSignIn = useAccountStore(stroe => stroe?.setIsSignIn);
+  // const setIsSignIn = useAccountStore(stroe => stroe?.setIsSignIn);
 
-  const handleLogout = () => {
+  // const handleLogout = () => {
 
-    localStorage.removeItem("loggedUser");
-    setIsSignIn(false);
-    navigate("/login");
-  };
+  //   localStorage.removeItem("loggedUser");
+  //   setIsSignIn(false);
+  //   navigate("/login");
+  // };
 
   useEffect(() => {
 
@@ -30,10 +31,7 @@ export const Private = ({ children }: TypeProps) => {
 
   return (
     <>
-      <div className="header">
-        <h1>Header</h1>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
+      <Header />
 
       <div className="sidebar-with-content">
         <div className="content">

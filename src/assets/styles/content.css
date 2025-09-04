@@ -25,23 +25,42 @@
   align-items: center;
 }
 
-.MuiFormControl-root {
-  width: 100%;
-}
-
-.MuiFormControl-root.MuiTextField-root {
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding-left: 1rem;
   color: grey;
   height: 80px;
+}
+
+.header-menu {
+  color: white;
+  background-color: #FF9A00;
+  width: 260px;
+  height: inherit;
+  padding: 0 10px;
+  align-content: center;
+}
+
+.header-menu-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rotate-icon {
+  rotate: -180deg;
+}
+
+.header-menu-items ul li {
+  display: block;
+}
+
+.header-menu-items ul li a {
+  display: block;
+  color: #ffffff;
 }
 
 .content {
@@ -53,6 +72,18 @@
 
 .sidebar-with-content {
   height: calc(100% - 80px);
+}
+
+.content-container {
+  background-color: #FFFFFF;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.button-group-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 
 .page-header {

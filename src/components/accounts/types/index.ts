@@ -14,7 +14,11 @@ export type TypeSignUp = {
 export type TypeLoginUserData = {
   userId: string;
   userLabel: string;
+  firstName: string;
+  lastName: string;
+  userName?: string;
   roleLabel: string;
+  email: string;
   isVerified: boolean;
   isDeleted: boolean;
 };
@@ -63,4 +67,15 @@ export type TypeSignInResponse = {
 export type TypeSignInOtpResponse = {
   isForcePasswordChange: boolean;
   authData: TypeAuthData;
-}
+};
+
+export type TypeUserProfile = {
+  email: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  // password: string;
+  userRole: string;
+  isVerified?: boolean;
+  isDeleted?: boolean;
+};

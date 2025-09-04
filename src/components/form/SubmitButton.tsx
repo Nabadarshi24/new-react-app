@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Button, ButtonProps } from '@mui/material';
 import { useFormContext, UseFormReturn } from 'react-hook-form';
 import { Link } from 'react-router';
@@ -29,14 +29,27 @@ export const SubmitButton = ({
 }: TypeButtonProps) => {
 
   const methods = useFormContext();
+  const { formState: { errors } } = methods;
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.log({ formError: errors });
+    }
+  }, [errors]);
 
   return (
     <Button
       type="submit"
-      onClick={(e) => {
+      className={className}
+      onClick={async (e) => {
+        // const rep = await methods.trigger();
+
+        // methods.formState.errors
+        // console.log({ rep, errors: methods.formState.errors });
         console.log({
           values: methods.getValues(),
-          errors: methods.formState.errors
+          // errors: methods.formState.errors
+          // errors: methods.control._formState.errors
         });
         onClick?.(e);
       }}

@@ -1,0 +1,32 @@
+.header-menu-items .css-1tktgsa-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  width: 260px;
+  left: unset !important;
+  right: 0 !important;
+  top: 80px !important;
+  color: #FFFFFF;
+  background-color: #FF9A00;
+  border-radius: unset;
+  border-bottom-left-radius: 4px;
+  box-shadow: none;
+}
+
+.MuiButtonBase-root.MuiButton-root {
+  background-color: skyblue;
+  color: #FFFFFF;
+  padding: 13px 25px;
+  min-width: 120px;
+}
+
+.MuiFormControl-root {
+  width: 100%;
+}
+
+.MuiFormControl-root.MuiTextField-root {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.MuiInputBase-root.MuiOutlinedInput-root.Mui-disabled {
+  background-color: lightcyan;
+}

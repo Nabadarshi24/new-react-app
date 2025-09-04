@@ -32,7 +32,7 @@ export const SignUp = () => {
     }
   ];
 
-  const [initialState, names, labels] = composeInitialState<TypeSignUp>({
+  const { initialState, names, labels } = composeInitialState<TypeSignUp>({
     email: "",
     firstName: "",
     lastName: "",
