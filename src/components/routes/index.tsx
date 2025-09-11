@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
-  Navigate
+  Navigate,
+  RouteObject
 } from "react-router";
 
 import { Private } from "../layout/Private";
@@ -73,29 +74,29 @@ const publicRoute = [
   }
 ];
 
-const decideParentRoute = (routes) => {
-  const routeArray = [];
-  routes.forEach(route => {
-    let routeObj;
-    if (route.isSignIn == true) {
-      routeObj = {
-        path: route.path,
-        element: <Private>{route.element}</Private>
-      }
-      routeArray.push(routeObj);
-    } else {
-      routeObj = {
-        path: route.path,
-        element: <Public>{route.element}</Public>
-      }
-      routeArray.push(routeObj);
-    }
-  })
-  return routeArray;
-};
+// const decideParentRoute = (routes) => {
+//   const routeArray = [];
+//   routes.forEach(route => {
+//     let routeObj;
+//     if (route.isSignIn == true) {
+//       routeObj = {
+//         path: route.path,
+//         element: <Private>{route.element}</Private>
+//       }
+//       routeArray.push(routeObj);
+//     } else {
+//       routeObj = {
+//         path: route.path,
+//         element: <Public>{route.element}</Public>
+//       }
+//       routeArray.push(routeObj);
+//     }
+//   })
+//   return routeArray;
+// };
 
-const PUBLIC_ROUTE = decideParentRoute(publicRoute);
-const PRIVATE_ROUTE = decideParentRoute(privateRoute);
+// const PUBLIC_ROUTE = decideParentRoute(publicRoute);
+// const PRIVATE_ROUTE = decideParentRoute(privateRoute);
 
 export const route = createBrowserRouter([
   {
@@ -103,8 +104,33 @@ export const route = createBrowserRouter([
     element: <Layout />,
     // element: <Private />,
     children: [
-      ...PUBLIC_ROUTE,
-      ...PRIVATE_ROUTE
+      // ...PUBLIC_ROUTE,
+      // ...PRIVATE_ROUTE,
+      {
+        path: "/",
+        element: <Public />,
+        children: [
+          ...publicRoute.map(x => {
+            return {
+              path: x.path,
+              element: x.element
+            };
+          })
+        ]
+      },
+
+      {
+        path: "/",
+        element: <Private />,
+        children: [
+          ...privateRoute.map(x => {
+            return {
+              path: x.path,
+              element: x.element
+            };
+          })
+        ]
+      },
     ]
   }
 ]);

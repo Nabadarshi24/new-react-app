@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 
 type TypeProps = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export const Public = ({ children }: TypeProps) => {
@@ -26,6 +26,7 @@ export const Public = ({ children }: TypeProps) => {
   return (
     <>
       <div className="content">
+        <Outlet/>
         {children}
       </div>
     </>

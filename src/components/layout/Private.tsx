@@ -4,7 +4,7 @@ import { useAccountStore } from '../stores/GlobalStore';
 import { Header } from './Header';
 
 type TypeProps = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export const Private = ({ children }: TypeProps) => {
@@ -35,6 +35,7 @@ export const Private = ({ children }: TypeProps) => {
 
       <div className="sidebar-with-content">
         <div className="content">
+          <Outlet/>
           {children}
         </div>
       </div>

@@ -8,6 +8,7 @@ import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
 import { useCallback, useEffect } from 'react';
 import { updateUser } from '../api';
+import { Checkbox } from '../../form/Checkbox';
 
 export const Profile = () => {
 
@@ -116,6 +117,18 @@ export const Profile = () => {
                 name={names.email}
                 label={labels.email}
                 type="email"
+              />
+            </div>
+            <div className="col-12 col-md-6 col-lg-4">
+              <Checkbox
+                name={names.isVerified}
+                label={labels.isVerified}
+              />
+            </div>
+            <div className="col-12 col-md-6 col-lg-4">
+              <Checkbox
+                name={names.isDeleted}
+                label={labels.isDeleted}
               />
             </div>
           </div>

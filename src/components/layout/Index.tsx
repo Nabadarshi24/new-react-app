@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Private } from './Private';
 import { Public } from './Public';

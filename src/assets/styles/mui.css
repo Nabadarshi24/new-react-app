@@ -30,3 +30,7 @@
 .MuiInputBase-root.MuiOutlinedInput-root.Mui-disabled {
   background-color: lightcyan;
 }
+
+.MuiFormControlLabel-root .MuiFormControlLabel-label {
+  color: #000000;
+}
