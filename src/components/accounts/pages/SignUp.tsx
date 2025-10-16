@@ -11,6 +11,7 @@ import { SubmitButton } from '../../form/SubmitButton';
 import { composeInitialState, createUser } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 import { Select, TypeDropdownOptions } from '../../form/Select';
+import axios from 'axios';
 
 export const SignUp = () => {
 
@@ -36,7 +37,7 @@ export const SignUp = () => {
     email: "",
     firstName: "",
     lastName: "",
-    role: "",
+    userRole: "",
     password: ""
   });
 
@@ -45,7 +46,7 @@ export const SignUp = () => {
     firstName: Yup.string().required().label(labels.firstName),
     lastName: Yup.string().required().label(labels.lastName),
     password: Yup.string().required().label(labels.password),
-    role: Yup.string().required().label(labels.role)
+    userRole: Yup.string().required().label(labels.userRole)
   })
 
   const methods = useHookForm<TypeSignUp>({
@@ -58,15 +59,18 @@ export const SignUp = () => {
       const data = methods.getValues();
       console.log({ data });
 
-      const response = createUser(data);
+      // const response = createUser(data);
+      const response = await axios.post("http://localhost:3000/api/sign-up", data);
 
-      if (response.success && response.message) {
-        window.alert(response.message);
+      console.log({ response });
 
-        navigate("/login");
-      } else {
-        window.alert(response.message);
-      }
+      // if (response.success && response.message) {
+      //   window.alert(response.message);
+
+      //   navigate("/login");
+      // } else {
+      //   window.alert(response.message);
+      // }
 
     } catch (error) {
 
@@ -115,8 +119,8 @@ export const SignUp = () => {
             </div>
             <div className="col-12">
               <Select
-                name={names.role}
-                label={labels.role}
+                name={names.userRole}
+                label={labels.userRole}
                 options={roles}
                 required
               />

@@ -1,5 +1,5 @@
 export type TypeLogin = {
-  userName: string;
+  email: string;
   password: string;
 };
 
@@ -8,7 +8,7 @@ export type TypeSignUp = {
   firstName: string;
   lastName: string;
   password: string;
-  role: string;
+  userRole: string;
 };
 
 export type TypeLoginUserData = {

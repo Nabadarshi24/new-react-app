@@ -102,9 +102,9 @@ export const createUser = (formData: TypeSignUp) => {
 
   let userObject: TypeUserData = {
     id: uuidTo8DigitString(uuidv4()),
-    isVerified: formData.role == "admin" ? true : false,
+    isVerified: formData.userRole == "admin" ? true : false,
     isDeleted: false,
-    userName: formData.firstName.toLocaleLowerCase() + "." + formData.lastName.toLocaleLowerCase(),
+    // userName: formData.firstName.toLocaleLowerCase() + "." + formData.lastName.toLocaleLowerCase(),
     ...formData
   };
 
