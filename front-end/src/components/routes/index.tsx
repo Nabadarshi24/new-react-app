@@ -16,6 +16,7 @@ import { Public } from "../layout/Public";
 import { AgencyList } from "../agency/pages/List";
 import { SignUp } from "../accounts/pages/SignUp";
 import { Profile } from "../accounts/pages/Profile";
+import { UserLayout } from "../layout/UserLayout";
 
 const privateRoute = [
   {
@@ -49,7 +50,12 @@ const publicRoute = [
   {
     path: "/",
     // index: true,
-    element: <Navigate to="/login" replace />,
+    element: <Navigate to="/user-layout" replace />,
+    isSignIn: false
+  },
+  {
+    path: "user-layout",
+    element: <UserLayout />,
     isSignIn: false
   },
   {

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
-import { Header } from './Header';
+import { Header } from '../common/Header';
 
 type TypeProps = {
   children?: ReactNode;
