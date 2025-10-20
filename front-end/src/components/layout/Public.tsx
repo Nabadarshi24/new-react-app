@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
+import { Header } from '../common/Header';
 
 type TypeProps = {
   children?: ReactNode;
@@ -25,10 +26,12 @@ export const Public = ({ children }: TypeProps) => {
 
   return (
     <>
+      {/* <Header /> */}
       <div className="content">
-        <Outlet/>
+        <Outlet />
         {children}
       </div>
+      {/* <Footer /> */}
     </>
   )
 };

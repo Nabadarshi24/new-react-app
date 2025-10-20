@@ -25,14 +25,14 @@
   align-items: center;
 }
 
-.header {
+/* .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-left: 1rem;
   color: grey;
   height: 80px;
-}
+} */
 
 .header-menu {
   color: white;
@@ -65,8 +65,8 @@
 
 .content {
   color: #ffffff;
-  background-color: rgb(64 79 93);
-  padding: 1rem;
+  background-color: #fff;
+  /* padding: 1rem; */
   height: 100%;
 }
 
