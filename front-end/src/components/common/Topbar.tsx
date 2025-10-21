@@ -4,26 +4,27 @@ import {
   Instagram,
   X
 } from '@mui/icons-material';
+import { Link } from 'react-router';
 
 export const Topbar = () => {
   return (
-    <div className='bg-[#ea2e0e] text-white'>
-      <div className="container mx-auto flex justify-between items-center py-3 px-4">
-        <div className='hidden md:flex items-center space-x-4'>
-          <a href="#" className='hover:text-gray-300'>
+    <div className='tw:bg-[#ea2e0e] tw:text-white'>
+      <div className="tw:container tw:mx-auto tw:flex tw:justify-between tw:items-center tw:py-3 tw:px-4">
+        <div className='tw:hidden tw:md:flex tw:items-center tw:space-x-4'>
+          <Link to="#" className='tw:hover:text-grey'>
             <Facebook className='w-5 h-5' />
-          </a>
-          <a href="#" className='hover:text-gray-300'>
+          </Link>
+          <Link to="#" className='tw:hover:text-grey'>
             <Instagram className='w-5 h-5' />
-          </a>
-          <a href="#" className='hover:text-gray-300'>
+          </Link>
+          <Link to="#" className='tw:hover:text-grey'>
             <X className='w-4 h-4' />
-          </a>
+          </Link>
         </div>
-        <div className="text-sm text-center flex-grow">
+        <div className="tw:text-sm tw:text-center tw:flex-grow">
           <span>We ship worldwide - Fast and reliable shipping!</span>
         </div>
-        <div className="text-sm hidden md:block">
+        <div className="tw:text-sm tw:hidden tw:md:block">
           <a href="tel:+1234567890">+123 456 7890</a>
         </div>
       </div>

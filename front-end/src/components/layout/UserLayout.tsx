@@ -3,11 +3,8 @@ import { Header } from "../common/Header"
 
 export const UserLayout = () => {
   return (
-    <>
-      {/* Header */}
-      <Header />
-      {/* Content */}
-      {/* Footer */}
-    </>
+    <div>
+      <h1>UserLayout</h1>
+    </div>
   )
 }

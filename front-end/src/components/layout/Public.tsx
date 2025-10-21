@@ -26,7 +26,7 @@ export const Public = ({ children }: TypeProps) => {
 
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <div className="content">
         <Outlet />
         {children}
