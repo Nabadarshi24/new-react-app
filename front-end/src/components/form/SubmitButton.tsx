@@ -8,6 +8,7 @@ type TypeButtonProps = {
   // children: ReactNode;
   label?: string;
   className?: string;
+  children?: ReactNode;
   to?: string;
   ref?: React.Ref<any>;
   variant?: 'text' | 'outlined' | 'contained';
@@ -21,6 +22,7 @@ export const SubmitButton = ({
   // children,
   label = "Submit",
   className,
+  children,
   // to,
   ref,
   variant = "outlined",
@@ -56,7 +58,7 @@ export const SubmitButton = ({
       ref={ref}
       {...rest}
     >
-      {label}
+      {children || label}
     </Button>
   );
 };

@@ -34,11 +34,9 @@ export const Header = () => {
   // };
 
   return (
-    <>
-      {/* Top Bar */}
+    <div className="tw:border-b tw:border-gray-200">
       <Topbar />
-      {/* Navbar */}
       <Navbar />
-    </>
+    </div>
   );
 };
