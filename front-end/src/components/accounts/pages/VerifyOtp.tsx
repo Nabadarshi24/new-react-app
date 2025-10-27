@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAccountStore } from '../../stores/GlobalStore';
 import { verifyOtp } from '../api';
@@ -12,7 +12,7 @@ import { Form } from '../../form/Form';
 import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 
-export const VerifyOtp = () => {
+const VerifyOtp = () => {
 
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export const VerifyOtp = () => {
   //   password: ""
   // };
 
-  const [initialState, names, labels] = composeInitialState<TypeSignInOtpPayload>({
+  const { initialState, names, labels } = composeInitialState<TypeSignInOtpPayload>({
     authKey: authKey,
     password: ["", "OTP"]
   });
@@ -95,3 +95,6 @@ export const VerifyOtp = () => {
     </div>
   )
 };
+
+export default VerifyOtp as ComponentType;
+

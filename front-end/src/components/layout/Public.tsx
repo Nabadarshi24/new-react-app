@@ -1,13 +1,22 @@
-import { ReactNode, useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import {
+  ComponentType,
+  ReactNode,
+  useEffect
+} from 'react';
+import {
+  Outlet,
+  useLocation,
+  useNavigate
+} from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Header } from '../common/Header';
+import { Footer } from '../common/Footer';
 
 type TypeProps = {
   children?: ReactNode;
 };
 
-export const Public = ({ children }: TypeProps) => {
+const Public = ({ children }: TypeProps) => {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,14 +33,18 @@ export const Public = ({ children }: TypeProps) => {
     }
   }, [isSignIn])
 
+  console.log({ timeStamp: new Date().getTime() })
+
   return (
     <>
       <Header />
       <div className="content">
         <Outlet />
-        {children}
+        {/* {children} */}
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   )
 };
+
+export default Public as ComponentType<TypeProps>;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 import {
   Link,
   useNavigate
@@ -13,7 +13,7 @@ import { useHookForm } from '../../libs/HookForm';
 import { Select, TypeDropdownOptions } from '../../form/Select';
 import axios from 'axios';
 
-export const SignUp = () => {
+const SignUp = () => {
 
   const navigate = useNavigate();
 
@@ -140,4 +140,6 @@ export const SignUp = () => {
     </div>
   );
 };
+
+export default SignUp as ComponentType;
 

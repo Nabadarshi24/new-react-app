@@ -1,10 +1,6 @@
 // import React from 'react';
-import {
-  Facebook,
-  Instagram,
-  X
-} from '@mui/icons-material';
 import { Link } from 'react-router';
+import { icons } from '../utils/Helpers';
 
 export const Topbar = () => {
   return (
@@ -12,13 +8,13 @@ export const Topbar = () => {
       <div className="tw:container tw:mx-auto tw:flex tw:justify-between tw:items-center tw:py-3 tw:px-4">
         <div className='tw:hidden tw:md:flex tw:items-center tw:space-x-4'>
           <Link to="#" className='tw:hover:text-grey'>
-            <Facebook className='w-5 h-5' />
+            <icons.Facebook className='w-5 h-5' />
           </Link>
           <Link to="#" className='tw:hover:text-grey'>
-            <Instagram className='w-5 h-5' />
+            <icons.Instagram className='w-5 h-5' />
           </Link>
           <Link to="#" className='tw:hover:text-grey'>
-            <X className='w-4 h-4' />
+            <icons.X className='w-4 h-4' />
           </Link>
         </div>
         <div className="tw:text-sm tw:text-center tw:flex-grow">

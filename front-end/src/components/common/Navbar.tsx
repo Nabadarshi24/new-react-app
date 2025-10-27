@@ -73,6 +73,40 @@ export const Navbar = () => {
             <Close className='tw:text-gray-600' />
           </button>
         </div>
+
+        <div className="tw:p-4">
+          <h2 className='tw:text-xl tw:font-semibold tw:mb-4'>Menu</h2>
+          <div className="tw:space-y-4">
+            <Link
+              to="#"
+              onClick={handleToggleNavDrawer}
+              className="tw:block tw:text-gray-700 tw:hover:text-black"
+            >
+              Men
+            </Link>
+            <Link
+              to="#"
+              onClick={handleToggleNavDrawer}
+              className="tw:block tw:text-gray-700 tw:hover:text-black"
+            >
+              Women
+            </Link>
+            <Link
+              to="#"
+              onClick={handleToggleNavDrawer}
+              className="tw:block tw:text-gray-700 tw:hover:text-black"
+            >
+              Top Wear
+            </Link>
+            <Link
+              to="#"
+              onClick={handleToggleNavDrawer}
+              className="tw:block tw:text-gray-700 tw:hover:text-black"
+            >
+              Bottom Wear
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

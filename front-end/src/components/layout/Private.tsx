@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ComponentType, ReactNode, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Header } from '../common/Header';
@@ -7,7 +7,7 @@ type TypeProps = {
   children?: ReactNode;
 };
 
-export const Private = ({ children }: TypeProps) => {
+const Private = ({ children }: TypeProps) => {
 
   const navigate = useNavigate();
 
@@ -42,3 +42,5 @@ export const Private = ({ children }: TypeProps) => {
     </>
   )
 };
+
+export default Private as ComponentType<TypeProps>;

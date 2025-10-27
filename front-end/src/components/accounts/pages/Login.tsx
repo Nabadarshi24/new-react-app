@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 // import * as yup from "yup";
 import * as Yup from "yup";
 import {
@@ -15,7 +15,7 @@ import { useHookForm } from '../../libs/HookForm';
 import { useAccountStore } from '../../stores/GlobalStore';
 import axios from 'axios';
 
-export const Login = () => {
+const Login = () => {
 
   const navigate = useNavigate();
 
@@ -115,3 +115,6 @@ export const Login = () => {
     </div>
   )
 };
+
+export default Login as ComponentType;
+

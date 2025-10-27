@@ -1,22 +1,23 @@
+import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
   Navigate,
   RouteObject
 } from "react-router";
 
-import { Private } from "../layout/Private";
-import { Dashboard } from "../dashboard/pages/Dashboard";
-import { ListUser } from "../user/ListUser";
-import { Details } from "../user/parts/Details";
-import { Login } from "../accounts/pages/Login";
-import { VerifyOtp } from "../accounts/pages/VerifyOtp";
-import { ForgotPassword } from "../accounts/pages/ForgotPassword";
-import { Layout } from "../layout/Index";
-import { Public } from "../layout/Public";
-import { AgencyList } from "../agency/pages/List";
-import { SignUp } from "../accounts/pages/SignUp";
-import { Profile } from "../accounts/pages/Profile";
-import { UserLayout } from "../layout/UserLayout";
+const Private = lazy(() => import("../layout/Private"));
+const Public = lazy(() => import("../layout/Public"));
+const Layout = lazy(() => import("../layout/Layout"));
+const Home = lazy(() => import("../home/pages/Home"));
+const Dashboard = lazy(() => import("../dashboard/pages/Dashboard"));
+const Profile = lazy(() => import("../accounts/pages/Profile"));
+const ListUser = lazy(() => import("../user/ListUser"));
+const Details = lazy(() => import("../user/parts/Details"));
+const Login = lazy(() => import("../accounts/pages/Login"));
+const VerifyOtp = lazy(() => import("../accounts/pages/VerifyOtp"));
+const ForgotPassword = lazy(() => import("../accounts/pages/ForgotPassword"));
+const SignUp = lazy(() => import("../accounts/pages/SignUp"));
+const UserLayout = lazy(() => import("../layout/UserLayout"));
 
 const privateRoute = [
   {
@@ -27,11 +28,6 @@ const privateRoute = [
   {
     path: "account/profile",
     element: <Profile />,
-    isSignIn: true
-  },
-  {
-    path: "agency/list",
-    element: <AgencyList />,
     isSignIn: true
   },
   {
@@ -49,8 +45,8 @@ const privateRoute = [
 const publicRoute = [
   {
     path: "/",
-    // index: true,
-    element: <Navigate to="/user-layout" replace />,
+    index: true,
+    element: <Home />,
     isSignIn: false
   },
   {
@@ -107,19 +103,19 @@ const publicRoute = [
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}><Layout /></Suspense>,
     // element: <Private />,
     children: [
       // ...PUBLIC_ROUTE,
       // ...PRIVATE_ROUTE,
       {
         path: "/",
-        element: <Public />,
+        element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}><Public /></Suspense>,
         children: [
           ...publicRoute.map(x => {
             return {
               path: x.path,
-              element: x.element
+              element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}>{x.element}</Suspense>
             };
           })
         ]
@@ -132,7 +128,7 @@ export const route = createBrowserRouter([
           ...privateRoute.map(x => {
             return {
               path: x.path,
-              element: x.element
+              element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}>{x.element}</Suspense>
             };
           })
         ]

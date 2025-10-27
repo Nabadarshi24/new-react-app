@@ -1,10 +1,13 @@
 // import React from 'react';
-import { Header } from "../common/Header"
+import { ComponentType } from "react";
 
-export const UserLayout = () => {
+const UserLayout = () => {
+
   return (
     <div>
       <h1>UserLayout</h1>
     </div>
   )
 }
+
+export default UserLayout as ComponentType;

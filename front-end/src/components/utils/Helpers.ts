@@ -1,7 +1,17 @@
 import { json } from "stream/consumers";
 import { TypeLogin, TypeLoginUserData, TypeSignUp, TypeUserData, TypeUserProfile } from "../accounts/types";
 import { v4 as uuidv4 } from 'uuid';
-import { console } from "inspector";
+import { console } from "inspector";import {
+  Facebook,
+  Instagram,
+  X
+} from '@mui/icons-material';
+
+export const icons = {
+  Facebook,
+  Instagram,
+  X
+}
 
 const covertToTitleCase = (str: string) => {
   let strArr = [];

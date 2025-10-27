@@ -6,11 +6,11 @@ import { useHookForm } from '../../libs/HookForm';
 import { TypeLoginUserData, TypeUserProfile } from '../types';
 import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
-import { useCallback, useEffect } from 'react';
+import { ComponentType, useCallback, useEffect } from 'react';
 import { updateUser } from '../api';
 import { Checkbox } from '../../form/Checkbox';
 
-export const Profile = () => {
+const Profile = () => {
 
   const { initialState, names, labels } = composeInitialState<TypeUserProfile>({
     email: "",
@@ -144,3 +144,6 @@ export const Profile = () => {
     </>
   );
 };
+
+export default Profile as ComponentType;
+
