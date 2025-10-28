@@ -109,6 +109,14 @@ export const NewArrivals = () => {
     });
   }
 
+  const onScroll = (direction: string) => {
+    const scrollAmount = direction == "left" ? -300 : 300;
+    scrollRef.current?.scrollBy({
+      left: scrollAmount,
+      behavior: "smooth"
+    });
+  };
+
   useEffect(() => {
     const container = scrollRef.current;
     if (container) {
@@ -126,10 +134,18 @@ export const NewArrivals = () => {
 
         {/* Scrool Buttons */}
         <div className="tw:absolute tw:right-0 tw:bottom-[-30px] tw:flex tw:space-x-2">
-          <button className="tw:bg-white tw:text-black tw:p-2 tw:rounded tw:border">
+          <button
+            onClick={() => onScroll("left")}
+            disabled={!canScrollLeft}
+            className={`tw:p-2 tw:rounded tw:border tw:cursor-pointer ${canScrollLeft ? "tw:bg-white tw:text-black" : "tw:bg-gray-200 tw:text-gray-400"}`}
+          >
             <icons.KeyboardArrowLeft />
           </button>
-          <button className="tw:bg-white tw:text-black tw:p-2 tw:rounded tw:border">
+          <button
+            onClick={() => onScroll("right")}
+            disabled={!canScrollRight}
+            className={`tw:p-2 tw:rounded tw:border tw:cursor-pointer ${canScrollRight ? "tw:bg-white tw:text-black" : "tw:bg-gray-200 tw:text-gray-400"}`}
+          >
             <icons.KeyboardArrowRight />
           </button>
         </div>
