@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { TypeSelectedProduct } from "../types";
+import { TypeSelectedProduct, TypeSimilarProduct } from "../types";
 import { toast } from "sonner";
+import { ProductGrid } from "./parts/ProductGrid";
 
 const selectedProduct: TypeSelectedProduct = {
   name: "Stylish Jacket",
@@ -26,6 +27,31 @@ const selectedProduct: TypeSelectedProduct = {
     // }
   ]
 }
+
+const similarProduct: TypeSimilarProduct[] = [
+  {
+    _id: "1",
+    name: "Product 1",
+    price: 100,
+    images: [{ url: "https://picsum.photos/500/500?random=3" }]
+  },
+  {
+    _id: "2",
+    name: "Product 2",
+    price: 200,
+    images: [{ url: "https://picsum.photos/500/500?random=4" }]
+  }, {
+    _id: "3",
+    name: "Product 3",
+    price: 300,
+    images: [{ url: "https://picsum.photos/500/500?random=5" }]
+  }, {
+    _id: "4",
+    name: "Product 4",
+    price: 400,
+    images: [{ url: "https://picsum.photos/500/500?random=6" }]
+  }
+];
 
 export const ProductDetails = () => {
 
@@ -199,6 +225,11 @@ export const ProductDetails = () => {
               </table>
             </div>
           </div>
+        </div>
+
+        <div className="tw:mt-20">
+          <h2 className="tw:text-2xl tw:text-center tw:font-medium tw:mb-4">You May Also Like</h2>
+          <ProductGrid products={similarProduct} />
         </div>
       </div>
     </div>
