@@ -1,6 +1,7 @@
 import { ComponentType, useEffect } from 'react';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Outlet } from 'react-router';
+import { Toaster } from 'sonner';
 
 const Layout = () => {
 
@@ -14,6 +15,7 @@ const Layout = () => {
   return (
     <>
       {/* {isSignIn ? <Private /> : <Public />} */}
+      <Toaster position="top-right" duration={2000} />
       <Outlet />
     </>
   );

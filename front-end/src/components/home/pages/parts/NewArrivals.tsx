@@ -88,6 +88,7 @@ export const NewArrivals = () => {
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -102,14 +103,39 @@ export const NewArrivals = () => {
       setCanScrollRight(constRightScrollable);
     }
 
-    console.log({
-      scrollLeft: container?.scrollLeft,
-      clientWidth: container?.clientWidth,
-      containerWidth: container?.scrollWidth
-    });
-  }
+    // console.log({
+    //   scrollLeft: container?.scrollLeft,
+    //   clientWidth: container?.clientWidth,
+    //   containerWidth: container?.scrollWidth,
+    //   offsetLeft: scrollRef.current?.offsetLeft
+    // });
+  };
 
-  const onScroll = (direction: string) => {
+  const handleOnMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current?.offsetLeft);
+    setScrollLeft(scrollRef.current?.scrollLeft);
+  };
+
+  const handleOnMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleOnMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const currentX = e.pageX - scrollRef.current?.offsetLeft;
+    const scrollAmount = currentX - startX;
+    scrollRef.current.scrollLeft = scrollLeft - scrollAmount;
+    console.log({
+      currentX,
+      scrollAmount,
+      scrollLeft,
+      startX,
+      pageX: e.pageX
+    })
+  };
+
+  const onButtonScroll = (direction: string) => {
     const scrollAmount = direction == "left" ? -300 : 300;
     scrollRef.current?.scrollBy({
       left: scrollAmount,
@@ -121,28 +147,30 @@ export const NewArrivals = () => {
     const container = scrollRef.current;
     if (container) {
       container.addEventListener("scroll", updateScrollButtons);
-      updateScrollButtons();
+      // updateScrollButtons();
+      return () => {
+        container.removeEventListener("scroll", updateScrollButtons);
+      }
     }
-  }, [])
-
+  }, []);
 
   return (
-    <section>
+    <section className='tw:py-16 tw:px-4 tw:lg:px-0'>
       <div className='tw:container tw:mx-auto tw:text-center tw:mb-10 tw:relative'>
         <h2 className='tw:text-3xl tw:text-black tw:font-bold tw:mb-4'>Explore New Arrivals</h2>
-        <p className='tw:text-lg tw:text-gray-600 tw:mb-8'>Discover the latest styles staright off the runway, freshly added to keep your wardrobr on the cutting edge of fashion.</p>
+        <p className='tw:text-lg tw:text-gray-600 tw:mb-[65px]'>Discover the latest styles staright off the runway, freshly added to keep your wardrobr on the cutting edge of fashion.</p>
 
         {/* Scrool Buttons */}
-        <div className="tw:absolute tw:right-0 tw:bottom-[-30px] tw:flex tw:space-x-2">
+        <div className="tw:absolute tw:right-0 tw:bottom-[-50px] tw:flex tw:space-x-2">
           <button
-            onClick={() => onScroll("left")}
+            onClick={() => onButtonScroll("left")}
             disabled={!canScrollLeft}
             className={`tw:p-2 tw:rounded tw:border tw:cursor-pointer ${canScrollLeft ? "tw:bg-white tw:text-black" : "tw:bg-gray-200 tw:text-gray-400"}`}
           >
             <icons.KeyboardArrowLeft />
           </button>
           <button
-            onClick={() => onScroll("right")}
+            onClick={() => onButtonScroll("right")}
             disabled={!canScrollRight}
             className={`tw:p-2 tw:rounded tw:border tw:cursor-pointer ${canScrollRight ? "tw:bg-white tw:text-black" : "tw:bg-gray-200 tw:text-gray-400"}`}
           >
@@ -154,7 +182,11 @@ export const NewArrivals = () => {
       {/* Scrollable Content */}
       <div
         ref={scrollRef}
-        className="tw:container tw:mx-auto tw:overflow-x-scroll tw:flex tw:space-x-6 tw:relative"
+        className={`tw:container tw:mx-auto tw:overflow-x-hidden tw:flex tw:space-x-6 tw:relative ${isDragging ? "tw:cursor-grabbing" : "tw:cursor-grab"}`}
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUpOrLeave}
+        onMouseLeave={handleOnMouseUpOrLeave}
+        onMouseMove={handleOnMouseMove}
       >
         {
           newArrivals.map((item) => (
@@ -166,6 +198,7 @@ export const NewArrivals = () => {
                 src={item.images[0].url}
                 alt={item.images[0].altText || item.name}
                 className="tw:w-full tw:h-[500px] tw:object-cover tw:rounded-lg"
+                draggable={false}
               />
               <div className="tw:absolute tw:bottom-0 tw:left-0 tw:right-0 tw:opacity-75 tw:backdrop-blur-md tw:text-white tw:p-4 tw:rounded-b-lg">
                 <Link
