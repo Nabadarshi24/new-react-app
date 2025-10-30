@@ -34,7 +34,7 @@ export const Header = () => {
   // };
 
   return (
-    <div className="tw:border-b tw:border-gray-200">
+    <div className="tw:border-b tw:bg-white tw:border-gray-200 tw:fixed tw:top-0 tw:left-0 tw:right-0 tw:z-50">
       <Topbar />
       <Navbar />
     </div>

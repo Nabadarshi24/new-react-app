@@ -126,13 +126,13 @@ export const NewArrivals = () => {
     const currentX = e.pageX - scrollRef.current?.offsetLeft;
     const scrollAmount = currentX - startX;
     scrollRef.current.scrollLeft = scrollLeft - scrollAmount;
-    console.log({
-      currentX,
-      scrollAmount,
-      scrollLeft,
-      startX,
-      pageX: e.pageX
-    })
+    // console.log({
+    //   currentX,
+    //   scrollAmount,
+    //   scrollLeft,
+    //   startX,
+    //   pageX: e.pageX
+    // })
   };
 
   const onButtonScroll = (direction: string) => {

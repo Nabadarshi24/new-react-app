@@ -9,7 +9,7 @@ type TypeProps = {
 
 export const ProductGrid = ({ products }: TypeProps) => {
   return (
-    <div className="tw:grid tw:grid-cols-1 tw:sm:grid-cols-2 tw:lg:grid-cols-4">
+    <div className="tw:grid tw:grid-cols-1 tw:sm:grid-cols-2 tw:lg:grid-cols-4 tw:gap-4">
       {
         products.map((product) => (
           <Link

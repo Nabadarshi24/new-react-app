@@ -21,7 +21,7 @@ export const Form = <TFieldValues extends FieldValues, TContext = any, TTransfor
   return (
     <FormProvider {...methods}>
       <form
-        className={`login-form tw:w-full ${className}`}
+        className={`tw:w-full ${className}`}
         onSubmit={methods.handleSubmit(onSubmit)}
         noValidate
       >

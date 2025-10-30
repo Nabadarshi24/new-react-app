@@ -33,7 +33,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className={`tw:flex tw:items-center tw:justify-center tw:transition-all tw:w-full tw:duration-300 ${isOpen ? "tw:absolute tw:bg-white tw:top-0 tw:left-0 tw:z-50" : "tw:w-auto"}`}>
+    <div className={`tw:flex tw:items-center tw:justify-center tw:transition-all tw:w-full tw:duration-300 ${isOpen ? "tw:absolute tw:bg-white tw:top-0 tw:left-0 tw:z-50 tw:min-h-[115px] tw:border-b tw:border-gray-200" : "tw:w-auto"}`}>
       {
         isOpen ?
           <Form

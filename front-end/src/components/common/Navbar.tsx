@@ -39,7 +39,7 @@ export const Navbar = () => {
       </div>
 
       <div className="tw:flex tw:items-center tw:justify-between tw:gap-4">
-        <Link to="/profile" className="tw:hover:text-black">
+        <Link to="/login" className="tw:hover:text-black">
           <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
         </Link>
         <button

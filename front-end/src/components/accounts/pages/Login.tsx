@@ -76,14 +76,19 @@ const Login = () => {
   };
 
   return (
-    <div className="public-card">
-      <div className='login-container'>
-        <h1>Login Form</h1>
-
+    <div className="tw:flex">
+      <div className='tw:w-full tw:md:w-1/2 tw:flex tw:flex-col tw:justify-center tw:items-center tw:p-8 tw:md:p-12'>
         <Form
           methods={methods}
           onSubmit={onSubmit}
+          className="tw:max-w-md tw:p-8 tw:rounded-lg tw:border-gray-500 tw:shadow-sm"
         >
+          <div className="tw:flex tw:justify-center tw:mb-6">
+            <h2 className="tw:text-xl tw:font-medium">Rabbit</h2>
+          </div>
+          <h2 className="tw:text-2xl tw:text-center tw:font-bold tw:mb-6">Hey there! </h2>
+          <p className="tw:text-center tw:mb-6">Enter your email and password to login</p>
+
           <div className="row">
             <div className="col-12">
               <Input
@@ -105,11 +110,22 @@ const Login = () => {
           <SubmitButton
             label="Login"
             variant="contained"
+            className='tw:w-full'
           />
-        </Form>
 
-        <div className="card-footer">
-          <Link to="/sign-up">Sign Up</Link>
+          <p className="tw:text-center tw:mt-6 tw:text-sm">
+            Don't have an account? {""}
+            <Link to="/sign-up" className="tw:text-blue-500">Sign Up</Link>
+          </p>
+        </Form>
+      </div>
+
+      <div className="tw:hidden tw:md:block tw:w-1/2 tw:bg-gray-800">
+        <div className="tw:h-full tw:flex tw:flex-col tw:justify-center tw:items-center">
+          <img
+            src="/images/login.webp"
+            className="tw:w-full tw:h-[750px] tw:object-cover"
+            alt="Login to account" />
         </div>
       </div>
     </div>

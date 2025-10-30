@@ -6,7 +6,10 @@ import { console } from "inspector"; import {
   Instagram,
   X,
   KeyboardArrowLeft,
-  KeyboardArrowRight
+  KeyboardArrowRight,
+  LocalMall,
+  Autorenew,
+  CreditCard
 } from '@mui/icons-material';
 
 export const icons = {
@@ -14,7 +17,10 @@ export const icons = {
   Instagram,
   X,
   KeyboardArrowLeft,
-  KeyboardArrowRight
+  KeyboardArrowRight,
+  LocalMall,
+  Autorenew,
+  CreditCard
 }
 
 const covertToTitleCase = (str: string) => {

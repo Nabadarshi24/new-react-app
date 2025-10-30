@@ -67,7 +67,8 @@
   /* color: #ffffff; */
   background-color: #fff;
   /* padding: 1rem; */
-  height: auto;
+  margin-top: 115px;
+  min-height: calc(100vh - 115px);
 }
 
 .sidebar-with-content {
