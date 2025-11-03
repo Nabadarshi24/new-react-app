@@ -32,7 +32,7 @@ export const Navbar = () => {
       </div>
 
       <div className="tw:hidden tw:md:flex tw:space-x-6">
-        <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Men</Link>
+        <Link to="/collections/all" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Men</Link>
         <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Women</Link>
         <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Top Wear</Link>
         <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Bottom Wear</Link>

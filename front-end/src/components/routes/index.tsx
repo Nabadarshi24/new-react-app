@@ -18,6 +18,7 @@ const VerifyOtp = lazy(() => import("../accounts/pages/VerifyOtp"));
 const ForgotPassword = lazy(() => import("../accounts/pages/ForgotPassword"));
 const SignUp = lazy(() => import("../accounts/pages/SignUp"));
 const UserLayout = lazy(() => import("../layout/UserLayout"));
+const CollectionList = lazy(() => import("../products/pages/CollectionList"));
 
 const privateRoute = [
   {
@@ -26,7 +27,7 @@ const privateRoute = [
     isSignIn: true
   },
   {
-    path: "account/profile",
+    path: "/profile",
     element: <Profile />,
     isSignIn: true
   },
@@ -47,6 +48,12 @@ const publicRoute = [
     path: "/",
     index: true,
     element: <Home />,
+    isSignIn: false
+  },
+  {
+    path: "/collections/:collection",
+    index: true,
+    element: <CollectionList />,
     isSignIn: false
   },
   {

@@ -2,6 +2,7 @@ import { ComponentType, ReactNode, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Header } from '../common/Header';
+import { Footer } from '../common/Footer';
 
 type TypeProps = {
   children?: ReactNode;
@@ -21,13 +22,13 @@ const Private = ({ children }: TypeProps) => {
   //   navigate("/login");
   // };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (!isSignIn) {
-      console.log("yy")
-      navigate("/login");
-    }
-  }, [isSignIn]);
+  //   if (!isSignIn) {
+  //     console.log("yy")
+  //     navigate("/login");
+  //   }
+  // }, [isSignIn]);
 
   return (
     <>
@@ -39,6 +40,8 @@ const Private = ({ children }: TypeProps) => {
           {children}
         </div>
       </div>
+
+      <Footer />
     </>
   )
 };

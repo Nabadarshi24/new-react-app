@@ -9,7 +9,8 @@ import { console } from "inspector"; import {
   KeyboardArrowRight,
   LocalMall,
   Autorenew,
-  CreditCard
+  CreditCard,
+  FilterListAlt
 } from '@mui/icons-material';
 
 export const icons = {
@@ -20,7 +21,8 @@ export const icons = {
   KeyboardArrowRight,
   LocalMall,
   Autorenew,
-  CreditCard
+  CreditCard,
+  FilterListAlt
 }
 
 const covertToTitleCase = (str: string) => {
