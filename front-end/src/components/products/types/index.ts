@@ -21,3 +21,14 @@ export type TypeSimilarProduct = {
     url: string;
   }[];
 };
+
+export type TypeFilter = {
+  category: string;
+  gender: string;
+  color: string;
+  size: string[];
+  material: string[];
+  brand: string[];
+  minPrice: number;
+  maxPrice: number;
+};
