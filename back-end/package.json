@@ -1,10 +1,10 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "node back-end/server.js",
-    "dev": "nodemon back-end/server.js"
+    "start": "node back-end/server.ts",
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "",
@@ -16,10 +16,15 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.19.2",
-    "nodemon": "^3.1.10"
+    "mongoose": "^8.19.2"
   },
   "devDependencies": {
-    "@types/node": "^24.10.0"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.10.1",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

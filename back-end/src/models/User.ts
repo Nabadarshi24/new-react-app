@@ -45,4 +45,12 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-// Mtach 
+// Mtach User entered password with hashed password
+UserSchema.methods.matchPassword = async function (password: string): Promise<boolean> {
+  return await bcrypt.compare(password, this.password);
+};
+
+const User = mongoose.model<IUser>("User", UserSchema);
+
+export default User;
+
