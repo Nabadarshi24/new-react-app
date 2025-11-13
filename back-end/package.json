@@ -1,9 +1,9 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "server.ts",
+  "type": "commonjs",
   "scripts": {
-    "start": "node back-end/server.ts",
+    "start": "ts-node src/server.ts",
     "dev": "nodemon"
   },
   "keywords": [],

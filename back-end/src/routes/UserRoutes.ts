@@ -19,23 +19,40 @@ router.post("/register", async (req: any, res: any) => {
     const newUser = new User({ name, email, password });
     await newUser.save();
 
-    // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-    //   expiresIn: "1h",
-    // });
+    // create JWT payload
+    const payload = {
+      id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role
+    };
+
+    const token = jwt.sign(
+      payload,
+      process.env.JWT_SECRET!,
+      { expiresIn: "1h" },
+    );
+
+    console.log(token);
 
     res.status(201).json({
-      // token,
       user: {
         id: newUser._id,
         name: newUser.name,
         email: newUser.email,
         role: newUser.role
-      }
+      },
+      token
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// @route POST /api/users/login
+// @desc Authenticate user
+// @access Public
+
 
 export default router;
