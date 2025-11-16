@@ -6,9 +6,10 @@ interface IUser {
   email: string;
   password: string;
   role: string;
+  matchPassword(enteredPassword: string): Promise<boolean>;
 };
 
-const UserSchema = new Schema<IUser>({
+export const UserSchema = new Schema<IUser>({
   name: {
     type: String,
     required: true,
