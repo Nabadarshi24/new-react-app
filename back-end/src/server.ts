@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 // import connectDB from "./config/db";
-import routes from "./routes/UserRoutes";
+import userRoutes from "./routes/UserRoutes";
+import productRoutes from "./routes/ProductRoutes";
 import { connectDB } from "./config/db";
 
 const app = express();
@@ -20,6 +21,9 @@ app.get("/", (req, res) => {
 });
 
 // User Routes
-app.use("/api/user", routes);
+app.use("/api/user", userRoutes);
+
+// Product Routes
+app.use("/api/product", productRoutes);
 
 app.listen(PORT, () => console.log(`Server is running on port http://localhost:${PORT}`));
