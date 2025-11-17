@@ -38,7 +38,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 // Middleware to check if user is admin
 export const admin = (req: Request, res: Response, next: NextFunction) => {
   if (req.body.user.role !== "admin") {
-    return res.status(401).json({ message: "Not authorized to access this route" });
+    return res.status(401).json({ message: "Not authorized - User must be an admin" });
   }
   next();
 };
