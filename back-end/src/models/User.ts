@@ -9,7 +9,7 @@ interface IUser {
   matchPassword(enteredPassword: string): Promise<boolean>;
 };
 
-export const UserSchema = new Schema<IUser>({
+export const userSchema = new Schema<IUser>({
   name: {
     type: String,
     required: true,
@@ -37,7 +37,7 @@ export const UserSchema = new Schema<IUser>({
 });
 
 // Password Hash Middleware
-UserSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
@@ -47,11 +47,11 @@ UserSchema.pre("save", async function (next) {
 });
 
 // Mtach User entered password with hashed password
-UserSchema.methods.matchPassword = async function (password: string): Promise<boolean> {
+userSchema.methods.matchPassword = async function (password: string): Promise<boolean> {
   return await bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model<IUser>("User", UserSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;
 

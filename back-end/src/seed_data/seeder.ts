@@ -1,19 +1,21 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Product from "../models/Products";
 import User from "../models/User";
+import Cart from "../models/Cart";
 import { products } from "../data/product";
+import { connectDB } from "../config/db";
 
 dotenv.config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI!)
+connectDB();
 
 // Function to seed data
 const seedData = async () => {
   try {
     await User.deleteMany();
     await Product.deleteMany();
+    await Cart.deleteMany();
 
     // Create admin user
     const adminUser = await User.create({
