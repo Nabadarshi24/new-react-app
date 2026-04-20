@@ -127,7 +127,6 @@ export const route = createBrowserRouter([
           })
         ]
       },
-
       {
         path: "/",
         element: <Private />,
