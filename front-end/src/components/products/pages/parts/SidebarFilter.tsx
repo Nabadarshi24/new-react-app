@@ -19,7 +19,33 @@ export const SidebarFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const categories = ["Top Wear", "Bottom Wear"];
+  const aspects =[
+    {
+      value: "top_wear",
+      label: "Top Wear",
+      type: "category"
+    },
+    {
+      value: "bottom_wear",
+      label: "Bottom Wear",
+      type: "category"
+    },
+    {
+      value: "red",
+      label: "Red",
+      type: "color"
+    }
+  ]
+  const categories = [
+    {
+      value: "top_wear",
+      label: "Top Wear"
+    },
+    {
+      value: "bottom_wear",
+      label: "Bottom Wear"
+    }
+  ];
   const colors = ["Red", "Blue", "Green", "Yellow", "Black", "White", "Pink", "Purple", "Orange"];
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
   const materials = ["Cotton", "Polyester", "Silk", "Wool", "Denim", "Linen"];
@@ -86,8 +112,10 @@ export const SidebarFilter = () => {
       }
     });
 
+    console.log({ params })
     setSearchParams(params);
-    navigate(`?${params.toString()}`);
+    // console.log({ params: params.toString() })
+    navigate(`?${params.toString().replace(/%2C/g, ',')}`);
   };
 
   const handlePriceRange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,16 +136,16 @@ export const SidebarFilter = () => {
         <label className="tw:block tw:font-medium tw:text-gray-600 tw:mb-2">Category</label>
         {
           categories.map((category) => (
-            <div key={category} className="tw:flex tw:items-center tw:mb-1">
+            <div key={category.value} className="tw:flex tw:items-center tw:mb-1">
               <input
                 type="radio"
                 name="category"
-                value={category}
-                checked={filters.category === category}
+                value={category.value}
+                checked={filters.category === category.value}
                 onChange={handleFilterChange}
                 className="tw:mr-2 tw:h-4 tw:w-4 tw:text-blue-500 tw:focus:ring-blue-400 tw:border-gray-300"
               />
-              <span className="tw:text-gray-700">{category}</span>
+              <span className="tw:text-gray-700">{category.label}</span>
             </div>
           ))
         }

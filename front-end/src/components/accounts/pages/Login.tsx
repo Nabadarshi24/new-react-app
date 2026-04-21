@@ -47,7 +47,7 @@ const Login = () => {
 
       // const response = loginUser(data);
 
-      const response = await axios.post("http://localhost:5000/api/user/login", data);
+      const response = await login(data);
 
       console.log({ response })
       // if (response.success && response.data) {

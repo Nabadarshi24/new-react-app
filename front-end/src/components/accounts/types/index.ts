@@ -4,11 +4,10 @@ export type TypeLogin = {
 };
 
 export type TypeSignUp = {
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
   password: string;
-  userRole: string;
+  role: string;
 };
 
 export type TypeLoginUserData = {

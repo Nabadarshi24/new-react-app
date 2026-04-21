@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ApiResponseObject } from "./types";
 // import { T } from "react-router/dist/development/route-data-H2S3hwhf";
 
-const baseUrl = "https://api.planability-dev.com.au/";
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const axiosInstance = axios.create({
   baseURL: baseUrl
@@ -53,7 +53,7 @@ export const makePostRequest = async <T extends Record<string, any>>(
     const response = error.response as AxiosResponse<ApiResponseObject<T>>;
 
     if (response.status >= 400 && response.status <= 500) {
-      
+
     }
   }
 };

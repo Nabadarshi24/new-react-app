@@ -11,13 +11,13 @@ const router = express.Router();
 
 router.post("/register", async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
-    const newUser = new User({ name, email, password });
+    const newUser = new User({ name, email, password, role });
     await newUser.save();
 
     // create JWT payload
@@ -38,14 +38,16 @@ router.post("/register", async (req: Request, res: Response) => {
 
     console.log(token);
 
-    res.status(201).json({
-      user: {
-        id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role
-      },
-      token
+    res.json({
+      data: {
+        user: {
+          id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role
+        },
+        token
+      }
     });
   } catch (error) {
     console.error(error);
@@ -84,13 +86,15 @@ router.post("/login", async (req: Request, res: Response) => {
     );
 
     res.json({
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      },
-      token
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        },
+        token
+      }
     });
   } catch (error) {
     console.error(error);

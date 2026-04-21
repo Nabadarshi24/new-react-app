@@ -3,7 +3,7 @@ import { ApiResponseObject } from "../../libs/types";
 import { TypeLogin, TypeLoginUserData, TypeSignInOtpPayload, TypeSignInOtpResponse, TypeSignInResponse, TypeUserData, TypeUserProfile } from "../types";
 
 export const login = async (payload: TypeLogin): Promise<ApiResponseObject<TypeSignInResponse>> => {
-  return await makePostRequest("/account/sign-in", payload);
+  return await makePostRequest("/user/login", payload);
 };
 
 export const verifyOtp = async (payload: TypeSignInOtpPayload): Promise<ApiResponseObject<TypeSignInOtpResponse>> => {
