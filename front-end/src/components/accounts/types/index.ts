@@ -31,7 +31,14 @@ export type TypeUserData = {
   role: string;
   isVerified: boolean;
   isDeleted: boolean;
-}
+};
+
+export type TypeRegistrationPayload = {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+};
 
 export type TypeSignInOtpPayload = {
   authKey: string;

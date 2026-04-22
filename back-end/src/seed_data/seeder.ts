@@ -4,6 +4,8 @@ import User from "../models/User";
 import Cart from "../models/Cart";
 import { products } from "../data/product";
 import { connectDB } from "../config/db";
+import { aspects } from "../data/aspect";
+import { Aspect } from "../models/Aspect";
 
 dotenv.config();
 
@@ -16,6 +18,7 @@ const seedData = async () => {
     await User.deleteMany();
     await Product.deleteMany();
     await Cart.deleteMany();
+    await Aspect.deleteMany();
 
     // Create admin user
     const adminUser = await User.create({
@@ -33,7 +36,10 @@ const seedData = async () => {
       user: defaultUserId
     }));
 
+    const sampleAspect = aspects.map(aspect => aspect);
+
     await Product.insertMany(sampleProducts);
+    await Aspect.insertMany(sampleAspect);
 
     console.log("Product data seeded successfully");
     process.exit();

@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import Product from "../models/Products";
 import { admin, protect } from "../middleware/authMiddleware";
+import { Aspect } from "../models/Aspect";
 
 const router = express.Router();
 
@@ -152,7 +153,7 @@ router.delete("/delete/:id", protect, admin, async (req, res) => {
   }
 });
 
-// @route GET /api/products
+// @route GET /api/product/all
 // @desc Get all products with optional query & filters
 // @access Public
 router.get("/all", async (req: Request, res: Response) => {
@@ -300,6 +301,27 @@ router.get("/similar/:id", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// @route GET /api/product/filter-option
+// @desc Get all product filter options
+// @access Public
+router.get("/filter-option", async (req: Request, res: Response) => {
+  try {
+    const options = await Aspect.find({});
+
+    if (!options || options.length === 0) {
+      return res.status(404).json({ message: "Filter options not found" });
+    }
+
+    res.status(200).json({
+      data: options,
+      success: true
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

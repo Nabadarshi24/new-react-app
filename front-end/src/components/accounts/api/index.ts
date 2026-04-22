@@ -1,13 +1,21 @@
 import { makePostRequest } from "../../libs/Axios";
 import { ApiResponseObject } from "../../libs/types";
-import { TypeLogin, TypeLoginUserData, TypeSignInOtpPayload, TypeSignInOtpResponse, TypeSignInResponse, TypeUserData, TypeUserProfile } from "../types";
+import {
+  TypeLogin,
+  TypeLoginUserData,
+  TypeRegistrationPayload,
+  TypeSignInOtpResponse,
+  TypeSignInResponse,
+  TypeUserData,
+  TypeUserProfile
+} from "../types";
 
 export const login = async (payload: TypeLogin): Promise<ApiResponseObject<TypeSignInResponse>> => {
   return await makePostRequest("/user/login", payload);
 };
 
-export const verifyOtp = async (payload: TypeSignInOtpPayload): Promise<ApiResponseObject<TypeSignInOtpResponse>> => {
-  return await makePostRequest("/account/sign-in-otp", payload);
+export const registration = async (payload: TypeRegistrationPayload): Promise<ApiResponseObject<TypeSignInOtpResponse>> => {
+  return await makePostRequest("/user/register", payload);
 };
 
 

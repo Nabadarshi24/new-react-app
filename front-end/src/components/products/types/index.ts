@@ -22,6 +22,12 @@ export type TypeSimilarProduct = {
   }[];
 };
 
+export type TypeFilterOption = {
+  value: string;
+  label: string;
+  type: string;
+};
+
 export type TypeFilter = {
   category: string;
   gender: string;
