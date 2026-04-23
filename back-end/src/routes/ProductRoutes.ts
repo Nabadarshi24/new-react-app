@@ -184,11 +184,11 @@ router.get("/all", async (req: Request, res: Response) => {
       query.category = category;
     }
 
+    if (gender) query.gender = gender;
+    if (color) query.color = { $in: [color] };
+    if (size) query.sizes = { $in: size.toString().split(",") };
     if (material) query.material = { $in: material.toString().split(",") };
     if (brand) query.brand = { $in: brand.toString().split(",") };
-    if (size) query.size = { $in: size.toString().split(",") };
-    if (color) query.color = { $in: [color] };
-    if (gender) query.gender = gender;
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = minPrice;
@@ -222,7 +222,10 @@ router.get("/all", async (req: Request, res: Response) => {
     // Fetched products and apply sorting and limit
     let products = await Product.find(query).sort(sort).limit(Number(limit) || 0);
 
-    res.json(products);
+    res.json({
+      data: products,
+      success: true
+    });
 
   } catch (error) {
     console.error(error);

@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { TypeFilter, TypeFilterOption } from '../../types';
 import { getFilterOptions } from '../../api';
+import axios from 'axios';
 
 export const SidebarFilter = () => {
   // const [priceRange, setPriceRange] = useState([0, 100]);
@@ -39,9 +40,10 @@ export const SidebarFilter = () => {
     // setPriceRange([0, parseInt(params.maxPrice) || 100]);
   }, [searchParams]);
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement> | FormEvent<HTMLButtonElement>) => {
+  const handleFilterChange = async (event: React.ChangeEvent<HTMLInputElement> | FormEvent<HTMLButtonElement>) => {
     const { name, value, checked, type } = event.target as HTMLInputElement;
     console.log({ name, value, checked, type });
+
     let newFilters: TypeFilter = { ...filters };
 
     if (type == "checkbox") {
@@ -60,21 +62,23 @@ export const SidebarFilter = () => {
       newFilterValue = value;
       newFilters = { ...newFilters, [name]: newFilterValue };
     }
-    debugger
+
+    // debugger
     setFilters(newFilters);
     // console.log({ newFilters });
-    const filteredNewFilters = Object.entries(newFilters);
+    // const filteredNewFilters = Object.entries(newFilters);
     // console.log({ X: Object.fromEntries(filteredNewFilters) });
-    updateURLParams(Object.fromEntries(filteredNewFilters));
+    // updateURLParams(Object.fromEntries(filteredNewFilters) as TypeFilter);
+    updateURLParams(newFilters);
   };
 
-  const updateURLParams = (newFilters: TypeFilter) => {
+  const updateURLParams = async (newFilters: TypeFilter) => {
     const params = new URLSearchParams();
     // console.log({ params });
 
     Object.keys(newFilters).forEach((key) => {
       const v = newFilters[key as keyof TypeFilter];
-      debugger
+      // debugger
 
       if (Array.isArray(v)) {
         if (v.length > 0) {
@@ -85,15 +89,26 @@ export const SidebarFilter = () => {
         return;
       }
 
-      if (v !== "") {
+      if (typeof v === "string" && v !== "") {
         params.append(key, v as string);
 
         return;
       }
+
+      if (typeof v === "number" && (v > 0 && v < filters.maxPrice)) {
+        params.append(key, v.toString());
+        return;
+      }
+
+      // params.append(key, v as string);
+
     });
 
     setSearchParams(params);
     // console.log({ params: params.toString() })
+    const response = await axios.get(`http://localhost:5000/api/product/all/?${params.toString().replace(/%2C/g, ',')}`);
+    console.log({ response });
+
     navigate(`?${params.toString().replace(/%2C/g, ',')}`);
   };
 
@@ -103,6 +118,14 @@ export const SidebarFilter = () => {
 
     const newFilters = { ...filters, minPrice: parseInt(newPrice), maxPrice: 100 };
     setFilters(newFilters);
+    // updateURLParams(newFilters);
+  };
+
+  const handleRelease = (event: React.MouseEvent<HTMLInputElement>) => {
+    const newPrice = event.currentTarget.value;
+
+    const newFilters = { ...filters, minPrice: parseInt(newPrice), maxPrice: 100 };
+    // setFilters(newFilters);
     updateURLParams(newFilters);
   };
 
@@ -278,6 +301,7 @@ export const SidebarFilter = () => {
           max={100}
           value={filters.minPrice}
           onChange={handlePriceRange}
+          onMouseUp={handleRelease}
           className="tw:w-full tw:h-2 tw:bg-gray-300 tw:appearance-none tw:rounded-lg tw:cursor-pointer"
         />
         <div className="tw:flex tw:items-center tw:justify-between">
@@ -288,3 +312,4 @@ export const SidebarFilter = () => {
     </div>
   );
 };
+
