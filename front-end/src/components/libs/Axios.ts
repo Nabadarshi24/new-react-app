@@ -60,11 +60,11 @@ export const makePostRequest = async <T extends Record<string, any>>(
 
 export const makeGetRequest = async <T extends Record<string, any>>(
   url: string,
-  data?: Record<string, any>
+  params?: Record<string, any>
 ) => {
   const requestConfig: AxiosRequestConfig = {
     url,
-    data,
+    params,
     method: "GET"
   };
 

@@ -8,10 +8,15 @@ import { icons } from '../../utils/Helpers';
 import { SidebarFilter } from './parts/SidebarFilter';
 import { ProductGrid } from './parts/ProductGrid';
 import { SortOption } from './parts/SortOption';
+import { TypeProduct } from '../types';
+import { getAllProducts } from '../api';
+import { useSearchParams } from 'react-router';
 
 const CollectionList = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<TypeProduct[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const sidebarRef = useRef(null);
 
@@ -32,62 +37,25 @@ const CollectionList = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      const fetchedProducts = [
-        {
-          _id: "1",
-          name: "Product 1",
-          price: 100,
-          images: [{ url: "https://picsum.photos/500/500?random=3" }]
-        },
-        {
-          _id: "2",
-          name: "Product 2",
-          price: 200,
-          images: [{ url: "https://picsum.photos/500/500?random=4" }]
-        },
-        {
-          _id: "3",
-          name: "Product 3",
-          price: 300,
-          images: [{ url: "https://picsum.photos/500/500?random=5" }]
-        },
-        {
-          _id: "4",
-          name: "Product 4",
-          price: 400,
-          images: [{ url: "https://picsum.photos/500/500?random=6" }]
-        },
-        {
-          _id: "5",
-          name: "Product 5",
-          price: 400,
-          images: [{ url: "https://picsum.photos/500/500?random=7" }]
-        },
-        {
-          _id: "6",
-          name: "Product 6",
-          price: 400,
-          images: [{ url: "https://picsum.photos/500/500?random=8" }]
-        },
-        {
-          _id: "7",
-          name: "Product 7",
-          price: 400,
-          images: [{ url: "https://picsum.photos/500/500?random=9" }]
-        },
-        {
-          _id: "8",
-          name: "Product 8",
-          price: 400,
-          images: [{ url: "https://picsum.photos/500/500?random=10" }]
-        }
-      ];
+  const onMount = async (params?: Record<string, string>) => {
+    // TODO: Fetch products from API
+    try {
+      const response = await getAllProducts(params);
+      console.log({ response });
 
-      setProducts(fetchedProducts);
-    }, 1000)
-  }, []);
+      if (response.success && response.data) {
+        setProducts(response.data.items);
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  useEffect(() => {
+    const params = Object.fromEntries(searchParams.entries());
+    console.log({ searchParams: params });
+    void onMount(params);
+  }, [searchParams]);
 
   return (
     <div className="tw:flex tw:flex-col tw:lg:flex-row">

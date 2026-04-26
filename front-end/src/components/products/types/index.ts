@@ -13,6 +13,36 @@ export type TypeSelectedProduct = {
   }[];
 };
 
+export type TypeProduct = {
+  _id: string;
+  productName: string;
+  description: string;
+  price: number;
+  discountPrice: number;
+  countInStock: number;
+  sku: string;
+  category: string;
+  brand: string;
+  sizes: string[];
+  colors: string[];
+  collections: string;
+  material: string;
+  gender: string;
+  images: {
+    _id: string;
+    url: string;
+    altText: string;
+  }[];
+  isFeatured: boolean;
+  isPublished: boolean;
+  rating: number;
+  numberOfReviews: number;
+  tags: string[];
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type TypeSimilarProduct = {
   _id: string;
   name: string;

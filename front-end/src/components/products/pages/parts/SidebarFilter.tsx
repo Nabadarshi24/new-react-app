@@ -2,7 +2,7 @@ import { Category } from '@mui/icons-material';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { TypeFilter, TypeFilterOption } from '../../types';
-import { getFilterOptions } from '../../api';
+import { getAllProducts, getFilterOptions } from '../../api';
 import axios from 'axios';
 
 export const SidebarFilter = () => {
@@ -22,29 +22,13 @@ export const SidebarFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const params = Object.fromEntries(searchParams);
-    // console.log({ params });
-
-    setFilters({
-      category: params.category || "",
-      gender: params.gender || "",
-      color: params.color || "",
-      size: params.size ? params.size.split(",") : [],
-      material: params.material ? params.material.split(",") : [],
-      brand: params.brand ? params.brand.split(",") : [],
-      minPrice: params.minPrice ? parseInt(params.minPrice) : 0,
-      maxPrice: params.maxPrice ? parseInt(params.maxPrice) : 100
-    });
-
-    // setPriceRange([0, parseInt(params.maxPrice) || 100]);
-  }, [searchParams]);
-
-  const handleFilterChange = async (event: React.ChangeEvent<HTMLInputElement> | FormEvent<HTMLButtonElement>) => {
-    const { name, value, checked, type } = event.target as HTMLInputElement;
+  // const handleFilterChange = async (event: React.ChangeEvent<HTMLInputElement> | FormEvent<HTMLButtonElement>) => {
+  const handleFilterChange = async (event?: React.ChangeEvent<HTMLInputElement>, currentFilters?: TypeFilter) => {
+    const { name, value, checked, type } = event?.currentTarget || {};
     console.log({ name, value, checked, type });
+    // debugger
 
-    let newFilters: TypeFilter = { ...filters };
+    let newFilters: TypeFilter = { ...(currentFilters || filters) };
 
     if (type == "checkbox") {
       let newFilterValue = newFilters[name as keyof TypeFilter] as string[];
@@ -69,10 +53,10 @@ export const SidebarFilter = () => {
     // const filteredNewFilters = Object.entries(newFilters);
     // console.log({ X: Object.fromEntries(filteredNewFilters) });
     // updateURLParams(Object.fromEntries(filteredNewFilters) as TypeFilter);
-    updateURLParams(newFilters);
+    updateURLSearchParams(newFilters);
   };
 
-  const updateURLParams = async (newFilters: TypeFilter) => {
+  const updateURLSearchParams = async (newFilters: TypeFilter) => {
     const params = new URLSearchParams();
     // console.log({ params });
 
@@ -99,17 +83,14 @@ export const SidebarFilter = () => {
         params.append(key, v.toString());
         return;
       }
-
-      // params.append(key, v as string);
-
     });
 
     setSearchParams(params);
-    // console.log({ params: params.toString() })
-    const response = await axios.get(`http://localhost:5000/api/product/all/?${params.toString().replace(/%2C/g, ',')}`);
-    console.log({ response });
 
-    navigate(`?${params.toString().replace(/%2C/g, ',')}`);
+    // navigate(`?${params.toString().replace(/%2C/g, ',')}`);
+    // console.log({ params: params.toString() })
+    // const response = await getAllProducts(Object.fromEntries(params));
+    // console.log({ response });
   };
 
   const handlePriceRange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,22 +107,64 @@ export const SidebarFilter = () => {
 
     const newFilters = { ...filters, minPrice: parseInt(newPrice), maxPrice: 100 };
     // setFilters(newFilters);
-    updateURLParams(newFilters);
+    updateURLSearchParams(newFilters);
   };
+
+  // useEffect(() => {
+  //   const params = Object.fromEntries(searchParams);
+  //   console.log({ params });
+
+  //   setFilters({
+  //     category: params.category || "",
+  //     gender: params.gender || "",
+  //     color: params.color || "",
+  //     size: params.size ? params.size.split(",") : [],
+  //     material: params.material ? params.material.split(",") : [],
+  //     brand: params.brand ? params.brand.split(",") : [],
+  //     minPrice: params.minPrice ? parseInt(params.minPrice) : 0,
+  //     maxPrice: params.maxPrice ? parseInt(params.maxPrice) : 100
+  //   });
+
+  //   // debugger
+  //   // if (Object.keys(params).length > 0) {
+  //     updateURLSearchParams(params as unknown as TypeFilter);
+  //   // }
+  //   // setPriceRange([0, parseInt(params.maxPrice) || 100]);
+  // }, [searchParams]);
 
   const onMount = async () => {
     try {
+
       const response = await getFilterOptions();
-      console.log({ response });
+      // console.log({ response });
 
       if (response.success && response.data) {
         setFilterOptions(response.data);
       }
 
+      const params = Object.fromEntries(searchParams);
+      console.log({ params });
+
+      
+      const currentFilters ={
+        category: params.category || "",
+        gender: params.gender || "",
+        color: params.color || "",
+        size: params.size ? params.size.split(",") : [],
+        material: params.material ? params.material.split(",") : [],
+        brand: params.brand ? params.brand.split(",") : [],
+        minPrice: params.minPrice ? parseInt(params.minPrice) : 0,
+        maxPrice: params.maxPrice ? parseInt(params.maxPrice) : 100
+      };
+      
+      // setFilters(currentFilters);
+
+      await handleFilterChange(undefined, currentFilters);
+
     } catch (error) {
       console.log({ error });
     }
-  }
+  };
 
   useEffect(() => {
     void onMount();

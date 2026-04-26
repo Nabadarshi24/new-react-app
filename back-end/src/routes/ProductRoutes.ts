@@ -223,7 +223,14 @@ router.get("/all", async (req: Request, res: Response) => {
     let products = await Product.find(query).sort(sort).limit(Number(limit) || 0);
 
     res.json({
-      data: products,
+      data: {
+        items: products,
+        pageIndex: 1,
+        totalPages: 1,
+        totalCount: products.length,
+        hasPreviousPage: false,
+        hasNextPage: false
+      },
       success: true
     });
 
