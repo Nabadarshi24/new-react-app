@@ -111,7 +111,7 @@ router.put("/update/:id", protect, admin, async (req, res) => {
       product.sizes = sizes || product.sizes;
       product.colors = colors || product.colors;
       product.collections = collections || product.collections;
-      product.material = material || product.material;
+      product.materialAspectId = material || product.materialAspectId;
       product.gender = gender || product.gender;
       product.images = images || product.images;
       product.isFeatured = isFeatured !== undefined ? isFeatured : product.isFeatured;
@@ -185,9 +185,9 @@ router.get("/all", async (req: Request, res: Response) => {
     }
 
     if (gender) query.gender = gender;
-    if (color) query.color = { $in: [color] };
+    if (color) query.colors = { $in: color.toString().split(",") };
     if (size) query.sizes = { $in: size.toString().split(",") };
-    if (material) query.material = { $in: material.toString().split(",") };
+    if (material) query.materialAspectId = { $in: material.toString().split(",") };
     if (brand) query.brand = { $in: brand.toString().split(",") };
     if (minPrice || maxPrice) {
       query.price = {};
@@ -203,12 +203,13 @@ router.get("/all", async (req: Request, res: Response) => {
 
     // Sort by logic
     let sort = {};
+
     if (sortBy) {
       switch (sortBy) {
-        case "priceAsc":
+        case "asc":
           sort = { price: 1 };
           break;
-        case "priceDesc":
+        case "desc":
           sort = { price: -1 };
           break;
         case "popularity":

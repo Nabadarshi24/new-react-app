@@ -11,7 +11,7 @@ export const SidebarFilter = () => {
   const [filters, setFilters] = useState<TypeFilter>({
     category: "",
     gender: "",
-    color: "",
+    color: [],
     size: [],
     material: [],
     brand: [],
@@ -145,18 +145,18 @@ export const SidebarFilter = () => {
       const params = Object.fromEntries(searchParams);
       console.log({ params });
 
-      
-      const currentFilters ={
+
+      const currentFilters = {
         category: params.category || "",
         gender: params.gender || "",
-        color: params.color || "",
+        color: params.color ? params.color.split(",") : [],
         size: params.size ? params.size.split(",") : [],
         material: params.material ? params.material.split(",") : [],
         brand: params.brand ? params.brand.split(",") : [],
         minPrice: params.minPrice ? parseInt(params.minPrice) : 0,
         maxPrice: params.maxPrice ? parseInt(params.maxPrice) : 100
       };
-      
+
       // setFilters(currentFilters);
 
       await handleFilterChange(undefined, currentFilters);
@@ -225,14 +225,16 @@ export const SidebarFilter = () => {
           {
             filterOptions.map((option) => {
               if (option.type === 'color') {
-                return <button
+                return <input
+                  type='checkbox'
                   key={option.value}
                   name="color"
                   value={option.value}
-                  onClick={handleFilterChange}
-                  className={`tw:w-8 tw:h-8 tw:rounded-full tw:border tw:border-gray-300 tw:cursor-pointer tw:transition tw:hover:scale-105 ${filters.color === option.value ? "tw:ring-2 tw:ring-blue-500" : ""}`}
+                  checked={filters.color.includes(option.value)}
+                  onChange={handleFilterChange}
+                  className={`color-checkbox tw:transition tw:hover:scale-105 ${filters.color.includes(option.value) ? "tw:ring-2 tw:ring-blue-500" : ""}`}
                   style={{ backgroundColor: option.value.toLowerCase() }}
-                ></button>
+                />
               }
             })
           }
@@ -277,8 +279,8 @@ export const SidebarFilter = () => {
                 <input
                   type="checkbox"
                   name="material"
-                  value={option.value}
-                  checked={filters.material.includes(option.value)}
+                  value={option.id}
+                  checked={filters.material.includes(option.id)}
                   onChange={handleFilterChange}
                   className="tw:mr-2 tw:h-4 tw:w-4 tw:text-blue-500 tw:focus:ring-blue-400 tw:border-gray-300"
                 />

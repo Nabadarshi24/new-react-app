@@ -1,4 +1,10 @@
 // product.js:
+interface Aspect {
+  id: string;
+  label: string;
+  value: string;
+  type: string;
+};
 
 interface ProductDetails {
   productName: string;
@@ -12,7 +18,7 @@ interface ProductDetails {
   sizes: string[];
   colors: string[];
   collections: string;
-  material: string;
+  materialAspectId: string;
   gender: string;
   images: {
     url: string;
@@ -20,6 +26,7 @@ interface ProductDetails {
   }[];
   rating: number;
   numReviews: number;
+  // material: Aspect;
 }
 
 export const products: ProductDetails[] = [
@@ -36,7 +43,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl", "xxl"],
     colors: ["red", "blue", "yellow"],
     collections: "Business Casual",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -64,7 +71,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "blue"],
     collections: "Formal Wear",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -92,7 +99,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl", "xxl"],
     colors: ["light_blue", "dark_wash"],
     collections: "Casual Wear",
-    material: "denim",
+    materialAspectId: "material_denim",
     gender: "men",
     images: [
       {
@@ -120,7 +127,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["orange", "blue"],
     collections: "Vacation Wear",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -148,7 +155,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "pink"],
     collections: "Business Wear",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -176,7 +183,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "navy", "red"],
     collections: "Casual Wear",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -204,7 +211,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "purple"],
     collections: "Streetwear",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -228,7 +235,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["heather_gray", "olive", "black"],
     collections: "Casual Wear",
-    material: "cotton_blend",
+    materialAspectId: "material_cotton_blend",
     gender: "men",
     images: [
       {
@@ -252,7 +259,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl", "xxl"],
     colors: ["black", "green", "blue"],
     collections: "Winter Essentials",
-    material: "wool",
+    materialAspectId: "material_wool",
     gender: "men",
     images: [
       {
@@ -276,7 +283,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "black"],
     collections: "Basics",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -300,7 +307,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "gray"],
     collections: "Casual Collection",
-    material: "denim",
+    materialAspectId: "material_denim",
     gender: "men",
     images: [
       {
@@ -324,7 +331,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["blue", "black"],
     collections: "Urban Collection",
-    material: "denim",
+    materialAspectId: "material_denim",
     gender: "men",
     images: [
       {
@@ -348,7 +355,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["gray", "blue"],
     collections: "Lounge Collection",
-    material: "wool",
+    materialAspectId: "material_wool",
     gender: "men",
     images: [
       {
@@ -372,7 +379,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["blue", "black"],
     collections: "Denim Collection",
-    material: "denim",
+    materialAspectId: "material_denim",
     gender: "men",
     images: [
       {
@@ -396,7 +403,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["navy", "black"],
     collections: "Smart Casual Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -420,7 +427,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "red", "blue"],
     collections: "Activewear Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "men",
     images: [
       {
@@ -444,7 +451,7 @@ export const products: ProductDetails[] = [
     sizes: ["m", "l", "xl"],
     colors: ["white", "black"],
     collections: "Office Wear",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "men",
     images: [
       {
@@ -468,7 +475,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "blue"],
     collections: "Street Style Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "men",
     images: [
       {
@@ -492,7 +499,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["gray", "black"],
     collections: "fashionista",
-    material: "wool",
+    materialAspectId: "material_wool",
     gender: "men",
     images: [
       {
@@ -516,7 +523,7 @@ export const products: ProductDetails[] = [
     sizes: ["l", "xl"],
     colors: ["black"],
     collections: "Formal Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "men",
     images: [
       {
@@ -540,7 +547,7 @@ export const products: ProductDetails[] = [
     sizes: ["xs", "s", "m", "l", "xl"],
     colors: ["blue", "black"],
     collections: "Denim Collection",
-    material: "denim",
+    materialAspectId: "material_denim",
     gender: "women",
     images: [
       {
@@ -564,7 +571,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "white"],
     collections: "Formal Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "women",
     images: [
       {
@@ -588,7 +595,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "blue"],
     collections: "Activewear Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -612,7 +619,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["pink", "blue", "black"],
     collections: "Spring Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "women",
     images: [
       {
@@ -636,7 +643,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "blue"],
     collections: "Summer Collection",
-    material: "linen",
+    materialAspectId: "material_linen",
     gender: "women",
     images: [
       {
@@ -660,7 +667,7 @@ export const products: ProductDetails[] = [
     sizes: ["xs", "s", "m", "l"],
     colors: ["black", "pink"],
     collections: "Loungewear Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -684,7 +691,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["white", "blue"],
     collections: "Summer Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -708,7 +715,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["blue", "black", "white"],
     collections: "Denim Collection",
-    material: "denim",
+    materialAspectId: "material_denim",
     gender: "women",
     images: [
       {
@@ -732,7 +739,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "white",],
     collections: "Casual Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "women",
     images: [
       {
@@ -756,7 +763,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["blue", "black"],
     collections: "Formal Collection",
-    material: "wool",
+    materialAspectId: "material_wool",
     gender: "women",
     images: [
       {
@@ -780,7 +787,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["white"],
     collections: "Knits Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -804,7 +811,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "pink"],
     collections: "Summer Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -828,7 +835,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["black", "white", "gray"],
     collections: "Essentials",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -852,7 +859,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["red", "white", "blue"],
     collections: "Evening Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "women",
     images: [
       {
@@ -876,7 +883,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["black", "white"],
     collections: "Lingerie-Inspired",
-    material: "silk",
+    materialAspectId: "material_silk",
     gender: "women",
     images: [
       {
@@ -900,7 +907,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "black"],
     collections: "Urban Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -924,7 +931,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["red", "pink",],
     collections: "Fall Collection",
-    material: "cotton_blend",
+    materialAspectId: "material_cotton_blend",
     gender: "women",
     images: [
       {
@@ -948,7 +955,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["white", "blue"],
     collections: "Summer Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -972,7 +979,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l", "xl"],
     colors: ["white", "blue", "black"],
     collections: "Office Collection",
-    material: "cotton",
+    materialAspectId: "material_cotton",
     gender: "women",
     images: [
       {
@@ -996,7 +1003,7 @@ export const products: ProductDetails[] = [
     sizes: ["s", "m", "l"],
     colors: ["red", "black", "white"],
     collections: "Evening Collection",
-    material: "polyester",
+    materialAspectId: "material_polyester",
     gender: "women",
     images: [
       {

@@ -53,6 +53,7 @@ export type TypeSimilarProduct = {
 };
 
 export type TypeFilterOption = {
+  id: string;
   value: string;
   label: string;
   type: string;
@@ -61,7 +62,7 @@ export type TypeFilterOption = {
 export type TypeFilter = {
   category: string;
   gender: string;
-  color: string;
+  color: string[];
   size: string[];
   material: string[];
   brand: string[];

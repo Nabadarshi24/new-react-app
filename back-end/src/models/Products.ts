@@ -1,7 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 interface IProduct {
   productName: string;
+  productVariantIds: string[];
   description: string;
   price: number;
   discountPrice: number;
@@ -12,7 +13,8 @@ interface IProduct {
   sizes: string[];
   colors: string[];
   collections: string;
-  material: string;
+  // material: string;
+  materialAspectId: string;
   gender: string;
   images: {
     url: string;
@@ -23,7 +25,7 @@ interface IProduct {
   rating: number;
   numberOfReviews: number;
   tags: string[];
-  user: mongoose.Schema.Types.ObjectId;
+  // user: mongoose.Schema.Types.ObjectId;
   metaTitle: string;
   metaDescription: string;
   metaKeywords: string;
@@ -41,6 +43,9 @@ const productSchema = new Schema<IProduct>({
     required: true,
     trim: true
   },
+  productVariantIds: [{
+    type: String
+  }],
   description: {
     type: String,
     required: true,
@@ -82,8 +87,12 @@ const productSchema = new Schema<IProduct>({
     type: String,
     required: true
   },
-  material: {
-    type: String
+  // material: {
+  //   type: String
+  // },
+  materialAspectId: {
+    type: String,
+    required: true
   },
   gender: {
     type: String,
@@ -117,11 +126,11 @@ const productSchema = new Schema<IProduct>({
     default: 0
   },
   tags: [String],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
-  },
+  // user: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "User",
+  //   required: true
+  // },
   metaTitle: {
     type: String
   },
@@ -142,6 +151,24 @@ const productSchema = new Schema<IProduct>({
     timestamps: true
   }
 );
+
+productSchema.virtual('materialAspect', {
+  ref: 'Aspect',            // The model to join with
+  localField: 'materialAspectId', // The field in Product
+  foreignField: 'id',     // The unique field in Aspect
+  justOne: true           // Returns an object, not an array
+});
+
+productSchema.virtual('productVariants', {
+  ref: 'ProductVariant',            // The model to join with
+  localField: 'productVariantIds', // The field in Product
+  foreignField: 'variantId',     // The unique field in ProductVariant
+  justOne: false           // Returns an array of objects
+});
+
+// Ensure virtuals show up when converting to JSON/Objects
+productSchema.set('toObject', { virtuals: true });
+productSchema.set('toJSON', { virtuals: true });
 
 const Product = mongoose.model<IProduct>("Product", productSchema);
 

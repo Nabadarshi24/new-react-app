@@ -139,3 +139,13 @@
   overflow-wrap: break-word;
   /* word-wrap: break-word; */
 }
+
+.color-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid lightgray;
+  border-radius: 50%;
+  cursor: pointer;
+}

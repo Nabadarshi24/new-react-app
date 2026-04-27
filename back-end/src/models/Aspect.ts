@@ -1,12 +1,18 @@
 import mongoose from "mongoose";
 
 interface IAspect {
+  id: string;
   label: string;
   value: string;
   type: string;
 }
 
 const aspectSchema = new mongoose.Schema<IAspect>({
+  id: {
+    type: String,
+    unique: true,
+    required: true
+  },
   label: {
     type: String,
     required: true

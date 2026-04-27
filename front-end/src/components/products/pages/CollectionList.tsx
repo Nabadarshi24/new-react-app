@@ -41,7 +41,7 @@ const CollectionList = () => {
     // TODO: Fetch products from API
     try {
       const response = await getAllProducts(params);
-      console.log({ response });
+      // console.log({ response });
 
       if (response.success && response.data) {
         setProducts(response.data.items);
@@ -52,8 +52,9 @@ const CollectionList = () => {
   };
 
   useEffect(() => {
-    const params = Object.fromEntries(searchParams.entries());
-    console.log({ searchParams: params });
+    const params = Object.fromEntries(searchParams);
+    // console.log({ searchParams: params });
+
     void onMount(params);
   }, [searchParams]);
 
