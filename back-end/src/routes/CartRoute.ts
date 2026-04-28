@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import Cart from "../models/Cart";
 import { admin, protect } from "../middleware/authMiddleware";
-import Product from "../models/Products";
+import Product from "../models/Product";
 
 const cartRouter = express.Router();
 
@@ -70,7 +70,9 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
           color,
           size,
           quantity,
-          price: product.price,
+          // TODO:
+          price: 0
+          // price: product.price,
         })
       }
 
@@ -90,10 +92,14 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
             color,
             size,
             quantity,
-            price: product.price
+            // TODO:
+            price: 0
+            // price: product.price
           }
         ],
-        totalPrice: product.price * quantity
+        // TODO:
+        totalPrice: 0
+        // totalPrice: product.price * quantity
       });
 
       return res.status(201).json(newCart);

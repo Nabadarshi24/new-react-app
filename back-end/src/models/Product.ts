@@ -1,19 +1,14 @@
 import mongoose, { model, Schema } from "mongoose";
+import { IProductVariant } from "./ProductVariant";
+import { IAspect } from "../data/aspect";
 
-interface IProduct {
+export interface IProduct {
   productName: string;
-  productVariantIds: string[];
+  // productVariantIds: string[];
   description: string;
-  price: number;
-  discountPrice: number;
-  countInStock: number;
-  sku: string;
   category: string;
   brand: string;
-  sizes: string[];
-  colors: string[];
   collections: string;
-  // material: string;
   materialAspectId: string;
   gender: string;
   images: {
@@ -23,9 +18,10 @@ interface IProduct {
   isFeatured: boolean;
   isPublished: boolean;
   rating: number;
+  minPrice: number;
+  maxPrice: number;
   numberOfReviews: number;
   tags: string[];
-  // user: mongoose.Schema.Types.ObjectId;
   metaTitle: string;
   metaDescription: string;
   metaKeywords: string;
@@ -35,6 +31,9 @@ interface IProduct {
     length: number;
   };
   weight: number;
+  countInStock: number;
+  materialAspect: IAspect;
+  productVariants: IProductVariant[];
 };
 
 const productSchema = new Schema<IProduct>({
@@ -43,29 +42,16 @@ const productSchema = new Schema<IProduct>({
     required: true,
     trim: true
   },
-  productVariantIds: [{
-    type: String
-  }],
+  // productVariantIds: [{
+  //   type: String
+  // }],
+  // productVariants: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'ProductVariant'
+  // }],
   description: {
     type: String,
     required: true,
-  },
-  price: {
-    type: Number,
-    required: true
-  },
-  discountPrice: {
-    type: Number
-  },
-  countInStock: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  sku: {
-    type: String,
-    unique: true,
-    required: true
   },
   category: {
     type: String,
@@ -73,14 +59,6 @@ const productSchema = new Schema<IProduct>({
   },
   brand: {
     type: String,
-    required: true
-  },
-  sizes: {
-    type: [String],
-    required: true
-  },
-  colors: {
-    type: [String],
     required: true
   },
   collections: {
@@ -126,11 +104,6 @@ const productSchema = new Schema<IProduct>({
     default: 0
   },
   tags: [String],
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "User",
-  //   required: true
-  // },
   metaTitle: {
     type: String
   },
@@ -161,9 +134,20 @@ productSchema.virtual('materialAspect', {
 
 productSchema.virtual('productVariants', {
   ref: 'ProductVariant',            // The model to join with
-  localField: 'productVariantIds', // The field in Product
-  foreignField: 'variantId',     // The unique field in ProductVariant
+  localField: '_id', // The field in Product
+  foreignField: 'productId',     // The unique field in ProductVariant
   justOne: false           // Returns an array of objects
+});
+
+productSchema.virtual('countInStock', {
+  ref: 'ProductVariant',
+  localField: '_id',
+  foreignField: 'productId',
+  justOne: false
+  // count: true, // Set to true to count instead of return docs,
+}).get(function () {
+  // return v..reduce((acc: number, curr: any) => acc + curr.countInStock, 0);
+  return this.productVariants?.reduce((acc: number, curr: any) => acc + curr.countInStock, 0);
 });
 
 // Ensure virtuals show up when converting to JSON/Objects
