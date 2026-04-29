@@ -2,11 +2,12 @@ import { ComponentType } from 'react'
 import { Hero } from './parts/Hero';
 import { GenderCollection } from './parts/GenderCollection';
 import { NewArrivals } from './parts/NewArrivals';
-import { ProductDetails } from '../../products/pages/ProductDetails';
+// import { ProductDetails } from '../../products/pages/ProductDetails';
 import { ProductGrid } from '../../products/pages/parts/ProductGrid';
 import { TypeSimilarProduct } from '../../products/types';
 import { FeaturedCollection } from '../../products/pages/FeaturedCollection';
 import { FeaturedSection } from '../../products/pages/FeaturedSection';
+import ProductDetails from '../../products/pages/ProductDetails';
 
 const placeHolderProducts: TypeSimilarProduct[] = [
   {

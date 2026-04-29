@@ -17,16 +17,18 @@ export type TypeProduct = {
   _id: string;
   productName: string;
   description: string;
-  price: number;
-  discountPrice: number;
+  minPrice: number;
+  maxPrice: number;
+  // price: number;
+  // discountPrice: number;
   countInStock: number;
-  sku: string;
+  // sku: string;
   category: string;
   brand: string;
-  sizes: string[];
-  colors: string[];
+  // sizes: string[];
+  // colors: string[];
   collections: string;
-  material: string;
+  materialAspectId: string;
   gender: string;
   images: {
     _id: string;

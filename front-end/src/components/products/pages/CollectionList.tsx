@@ -82,7 +82,6 @@ const CollectionList = () => {
 
         {/* Product Grid */}
         <ProductGrid products={products} />
-
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { IProductVariant } from "./ProductVariant";
 import { IAspect } from "../data/aspect";
 
 export interface IProduct {
+  _id: mongoose.Types.ObjectId;
   productName: string;
   // productVariantIds: string[];
   description: string;
@@ -37,6 +38,7 @@ export interface IProduct {
 };
 
 const productSchema = new Schema<IProduct>({
+  
   productName: {
     type: String,
     required: true,
@@ -139,6 +141,28 @@ productSchema.virtual('productVariants', {
   justOne: false           // Returns an array of objects
 });
 
+productSchema.virtual('minPrice', {
+  ref: 'ProductVariant',
+  localField: '_id',
+  foreignField: 'productId',
+  justOne: true
+  // count: true, // Set to true to count instead of return docs,
+}).get(function () {
+  const prices = this.productVariants.map(x => x.price);
+  return 0 || Math.min(...prices);
+});
+
+productSchema.virtual('maxPrice', {
+  ref: 'ProductVariant',
+  localField: '_id',
+  foreignField: 'productId',
+  justOne: true
+  // count: true, // Set to true to count instead of return docs,
+}).get(function () {
+  const prices = this.productVariants.map(x => x.price);
+  return 0 || Math.max(...prices);
+});
+
 productSchema.virtual('countInStock', {
   ref: 'ProductVariant',
   localField: '_id',
@@ -146,11 +170,10 @@ productSchema.virtual('countInStock', {
   justOne: false
   // count: true, // Set to true to count instead of return docs,
 }).get(function () {
-  // return v..reduce((acc: number, curr: any) => acc + curr.countInStock, 0);
   return this.productVariants?.reduce((acc: number, curr: any) => acc + curr.countInStock, 0);
 });
 
-// Ensure virtuals show up when converting to JSON/Objects
+// https://mongoosejs.com/docs/tutorials/virtuals.html#virtuals-in-json
 productSchema.set('toObject', { virtuals: true });
 productSchema.set('toJSON', { virtuals: true });
 

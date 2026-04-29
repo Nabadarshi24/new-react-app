@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { TypeSelectedProduct, TypeSimilarProduct } from "../types";
+import { ComponentType, useEffect, useState } from "react";
+import { TypeProduct, TypeSelectedProduct, TypeSimilarProduct } from "../types";
 import { toast } from "sonner";
 import { ProductGrid } from "./parts/ProductGrid";
 
@@ -53,8 +53,9 @@ const similarProduct: TypeSimilarProduct[] = [
   }
 ];
 
-export const ProductDetails = () => {
+const ProductDetails = () => {
 
+  const [productDetails, setProductDetails] = useState<TypeProduct>();
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -85,6 +86,15 @@ export const ProductDetails = () => {
       setSelectedSize(null);
       setSelectedColor(null);
     }, 1000);
+  };
+
+  const onMount = async () => {
+    try {
+      // Your async logic here
+      console.log("ProductDetails mounted");
+    } catch (error) {
+      console.error("Error in onMount:", error);
+    }
   };
 
   useEffect(() => {
@@ -235,3 +245,5 @@ export const ProductDetails = () => {
     </div>
   );
 };
+
+export default ProductDetails as ComponentType;

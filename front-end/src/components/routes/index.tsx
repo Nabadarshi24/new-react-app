@@ -19,6 +19,7 @@ const ForgotPassword = lazy(() => import("../accounts/pages/ForgotPassword"));
 const SignUp = lazy(() => import("../accounts/pages/SignUp"));
 const UserLayout = lazy(() => import("../layout/UserLayout"));
 const CollectionList = lazy(() => import("../products/pages/CollectionList"));
+const ProductDetails = lazy(() => import("../products/pages/ProductDetails"));
 
 const privateRoute = [
   {
@@ -51,9 +52,15 @@ const publicRoute = [
     isSignIn: false
   },
   {
-    path: "/collections/:collection",
+    path: "/collection/all",
     index: true,
     element: <CollectionList />,
+    isSignIn: false
+  },
+  {
+    path: "/product/details/:id",
+    index: true,
+    element: <ProductDetails />,
     isSignIn: false
   },
   {

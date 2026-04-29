@@ -4,6 +4,7 @@ import { admin, protect } from "../middleware/authMiddleware";
 import { Aspect } from "../models/Aspect";
 import { IAspect } from "../data/aspect";
 import "../models/ProductVariant";
+import { productVariants } from "../data/productVariant";
 
 const router = express.Router();
 
@@ -175,6 +176,9 @@ router.get("/all", async (req: Request, res: Response) => {
       search
     } = req.query;
 
+    const pageIndex = parseInt(req.query.pageIndex as string) || 1;
+    const pageSize = parseInt(req.query.pageSize as string) || 10;
+
     let query: Record<string, any> = {};
 
     // Filter logic
@@ -223,16 +227,31 @@ router.get("/all", async (req: Request, res: Response) => {
     }
 
     // Fetched products and apply sorting and limit
-    let products = await Product.find(query).sort(sort).limit(Number(limit) || 0);
+    let products: IProduct[] = await Product.find(query)
+      .populate("productVariants")
+      .populate("minPrice")
+      .populate("maxPrice")
+      .sort(sort)
+      .limit(Number(limit) || 0);
+
+    // console.log({ productVariants: products[0].productVariants });
+
+    // products = products.map(product => ({
+    //   ...product,
+    //   minPrice: product.productVariants.reduce((acc, x) => acc < x.price ? acc : x.price, product.productVariants[0].price),
+    //   maxPrice: product.productVariants.reduce((acc, x) => acc > x.price ? acc : x.price, product.productVariants[0].price)
+    // }));
+
+    // console.log({ products });
 
     res.json({
       data: {
         items: products,
-        pageIndex: 1,
-        totalPages: 1,
+        pageIndex: pageIndex,
+        totalPages: Math.ceil(products.length / pageSize),
         totalCount: products.length,
-        hasPreviousPage: false,
-        hasNextPage: false
+        hasPreviousPage: pageIndex > 1,
+        hasNextPage: pageIndex < Math.ceil(products.length / pageSize)
       },
       success: true
     });
@@ -281,21 +300,22 @@ router.get("/new-arrivals", async (req: Request, res: Response) => {
 router.get("/details/:id", async (req: Request, res: Response) => {
   try {
     const product = await Product.findById(req.params.id)
+      .populate("productVariants")
       .populate("materialAspect")
       .populate("countInStock")
-      .populate("productVariants")
+      .populate("minPrice")
+      .populate("maxPrice")
 
     if (product) {
 
-      const producttDetails: IProduct = {
-        ...product.toObject(),
-        minPrice: product.productVariants.reduce((acc, x) => acc < x.price ? acc : x.price, product.productVariants[0].price),
-        maxPrice: product.productVariants.reduce((acc, x) => acc > x.price ? acc : x.price, product.productVariants[0].price)
-      };
+      // const producttDetails: IProduct = {
+      //   ...product.toObject(),
+      //   minPrice: product.productVariants.reduce((acc, x) => acc < x.price ? acc : x.price, product.productVariants[0].price),
+      //   maxPrice: product.productVariants.reduce((acc, x) => acc > x.price ? acc : x.price, product.productVariants[0].price)
+      // };
 
-      res.json(producttDetails);
-
-      // res.json(product);
+      // res.json(producttDetails);
+      res.json(product);
     } else {
       res.status(404).json({ message: "Product not found" });
     }
