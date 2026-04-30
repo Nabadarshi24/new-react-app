@@ -13,6 +13,18 @@ export type TypeSelectedProduct = {
   }[];
 };
 
+export type TypeProductVariant = {
+  _id: string;
+  productId: string;
+  // variantId: string;
+  sizeAspectId: string;
+  colorAspectId: string;
+  countInStock: number;
+  sku: string;
+  price: number;
+  discountPrice?: number;
+};
+
 export type TypeProduct = {
   _id: string;
   productName: string;
@@ -29,6 +41,9 @@ export type TypeProduct = {
   // colors: string[];
   collections: string;
   materialAspectId: string;
+  defaultVariantId: string;
+  defaultVariant: TypeProductVariant;
+  productvariants: TypeProductVariant[];
   gender: string;
   images: {
     _id: string;

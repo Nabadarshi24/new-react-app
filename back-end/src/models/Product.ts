@@ -11,6 +11,7 @@ export interface IProduct {
   brand: string;
   collections: string;
   materialAspectId: string;
+  defaultVariantId: mongoose.Types.ObjectId;
   gender: string;
   images: {
     url: string;
@@ -34,11 +35,11 @@ export interface IProduct {
   weight: number;
   countInStock: number;
   materialAspect: IAspect;
+  defaultVariant: IProductVariant;
   productVariants: IProductVariant[];
 };
 
 const productSchema = new Schema<IProduct>({
-  
   productName: {
     type: String,
     required: true,
@@ -72,6 +73,10 @@ const productSchema = new Schema<IProduct>({
   // },
   materialAspectId: {
     type: String,
+    required: true
+  },
+  defaultVariantId: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
   gender: {
@@ -134,6 +139,13 @@ productSchema.virtual('materialAspect', {
   justOne: true           // Returns an object, not an array
 });
 
+productSchema.virtual('defaultVariant', {
+  ref: 'ProductVariant',            // The model to join with
+  localField: 'defaultVariantId', // The field in Product
+  foreignField: '_id',     // The unique field in ProductVariant
+  justOne: true           // Returns an object, not an array
+});
+
 productSchema.virtual('productVariants', {
   ref: 'ProductVariant',            // The model to join with
   localField: '_id', // The field in Product
@@ -148,7 +160,7 @@ productSchema.virtual('minPrice', {
   justOne: true
   // count: true, // Set to true to count instead of return docs,
 }).get(function () {
-  const prices = this.productVariants.map(x => x.price);
+  const prices = (this.productVariants ?? []).map(x => x.price);
   return 0 || Math.min(...prices);
 });
 
@@ -159,7 +171,7 @@ productSchema.virtual('maxPrice', {
   justOne: true
   // count: true, // Set to true to count instead of return docs,
 }).get(function () {
-  const prices = this.productVariants.map(x => x.price);
+  const prices = (this.productVariants ?? []).map(x => x.price);
   return 0 || Math.max(...prices);
 });
 
@@ -170,7 +182,7 @@ productSchema.virtual('countInStock', {
   justOne: false
   // count: true, // Set to true to count instead of return docs,
 }).get(function () {
-  return this.productVariants?.reduce((acc: number, curr: any) => acc + curr.countInStock, 0);
+  return (this.productVariants ?? []).reduce((acc: number, curr: any) => acc + curr.countInStock, 0);
 });
 
 // https://mongoosejs.com/docs/tutorials/virtuals.html#virtuals-in-json

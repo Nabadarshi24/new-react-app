@@ -2,14 +2,15 @@ import { IProductVariant } from "../models/ProductVariant";
 import mongoose from "mongoose";
 
 
-export const productVariantIds ={
+export const productVariantIds = {
   id00_00: new mongoose.Types.ObjectId(),
   id00_01: new mongoose.Types.ObjectId(),
   id00_02: new mongoose.Types.ObjectId(),
   id01_00: new mongoose.Types.ObjectId(),
+  id02_00: new mongoose.Types.ObjectId(),
 };
 
-export const productIds ={
+export const productIds = {
   id00: new mongoose.Types.ObjectId(),
   id01: new mongoose.Types.ObjectId(),
   id02: new mongoose.Types.ObjectId(),
@@ -58,6 +59,17 @@ export const productVariants: IProductVariant[] = [
     countInStock: 40,
     sku: "SKU-012",
     price: 160,
+    discountPrice: 150
+  },
+  {
+    _id: productVariantIds.id02_00,
+    productId: productIds.id02,
+    // variantId: "variant-5",
+    sizeAspectId: "size-xl",
+    colorAspectId: "color-black",
+    countInStock: 50,
+    sku: "SKU-345",
+    price: 180,
     discountPrice: 150
   }
 ];

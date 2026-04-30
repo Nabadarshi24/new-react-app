@@ -300,11 +300,28 @@ router.get("/new-arrivals", async (req: Request, res: Response) => {
 router.get("/details/:id", async (req: Request, res: Response) => {
   try {
     const product = await Product.findById(req.params.id)
-      .populate("productVariants")
-      .populate("materialAspect")
-      .populate("countInStock")
-      .populate("minPrice")
-      .populate("maxPrice")
+      // .populate("defaultVariant productVariants materialAspect")
+      .populate("defaultVariant materialAspect")
+      // .populate("productVariants")
+      // .populate("productVariants.sizeAspect")
+      // .populate("materialAspect")
+      // .populate("countInStock")
+      // .populate("minPrice")
+      // .populate("maxPrice")
+      .populate({
+        path: "productVariants",
+        model: "ProductVariant",
+        populate: {
+          path: "colorAspect",
+          model: "Aspect"
+        }
+      })
+      // .then(async (productVariants) => {
+      //   await productVariants?.populate("colorAspect")
+      //     .then(async (colorAspect) => {
+      //       await colorAspect?.populate("sizeAspect")
+      //     })
+      // })
 
     if (product) {
 
@@ -315,7 +332,10 @@ router.get("/details/:id", async (req: Request, res: Response) => {
       // };
 
       // res.json(producttDetails);
-      res.json(product);
+      res.json({
+        data: product,
+        success: true,
+      });
     } else {
       res.status(404).json({ message: "Product not found" });
     }

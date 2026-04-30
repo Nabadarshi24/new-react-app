@@ -12,3 +12,10 @@ export const getAllProducts = async (params?: Record<string, any>): Promise<ApiR
     // }
     return await makeGetRequest("/product/all", params);
 };
+
+export const getProductDetails = async (id: string): Promise<ApiResponseObject<TypeProduct>> => {
+    // if (!params) {
+    //     return await makeGetRequest("/product/all");
+    // }
+    return await makeGetRequest(`/product/details/${id}`);
+};

@@ -13,16 +13,11 @@ interface ProductDetails {
   _id: mongoose.Types.ObjectId;
   productName: string;
   description: string;
-  // price: number;
-  // discountPrice: number;
-  // countInStock: number;
-  // sku: string;
   category: string;
   brand: string;
-  // sizes: string[];
-  // colors: string[];
   collections: string;
   materialAspectId: string;
+  defaultVariantId: mongoose.Types.ObjectId;
   gender: string;
   images: {
     url: string;
@@ -31,7 +26,7 @@ interface ProductDetails {
   rating: number;
   numReviews: number;
   // material: Aspect;
-  productVariantIds: mongoose.Types.ObjectId[];
+  // productVariantIds: mongoose.Types.ObjectId[];
 }
 
 export const products: ProductDetails[] = [
@@ -50,6 +45,7 @@ export const products: ProductDetails[] = [
     // colors: ["red", "blue", "yellow"],
     collections: "Business Casual",
     materialAspectId: "material_cotton",
+    defaultVariantId: productVariantIds.id00_00,
     gender: "men",
     images: [
       {
@@ -63,11 +59,11 @@ export const products: ProductDetails[] = [
     ],
     rating: 4.5,
     numReviews: 12,
-    productVariantIds: [
-      productVariantIds.id00_00,
-      productVariantIds.id00_01,
-      productVariantIds.id00_02,
-    ],
+    // productVariantIds: [
+    //   productVariantIds.id00_00,
+    //   productVariantIds.id00_01,
+    //   productVariantIds.id00_02,
+    // ],
   },
   {
     _id: productIds.id01,
@@ -84,6 +80,7 @@ export const products: ProductDetails[] = [
     // colors: ["black", "blue"],
     collections: "Formal Wear",
     materialAspectId: "material_cotton",
+    defaultVariantId: productVariantIds.id01_00,
     gender: "men",
     images: [
       {
@@ -97,25 +94,20 @@ export const products: ProductDetails[] = [
     ],
     rating: 4.8,
     numReviews: 15,
-    productVariantIds: [
-      productVariantIds.id01_00,
-    ],
+    // productVariantIds: [
+    //   productVariantIds.id01_00,
+    // ],
   },
   {
     _id: productIds.id02,
     productName: "Casual Denim Shirt",
     description:
       "This casual denim shirt is made from lightweight cotton denim. It features a regular fit, snap buttons, and a straight hem. With Western-inspired details, this shirt is perfect for layering or wearing solo.",
-    // price: 49.99,
-    // discountPrice: 44.99,
-    // countInStock: 15,
-    // sku: "CAS-DEN-003",
     category: "top_wear",
     brand: "street_style",
-    // sizes: ["s", "m", "l", "xl", "xxl"],
-    // colors: ["light_blue", "dark_wash"],
     collections: "Casual Wear",
     materialAspectId: "material_denim",
+    defaultVariantId: productVariantIds.id02_00,
     gender: "men",
     images: [
       {
@@ -129,7 +121,7 @@ export const products: ProductDetails[] = [
     ],
     rating: 4.6,
     numReviews: 8,
-    productVariantIds: [],
+    // productVariantIds: [],
   },
   // {
   //   productName: "Printed Resort Shirt",

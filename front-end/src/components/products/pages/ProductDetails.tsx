@@ -2,6 +2,8 @@ import { ComponentType, useEffect, useState } from "react";
 import { TypeProduct, TypeSelectedProduct, TypeSimilarProduct } from "../types";
 import { toast } from "sonner";
 import { ProductGrid } from "./parts/ProductGrid";
+import { getProductDetails } from "../api";
+import { useParams } from "react-router";
 
 const selectedProduct: TypeSelectedProduct = {
   name: "Stylish Jacket",
@@ -62,6 +64,8 @@ const ProductDetails = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
+  const params = useParams();
+
   const handleQuantityChange = (action: string) => {
     if (action == "increase") {
       setSelectedQuantity(selectedQuantity + 1);
@@ -91,17 +95,28 @@ const ProductDetails = () => {
   const onMount = async () => {
     try {
       // Your async logic here
-      console.log("ProductDetails mounted");
+      const response = await getProductDetails(params.id as string);
+      console.log(response);
+
+      if (response.data && response.success) {
+        setProductDetails(response.data);
+      } else {
+        throw new Error("Failed to fetch product details");
+      }
     } catch (error) {
       console.error("Error in onMount:", error);
     }
   };
 
   useEffect(() => {
-    if (selectedProduct.images.length > 0) {
-      setSelectedImage(selectedProduct.images[0].url);
+    if (productDetails?.images.length > 0) {
+      setSelectedImage(productDetails.images[0].url);
     }
-  }, [selectedProduct]);
+  }, [productDetails]);
+
+  useEffect(() => {
+    onMount();
+  }, []);
 
   return (
     <div className='tw:p-6'>
@@ -110,7 +125,7 @@ const ProductDetails = () => {
           {/* Left Thumbnail */}
           <div className="tw:hidden tw:md:flex tw:flex-col tw:space-y-4 tw:mr-6">
             {
-              selectedProduct.images.map((image, index) => (
+              productDetails?.images.map((image, index) => (
                 <img
                   key={index}
                   src={image.url}
@@ -150,20 +165,20 @@ const ProductDetails = () => {
 
           {/* Right Content */}
           <div className="tw:md:w-1/2 tw:md:ml-10">
-            <h1 className="tw:text-2xl tw:md:text-3xl tw:font-semibold tw:mb-2">{selectedProduct.name}</h1>
-            <p className="tw:text-lg tw:text-gray-600 tw:mb-1 tw:line-through">{selectedProduct.originalPrice && `${selectedProduct.originalPrice}`}</p>
-            <p className="tw:text-xl tw:text-gray-500 tw:mb-2">{selectedProduct.price}</p>
-            <p className="tw:text-gray-600 tw:mb-4">{selectedProduct.description}</p>
+            <h1 className="tw:text-2xl tw:md:text-3xl tw:font-semibold tw:mb-2">{productDetails?.productName}</h1>
+            <p className="tw:text-lg tw:text-gray-600 tw:mb-1 tw:line-through">{productDetails?.defaultVariant.price}</p>
+            <p className="tw:text-xl tw:text-gray-500 tw:mb-2">{productDetails?.defaultVariant.discountPrice}</p>
+            <p className="tw:text-gray-600 tw:mb-4">{productDetails?.description}</p>
 
-            <div className="tw:mb-4">
+            {/* <div className="tw:mb-4">
               <p className="tw:text-gray-700">Color:</p>
               <div className="tw:mt-2 tw:flex tw:gap-2">
                 {
-                  selectedProduct.colors.map((color) => (
+                  productDetails.productvariants.map((variant) => (
                     <button
-                      key={color}
-                      className={`tw:w-8 tw:h-8 tw:rounded-full tw:border tw:cursor-pointer ${selectedColor == color ? "tw:border-black tw:border-4" : "tw:border-gray-300"}`}
-                      onClick={() => setSelectedColor(color)}
+                      key={variant._id}
+                      className={`tw:w-8 tw:h-8 tw:rounded-full tw:border tw:cursor-pointer ${selectedColor == variant.colorAspectId ? "tw:border-black tw:border-4" : "tw:border-gray-300"}`}
+                      onClick={() => setSelectedColor(variant.colorAspectId)}
                       style={{
                         backgroundColor: color.toLocaleLowerCase(),
                         filter: "brightness(0.5)"
@@ -173,7 +188,7 @@ const ProductDetails = () => {
                   ))
                 }
               </div>
-            </div>
+            </div> */}
 
             <div className="tw:mb-4">
               <p className="tw:text-gray-700">Size:</p>
