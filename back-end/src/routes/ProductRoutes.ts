@@ -316,12 +316,14 @@ router.get("/details/:id", async (req: Request, res: Response) => {
           model: "Aspect"
         }
       })
-      // .then(async (productVariants) => {
-      //   await productVariants?.populate("colorAspect")
-      //     .then(async (colorAspect) => {
-      //       await colorAspect?.populate("sizeAspect")
-      //     })
-      // })
+      .populate({
+        path: "productVariants",
+        model: "ProductVariant",
+        populate: {
+          path: "sizeAspect",
+          model: "Aspect"
+        }
+      });
 
     if (product) {
 
@@ -357,9 +359,12 @@ router.get("/similar/:id", async (req: Request, res: Response) => {
         _id: { $ne: id }, // Exclude the current product
         gender: product.gender,
         category: product.category,
-      }).limit(4);
+      }).populate("productVariants").limit(4);
 
-      res.json(similarProducts);
+      res.json({
+        data: similarProducts,
+        success: true
+      });
     } else {
       res.status(404).json({ message: "Product not found" });
     }
@@ -382,6 +387,27 @@ router.get("/filter-option", async (req: Request, res: Response) => {
 
     res.status(200).json({
       data: options,
+      success: true
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// @route GET /api/product/size-option
+// @desc Get all product size options
+// @access Public
+router.get("/size-option", async (req: Request, res: Response) => {
+  try {
+    const options = await Aspect.find({});
+
+    if (!options || options.length === 0) {
+      return res.status(404).json({ message: "Filter options not found" });
+    }
+
+    res.status(200).json({
+      data: options.filter(option => option.type === "size"),
       success: true
     });
   } catch (error) {

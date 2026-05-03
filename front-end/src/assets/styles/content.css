@@ -149,3 +149,24 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+/* #region loading */
+.loading-container {
+  position: fixed;
+  z-index: 9999;
+  background-color: #ffffff95;
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.loading-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* #endregion */

@@ -4,6 +4,7 @@ import {
   Navigate,
   RouteObject
 } from "react-router";
+import { Loading } from '../elements/Loading';
 
 const Private = lazy(() => import("../layout/Private"));
 const Public = lazy(() => import("../layout/Public"));
@@ -117,31 +118,31 @@ const publicRoute = [
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}><Layout /></Suspense>,
+    element: <Suspense fallback={<Loading />}><Layout /></Suspense>,
     // element: <Private />,
     children: [
       // ...PUBLIC_ROUTE,
       // ...PRIVATE_ROUTE,
       {
         path: "/",
-        element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}><Public /></Suspense>,
+        element: <Suspense fallback={<Loading />}><Public /></Suspense>,
         children: [
           ...publicRoute.map(x => {
             return {
               path: x.path,
-              element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}>{x.element}</Suspense>
+              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
             };
           })
         ]
       },
       {
         path: "/",
-        element: <Private />,
+        element: <Suspense fallback={<Loading />}><Private /></Suspense>,
         children: [
           ...privateRoute.map(x => {
             return {
               path: x.path,
-              element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}>{x.element}</Suspense>
+              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
             };
           })
         ]

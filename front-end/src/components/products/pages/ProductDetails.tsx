@@ -1,70 +1,29 @@
-import { ComponentType, useEffect, useState } from "react";
-import { TypeProduct, TypeSelectedProduct, TypeSimilarProduct } from "../types";
+import { ComponentType, useCallback, useEffect, useState } from "react";
+import { TypeFilterOption, TypeProduct } from "../types";
 import { toast } from "sonner";
 import { ProductGrid } from "./parts/ProductGrid";
-import { getProductDetails } from "../api";
+import {
+  getProductDetails,
+  getProductSizeOptions,
+  getSimilarProducts
+} from "../api";
 import { useParams } from "react-router";
-
-const selectedProduct: TypeSelectedProduct = {
-  name: "Stylish Jacket",
-  price: 120,
-  originalPrice: 150,
-  description: "This is a stylish jacket perfect for any occasion",
-  brand: "Fashion Brand",
-  material: "100% Cotton",
-  sizes: ["S", "M", "L", "XL", "XXL"],
-  colors: ["Red", "White"],
-  images: [
-    {
-      url: "https://picsum.photos/500/500?random=1",
-      altText: "Stylish Jacket 1"
-    },
-    {
-      url: "https://picsum.photos/500/500?random=2",
-      altText: "Stylish Jacket 2"
-    },
-    // {
-    //   url: "https://picsum.photos/500/500?random=3",
-    //   altText: "Stylish Jacket 3"
-    // }
-  ]
-}
-
-const similarProduct: TypeSimilarProduct[] = [
-  {
-    _id: "1",
-    name: "Product 1",
-    price: 100,
-    images: [{ url: "https://picsum.photos/500/500?random=3" }]
-  },
-  {
-    _id: "2",
-    name: "Product 2",
-    price: 200,
-    images: [{ url: "https://picsum.photos/500/500?random=4" }]
-  }, {
-    _id: "3",
-    name: "Product 3",
-    price: 300,
-    images: [{ url: "https://picsum.photos/500/500?random=5" }]
-  }, {
-    _id: "4",
-    name: "Product 4",
-    price: 400,
-    images: [{ url: "https://picsum.photos/500/500?random=6" }]
-  }
-];
+import { useAccountStore } from "../../stores/GlobalStore";
 
 const ProductDetails = () => {
 
   const [productDetails, setProductDetails] = useState<TypeProduct>();
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [similarProducts, setSimilarProducts] = useState<TypeProduct[]>([]);
+  const [sizeOptions, setSizeOptions] = useState<TypeFilterOption[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const params = useParams();
+
+  const setLoading = useAccountStore(store => store.setIsLoading);
 
   const handleQuantityChange = (action: string) => {
     if (action == "increase") {
@@ -92,19 +51,53 @@ const ProductDetails = () => {
     }, 1000);
   };
 
-  const onMount = async () => {
+  const loadSizeOptions = async () => {
+    try {
+      const response = await getProductSizeOptions();
+
+      if (response.data && response.success) {
+        setSizeOptions(response.data);
+      } else {
+        throw new Error("Failed to fetch size options");
+      }
+    } catch (error) {
+      console.error("Error in loadSizeOptions:", error);
+    }
+  };
+
+  const loadProductDetails = async () => {
     try {
       // Your async logic here
+      setLoading(true);
       const response = await getProductDetails(params.id as string);
       console.log(response);
 
       if (response.data && response.success) {
         setProductDetails(response.data);
+        setSelectedColor(response.data.defaultVariant.colorAspectId);
       } else {
         throw new Error("Failed to fetch product details");
       }
     } catch (error) {
       console.error("Error in onMount:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadSimilarProducts = async () => {
+    try {
+      // Your async logic here
+      const response = await getSimilarProducts(params.id as string);
+      console.log(response);
+
+      if (response.data && response.success) {
+        setSimilarProducts(response.data);
+      } else {
+        throw new Error("Failed to fetch similar products");
+      }
+    } catch (error) {
+      console.error("Error in loadSimilarProducts:", error);
     }
   };
 
@@ -114,151 +107,172 @@ const ProductDetails = () => {
     }
   }, [productDetails]);
 
+  const onMount = async () => {
+    await loadSizeOptions();
+    await loadProductDetails();
+    await loadSimilarProducts();
+  };
+
   useEffect(() => {
     onMount();
-  }, []);
+  }, [params.id]);
 
-  return (
-    <div className='tw:p-6'>
-      <div className="tw:max-w-6xl tw:mx-auto tw:p-8 tw:rounded-lg">
-        <div className="tw:flex tw:flex-col tw:md:flex-row">
-          {/* Left Thumbnail */}
-          <div className="tw:hidden tw:md:flex tw:flex-col tw:space-y-4 tw:mr-6">
-            {
-              productDetails?.images.map((image, index) => (
+  return (<>
+    {
+      productDetails &&
+      <div className='tw:p-6'>
+        <div className="tw:max-w-6xl tw:mx-auto tw:p-8 tw:rounded-lg">
+          <div className="tw:flex tw:flex-col tw:md:flex-row">
+
+            {/* Left Thumbnail */}
+            <div className="tw:hidden tw:md:flex tw:flex-col tw:space-y-4 tw:mr-6">
+              {
+                productDetails.images.map((image) => {
+                  return <img
+                    key={image._id}
+                    src={image.url}
+                    alt={image.altText}
+                    onClick={() => setSelectedImage(image.url)}
+                    className={`tw:w-20 tw:h-20 tw:object-cover tw:rounded-lg tw:cursor-pointer tw:border ${selectedImage == image.url ? "tw:border-black" : "tw:border-gray-200"}`}
+                  />
+                })
+              }
+            </div>
+
+            {/* Main Image */}
+            <div className="tw:md:w-1/2">
+              <div className="tw:mb-4">
                 <img
-                  key={index}
-                  src={image.url}
-                  alt={image.altText}
-                  onClick={() => setSelectedImage(image.url)}
-                  className={`tw:w-20 tw:h-20 tw:object-cover tw:rounded-lg tw:cursor-pointer tw:border ${selectedImage == image.url ? "tw:border-black" : "tw:border-gray-200"}`}
+                  src={selectedImage}
+                  alt="Main Product"
+                  className="tw:w-full tw:h-auto tw:object-cover tw:rounded-lg"
                 />
-              ))
-            }
-          </div>
-
-          {/* Main Image */}
-          <div className="tw:md:w-1/2">
-            <div className="tw:mb-4">
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="tw:w-full tw:h-auto tw:object-cover tw:rounded-lg"
-              />
-            </div>
-          </div>
-
-          {/* Mobile Thumbnail */}
-          <div className="tw:md:hidden tw:flex tw:overscroll-x-scroll tw:space-x-4 tw:mb-4">
-            {
-              selectedProduct.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image.url}
-                  alt={image.altText}
-                  onClick={() => setSelectedImage(image.url)}
-                  className={`tw:w-20 tw:h-20 tw:object-cover tw:rounded-lg tw:cursor-pointer tw:border ${selectedImage == image.url ? "tw:border-black" : "tw:border-gray-200"}`}
-                />
-              ))
-            }
-          </div>
-
-          {/* Right Content */}
-          <div className="tw:md:w-1/2 tw:md:ml-10">
-            <h1 className="tw:text-2xl tw:md:text-3xl tw:font-semibold tw:mb-2">{productDetails?.productName}</h1>
-            <p className="tw:text-lg tw:text-gray-600 tw:mb-1 tw:line-through">{productDetails?.defaultVariant.price}</p>
-            <p className="tw:text-xl tw:text-gray-500 tw:mb-2">{productDetails?.defaultVariant.discountPrice}</p>
-            <p className="tw:text-gray-600 tw:mb-4">{productDetails?.description}</p>
-
-            {/* <div className="tw:mb-4">
-              <p className="tw:text-gray-700">Color:</p>
-              <div className="tw:mt-2 tw:flex tw:gap-2">
-                {
-                  productDetails.productvariants.map((variant) => (
-                    <button
-                      key={variant._id}
-                      className={`tw:w-8 tw:h-8 tw:rounded-full tw:border tw:cursor-pointer ${selectedColor == variant.colorAspectId ? "tw:border-black tw:border-4" : "tw:border-gray-300"}`}
-                      onClick={() => setSelectedColor(variant.colorAspectId)}
-                      style={{
-                        backgroundColor: color.toLocaleLowerCase(),
-                        filter: "brightness(0.5)"
-                      }}
-                    >
-                    </button>
-                  ))
-                }
-              </div>
-            </div> */}
-
-            <div className="tw:mb-4">
-              <p className="tw:text-gray-700">Size:</p>
-              <div className="tw:mt-2 tw:flex tw:gap-2">
-                {
-                  selectedProduct.sizes.map((size) => (
-                    <button
-                      key={size}
-                      className={`tw:px-4 tw:py-2 tw:rounded tw:border tw:cursor-pointer ${selectedSize == size ? "tw:bg-black tw:text-white" : ""}`}
-                      onClick={() => setSelectedSize(size)}
-                    >
-                      {size}
-                    </button>
-                  ))
-                }
               </div>
             </div>
 
-            <div className="tw:mb-6">
-              <p className="tw:text-gray-700">Quantity:</p>
-              <div className="tw:mt-2 tw:flex tw:items-center tw:space-x-4">
-                <button
-                  className="tw:px-2 tw:py-1 tw:rounded tw:bg-gray-200 tw:text-lg tw:cursor-pointer"
-                  onClick={() => handleQuantityChange("decrease")}
-                >
-                  -
-                </button>
-                <span className="tw:text-lg">{selectedQuantity}</span>
-                <button
-                  className="tw:px-2 tw:py-1 tw:rounded tw:bg-gray-200 tw:text-lg tw:cursor-pointer"
-                  onClick={() => handleQuantityChange("increase")}
-                >
-                  +
-                </button>
+            {/* Mobile Thumbnail */}
+            <div className="tw:md:hidden tw:flex tw:overscroll-x-scroll tw:space-x-4 tw:mb-4">
+              {
+                productDetails.images.map((image) => (
+                  <img
+                    key={image._id}
+                    src={image.url}
+                    alt={image.altText}
+                    onClick={() => setSelectedImage(image.url)}
+                    className={`tw:w-20 tw:h-20 tw:object-cover tw:rounded-lg tw:cursor-pointer tw:border ${selectedImage == image.url ? "tw:border-black" : "tw:border-gray-200"}`}
+                  />
+                ))
+              }
+            </div>
+
+            {/* Right Content */}
+            <div className="tw:md:w-1/2 tw:md:ml-10">
+              <h1 className="tw:text-2xl tw:md:text-3xl tw:font-semibold tw:mb-2">{productDetails.productName}</h1>
+              <p className="tw:text-lg tw:text-gray-600 tw:mb-1 tw:line-through">{productDetails.defaultVariant.price}</p>
+              <p className="tw:text-xl tw:text-gray-500 tw:mb-2">{productDetails.defaultVariant.discountPrice}</p>
+              <p className="tw:text-gray-600 tw:mb-4">{productDetails.description}</p>
+
+              <div className="tw:mb-4">
+                <p className="tw:text-gray-700">Color:</p>
+                <div className="tw:mt-2 tw:flex tw:gap-2">
+                  {
+                    productDetails.productVariants.map((variant) => (
+                      <button
+                        key={variant.id}
+                        className={`tw:w-8 tw:h-8 tw:rounded-full tw:border tw:cursor-pointer ${selectedColor == variant.colorAspectId ? "tw:border-black tw:border-4" : "tw:border-gray-300"}`}
+                        onClick={() => {
+                          setSelectedColor(variant?.colorAspectId);
+                          setSelectedSize("");
+                        }}
+                        style={{
+                          backgroundColor: variant?.colorAspect.value,
+                          filter: "brightness(0.5)"
+                        }}
+                      >
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
+
+              <div className="tw:mb-4">
+                <p className="tw:text-gray-700">Size:</p>
+                <div className="tw:mt-2 tw:flex tw:gap-2">
+                  {
+                    sizeOptions.map((size) => (
+                      <button
+                        key={size.id}
+                        disabled={productDetails.productVariants.every((variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id)}
+                        className={`tw:px-4 tw:py-2 tw:rounded tw:border tw:cursor-pointer 
+                        ${selectedSize == size.value ? "tw:bg-black tw:text-white" : ""}
+                        ${productDetails.productVariants.every((variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id) ? "tw:opacity-30" : ""}`
+                        }
+                        onClick={() => setSelectedSize(size.value)}
+                      >
+                        {size.label}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
+
+              <div className="tw:mb-6">
+                <p className="tw:text-gray-700">Quantity:</p>
+                <div className="tw:mt-2 tw:flex tw:items-center tw:space-x-4">
+                  <button
+                    className="tw:px-2 tw:py-1 tw:rounded tw:bg-gray-200 tw:text-lg tw:cursor-pointer"
+                    onClick={() => handleQuantityChange("decrease")}
+                  >
+                    -
+                  </button>
+                  <span className="tw:text-lg">{selectedQuantity}</span>
+                  <button
+                    className="tw:px-2 tw:py-1 tw:rounded tw:bg-gray-200 tw:text-lg tw:cursor-pointer"
+                    onClick={() => handleQuantityChange("increase")}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <button
+                disabled={isButtonDisabled}
+                onClick={() => handleAddToCart()}
+                className={`tw:w-full tw:py-2 tw:px-6 tw:mb-4 tw:rounded tw:bg-black tw:text-white tw:cursor-pointer tw:uppercase ${isButtonDisabled ? "tw:opacity-50 tw:cursor-not-allowed" : ""}`}
+              >
+                {isButtonDisabled ? "Adding..." : "Add to Cart"}
+              </button>
+
+              <div className="tw:mt-10 tw:text-gray-700">
+                <h3 className="tw:text-xl tw:font-bold tw:mb-4">Characteristics:</h3>
+                <table className="tw:w-full tw:text-left tw:text-sm tw:text-gray-600">
+                  <tbody>
+                    <tr>
+                      <td className="tw:py-1">Brand:</td>
+                      <td className="tw:py-1">{productDetails.brand}</td>
+                    </tr>
+                    <tr>
+                      <td className="tw:py-1">Material:</td>
+                      <td className="tw:py-1">{productDetails.materialAspect?.label}</td>
+                    </tr>
+                    <tr>
+                      <td className="tw:py-1">Sku:</td>
+                      <td className="tw:py-1">{productDetails.productVariants?.filter((variant) => variant.colorAspectId === selectedColor).map((variant) => variant.sku).join(", ")}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-
-            <button
-              disabled={isButtonDisabled}
-              onClick={() => handleAddToCart()}
-              className={`tw:w-full tw:py-2 tw:px-6 tw:mb-4 tw:rounded tw:bg-black tw:text-white tw:cursor-pointer tw:uppercase ${isButtonDisabled ? "tw:opacity-50 tw:cursor-not-allowed" : ""}`}
-            >
-              {isButtonDisabled ? "Adding..." : "Add to Cart"}
-            </button>
-
-            <div className="tw:mt-10 tw:text-gray-700">
-              <h3 className="tw:text-xl tw:font-bold tw:mb-4">Characteristics:</h3>
-              <table className="tw:w-full tw:text-left tw:text-sm tw:text-gray-600">
-                <tbody>
-                  <tr>
-                    <td className="tw:py-1">Brand:</td>
-                    <td className="tw:py-1">{selectedProduct.brand}</td>
-                  </tr>
-                  <tr>
-                    <td className="tw:py-1">Material:</td>
-                    <td className="tw:py-1">{selectedProduct.material}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
-        </div>
 
-        <div className="tw:mt-20">
-          <h2 className="tw:text-2xl tw:text-center tw:font-medium tw:mb-4">You May Also Like</h2>
-          <ProductGrid products={similarProduct} />
+          <div className="tw:mt-20">
+            <h2 className="tw:text-2xl tw:text-center tw:font-medium tw:mb-4">You May Also Like</h2>
+            <ProductGrid products={similarProducts} />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    }
+  </>);
 };
 
 export default ProductDetails as ComponentType;

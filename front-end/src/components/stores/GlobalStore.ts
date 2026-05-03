@@ -5,11 +5,13 @@ import { Prettify } from "../globalTypes/GlobalTypes";
 
 
 const initialtate: TypeAccountState = {
-  isSignIn: !!localStorage.getItem("loggedUser")
+  isSignIn: !!localStorage.getItem("loggedUser"),
+  isLoading: false
 };
 
 type TypeActions = {
   setIsSignIn: (isSignIn: boolean) => void;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
 type TypeStore = Prettify<{ state: TypeAccountState } & TypeActions>;
@@ -23,6 +25,16 @@ export const useAccountStore = create<TypeStore>(set => ({
       state: {
         ...store.state,
         isSignIn: isSignIn
+      }
+    })
+  }),
+  setIsLoading: (isLoading: boolean) => set((store) => {
+    console.log({ store });
+
+    return ({
+      state: {
+        ...store.state,
+        isLoading
       }
     })
   })

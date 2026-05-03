@@ -1,7 +1,7 @@
 import { ComponentType, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAccountStore } from '../../stores/GlobalStore';
-import { verifyOtp } from '../api';
+// import { verifyOtp } from '../api';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TypeLogin, TypeSignInOtpPayload } from '../types';
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -47,21 +47,21 @@ const VerifyOtp = () => {
   const onSubmit = async (data: TypeSignInOtpPayload) => {
     try {
 
-      const response = await verifyOtp(data);
+      // const response = await verifyOtp(data);
 
-      console.log({ response })
+      // console.log({ response })
 
-      if (response.success && response.data) {
-        console.log("dd")
-        localStorage.setItem("accessToken", response.data.authData.accessToken);
-        localStorage.setItem("refreshToken", response.data.authData.refreshToken);
-        localStorage.setItem("userId", response.data.authData.userId);
-        localStorage.setItem("userLabel", response.data.authData.userLabel);
-        localStorage.setItem("roleId", response.data.authData.roleId);
+      // if (response.success && response.data) {
+      //   console.log("dd")
+      //   localStorage.setItem("accessToken", response.data.authData.accessToken);
+      //   localStorage.setItem("refreshToken", response.data.authData.refreshToken);
+      //   localStorage.setItem("userId", response.data.authData.userId);
+      //   localStorage.setItem("userLabel", response.data.authData.userLabel);
+      //   localStorage.setItem("roleId", response.data.authData.roleId);
 
-        setIsSignIn(true);
-        navigate("/dashboard");
-      }
+      //   setIsSignIn(true);
+      //   navigate("/dashboard");
+      // }
 
     } catch (error) {
 
