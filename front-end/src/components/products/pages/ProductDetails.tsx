@@ -1,5 +1,12 @@
-import { ComponentType, useCallback, useEffect, useState } from "react";
-import { TypeFilterOption, TypeProduct } from "../types";
+import {
+  ComponentType,
+  useEffect,
+  useState
+} from "react";
+import {
+  TypeFilterOption,
+  TypeProduct
+} from "../types";
 import { toast } from "sonner";
 import { ProductGrid } from "./parts/ProductGrid";
 import {
@@ -7,8 +14,15 @@ import {
   getProductSizeOptions,
   getSimilarProducts
 } from "../api";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAccountStore } from "../../stores/GlobalStore";
+import {
+  showErrorMessage,
+  showSuccessMessage,
+  updateLocalStorage
+} from "../../helper/helper";
+import { addToCart } from "../../cart/api";
+import { CartCreatePayload } from "../../cart/types";
 
 const ProductDetails = () => {
 
@@ -22,6 +36,7 @@ const ProductDetails = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const setLoading = useAccountStore(store => store.setIsLoading);
 
@@ -35,20 +50,54 @@ const ProductDetails = () => {
     }
   };
 
-  const handleAddToCart = () => {
-    if (!selectedColor || !selectedSize) {
-      toast.error("Please select a color and size before adding to cart.", { duration: 1000, style: { background: "red", color: "#fff" } });
-      return;
-    }
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+      setIsButtonDisabled(true);
+      if (!selectedColor || !selectedSize) {
+        showErrorMessage("Please select a color and size before adding to cart.");
+        setIsButtonDisabled(false);
+        return;
+      }
 
-    setIsButtonDisabled(true);
+      // const loggedInUser = localStorage.getItem("loggedUser");
+      // console.log(loggedInUser);
 
-    setTimeout(() => {
-      toast.success("Product added to cart successfully.", { duration: 1000, style: { background: "green", color: "#fff" } });
+      // if (!loggedInUser) {
+      //   navigate("/login");
+      //   return;
+      // }
+
+      const payload: CartCreatePayload = {
+        productId: params.id,
+        color: selectedColor,
+        size: selectedSize,
+        quantity: selectedQuantity,
+        userId: "69f6e486d4bfdab0ac981138",
+      }
+
+      const response = await addToCart(payload);
+      // debugger
+
+      if (response.success) {
+        setIsButtonDisabled(false);
+        setSelectedSize(null);
+        setSelectedColor(null);
+
+        // localStorage.setItem("cartId", response.data.id);
+        updateLocalStorage("cartId", response.data.id);
+        updateLocalStorage("cartItemsCount", response.data.itemsCount.toString());
+        showSuccessMessage(response.successMessage);
+      } else {
+        throw new Error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.log({ error });
+      showErrorMessage(error.message);
+    } finally {
+      setLoading(false);
       setIsButtonDisabled(false);
-      setSelectedSize(null);
-      setSelectedColor(null);
-    }, 1000);
+    }
   };
 
   const loadSizeOptions = async () => {

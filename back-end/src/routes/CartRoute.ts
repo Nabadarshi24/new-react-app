@@ -6,7 +6,7 @@ import Product from "../models/Product";
 const cartRouter = express.Router();
 
 // Helper funcotion to get a cart by userId or guestId
-const getCart = async (userId: string, guestId: string) => {
+const getCart = async (userId?: string, guestId?: string) => {
   if (userId) {
     return await Cart.findOne({ user: userId });
   } else if (guestId) {
@@ -78,7 +78,14 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
 
       cart.totalPrice = cart.products.reduce((total, item) => total + (item.price * item.quantity), 0);
       await cart.save();
-      return res.status(200).json(cart);
+      return res.status(200).json({
+        data: {
+          id: cart._id,
+          itemsCount: cart.products.length
+        },
+        success: true,
+        successMessage: "Product added to cart successfully"
+      });
     } else {
       // create a new cart for guest or user
       const newCart = await Cart.create({
@@ -102,7 +109,14 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
         // totalPrice: product.price * quantity
       });
 
-      return res.status(201).json(newCart);
+      return res.status(200).json({
+        data: {
+          id: newCart._id,
+          itemsCount: newCart.products.length
+        },
+        success: true,
+        successMessage: "Product added to cart successfully"
+      });
     }
   } catch (error) {
     console.error(error);
@@ -148,7 +162,7 @@ cartRouter.put("/edit", async (req: Request, res: Response) => {
   }
 });
 
-// @route PUT /api/cart/delete
+// @route DELETE /api/cart/delete
 // @desc Delete a product from the cart
 // @access Public
 
@@ -170,7 +184,11 @@ cartRouter.delete("/delete", async (req: Request, res: Response) => {
     cart.totalPrice = cart.products.reduce((total, item) => total + (item.price * item.quantity), 0);
 
     await cart.save();
-    return res.status(200).json(cart);
+    return res.status(200).json({
+      // data: cart,
+      success: true,
+      successMessage: "Product deleted from cart successfully",
+    });
   } else {
     return res.status(404).json({ message: "Product not found in cart" });
   }
@@ -204,7 +222,36 @@ cartRouter.get("/list/:id", async (req: Request, res: Response) => {
     const cart = await getCartById(id);
 
     if (cart) {
-      res.json(cart);
+      res.json({
+        data: cart,
+        success: true,
+        successMessage: "Cart retrieved successfully"
+      });
+    } else {
+      res.status(404).json({ message: "Cart not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" })
+  }
+});
+
+// @route GET /api/cart/details/:id
+// @desc GET logged-in or guest user's cart details
+// @access Public
+
+cartRouter.get("/details/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const cart = await Cart.findById(id);
+
+    if (cart) {
+      res.json({
+        data: cart,
+        success: true,
+        successMessage: "Cart retrieved successfully"
+      });
     } else {
       res.status(404).json({ message: "Cart not found" });
     }

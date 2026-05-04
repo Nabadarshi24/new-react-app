@@ -95,3 +95,41 @@ export const makeGetRequest = async <T extends Record<string, any>>(
     }
   }
 };
+
+export const makeDeleteRequest = async <T extends Record<string, any>>(
+  url: string,
+  data?: Record<string, any>
+) => {
+  const requestConfig: AxiosRequestConfig = {
+    url,
+    data,
+    method: "DELETE"
+  };
+
+  try {
+    const response = await axiosInstance.request<ApiResponseObject<T>>(requestConfig);
+    // console.log({ axiosResponse: response });
+
+    if (response.status == 200) {
+      console.log("Request has succeeded");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.log({ error })
+
+    if (error.code === "ECONNABORTED") {
+      throw new Error("Request took too long to execute!");
+    }
+
+    if (!error.response) {
+      throw new Error("Unknown api or network error");
+    }
+
+    const response = error.response as AxiosResponse<ApiResponseObject<T>>;
+
+    if (response.status >= 400 && response.status <= 500) {
+
+    }
+  }
+};

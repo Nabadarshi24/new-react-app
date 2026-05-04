@@ -1,6 +1,15 @@
-import { makeGetRequest } from "../../libs/Axios";
-import { ApiResponseList, ApiResponseObject } from "../../libs/types";
-import { TypeFilterOption, TypeProduct } from "../types";
+import {
+  makeGetRequest,
+  makePostRequest
+} from "../../libs/Axios";
+import {
+  ApiResponseList,
+  ApiResponseObject
+} from "../../libs/types";
+import {
+  TypeFilterOption,
+  TypeProduct
+} from "../types";
 
 export const getFilterOptions = async (): Promise<ApiResponseObject<TypeFilterOption[]>> => {
   return await makeGetRequest("/product/filter-option");
@@ -27,3 +36,4 @@ export const getSimilarProducts = async (id: string): Promise<ApiResponseObject<
 export const getProductSizeOptions = async (): Promise<ApiResponseObject<TypeFilterOption[]>> => {
   return await makeGetRequest("/product/size-option");
 };
+

@@ -68,8 +68,8 @@ export const Home = () => {
       <NewArrivals />
 
       {/* Best Seller */}
-      <h2 className='tw:text-3xl tw:text-center tw:font-bold tw:mb-4'>Best Seller</h2>
-      <ProductDetails />
+      {/* <h2 className='tw:text-3xl tw:text-center tw:font-bold tw:mb-4'>Best Seller</h2>
+      <ProductDetails /> */}
 
       <div className="tw:container tw:mx-auto">
         <h2 className='tw:text-3xl tw:text-center tw:font-bold tw:mb-4'>Top Wears For Women</h2>

@@ -1,5 +1,10 @@
+import { useEffect, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { CartContent } from './parts/CartContent';
+import { useAccountStore } from '../../stores/GlobalStore';
+import { getCartDetails } from '../api';
+import { Cart } from '../types';
+import { showErrorMessage } from '../../helper/helper';
 
 type TypeProps = {
   isDrawerOpen: boolean;
@@ -10,6 +15,41 @@ export const CartDrawer = ({
   isDrawerOpen,
   handleDrawerToggle
 }: TypeProps) => {
+
+  const [cartDetails, setcartDetails] = useState<Cart>();
+
+  const setLoading = useAccountStore((store) => store.setIsLoading);
+
+  const cartId = localStorage.getItem('cartId');
+
+  const loadCartDetails = async () => {
+    // TODO: Load cart details from API
+    try {
+      setLoading(true);
+
+      const response = await getCartDetails(cartId);
+
+      if (response.data && response.success) {
+        setcartDetails(response.data);
+        localStorage.setItem("cartItemsCount", response.data.products.length.toString());
+        window.dispatchEvent(new Event("storage"));
+      } else {
+        console.log('Failed to load cart details');
+      }
+    } catch (error) {
+      console.log({ error });
+      showErrorMessage(error.message)
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      loadCartDetails()
+    }
+  }, [isDrawerOpen])
+
   return (
     <div className={`tw:fixed tw:top-0 tw:right-0 tw:w-3/4 tw:sm:w-1/2 tw:md:w-[30rem] tw:h-full tw:bg-white tw:shadow-lg tw:transform tw:transition-transform tw:duration-300 tw:flex tw:flex-col tw:z-50 ${isDrawerOpen ? "tw:translate-x-0" : "tw:translate-x-full"}`}>
       <div className="tw:flex tw:justify-end tw:p-4">
@@ -25,7 +65,13 @@ export const CartDrawer = ({
         <div className="tw:flex tw:items-center tw:justify-between tw:p-4">
           <h2>Shopping Cart</h2>
         </div>
-        <CartContent />
+        {
+          cartDetails?.products &&
+          <CartContent
+            products={cartDetails.products}
+            doOnDelete={loadCartDetails}
+          />
+        }
       </div>
 
       <div className="tw:sticky tw:bottom-0 tw:p-4">
