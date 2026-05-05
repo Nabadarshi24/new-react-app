@@ -1,4 +1,4 @@
-export type CartCreatePayload = {
+export type TypeCartCreatePayload = {
   productId: string;
   color: string;
   size: string;
@@ -6,7 +6,7 @@ export type CartCreatePayload = {
   userId?: string;
   guestId?: string;
 };
-export type CartItem = {
+export type TypeCartItem = {
   productId: string;
   name: string;
   image: string;
@@ -16,22 +16,22 @@ export type CartItem = {
   quantity: number;
 };
 
-export type Cart = {
+export type TypeCart = {
   _id: string;
   user: string;
   guestId: string;
-  products: CartItem[];
+  products: TypeCartItem[];
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
 };
 
-export type CartCreate = {
+export type TypeCartCreate = {
   id: string;
   itemsCount: number;
 };
 
-export type ProductDeletePayload = {
+export type TypeProductDeletePayload = {
   productId: string;
   guestId: string;
   userId: string;

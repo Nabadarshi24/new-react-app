@@ -3,8 +3,8 @@ import { Close } from '@mui/icons-material';
 import { CartContent } from './parts/CartContent';
 import { useAccountStore } from '../../stores/GlobalStore';
 import { getCartDetails } from '../api';
-import { Cart } from '../types';
-import { showErrorMessage } from '../../helper/helper';
+import { TypeCart } from '../types';
+import { showErrorMessage, setLocalStorage } from '../../helper/Helper';
 
 type TypeProps = {
   isDrawerOpen: boolean;
@@ -16,7 +16,7 @@ export const CartDrawer = ({
   handleDrawerToggle
 }: TypeProps) => {
 
-  const [cartDetails, setcartDetails] = useState<Cart>();
+  const [cartDetails, setcartDetails] = useState<TypeCart>();
 
   const setLoading = useAccountStore((store) => store.setIsLoading);
 
@@ -31,8 +31,9 @@ export const CartDrawer = ({
 
       if (response.data && response.success) {
         setcartDetails(response.data);
-        localStorage.setItem("cartItemsCount", response.data.products.length.toString());
-        window.dispatchEvent(new Event("storage"));
+        setLocalStorage("cartItemsCount", response.data.products.length.toString())
+        // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
+        // window.dispatchEvent(new Event("storage"));
       } else {
         console.log('Failed to load cart details');
       }

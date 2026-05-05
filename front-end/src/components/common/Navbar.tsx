@@ -61,9 +61,7 @@ export const Navbar = () => {
       </div>
 
       <div className="tw:flex tw:items-center tw:justify-between tw:gap-4">
-        <Link to="/login" className="tw:hover:text-black">
-          <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
-        </Link>
+        <SearchBar />
         <button
           onClick={handleDrawerToggle}
           className="tw:relative tw:cursor-pointer tw:hover:text-black"
@@ -74,8 +72,9 @@ export const Navbar = () => {
             <span className="tw:absolute tw:-top-1px tw:-right-14px tw:bg-[#ea2e0e] tw:text-white tw:text-xs tw:rounded-full tw:px-2 tw:py-0.5">{itemCounts}</span>
           }
         </button>
-
-        <SearchBar />
+        <Link to="/login" className="tw:hover:text-black">
+          <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
+        </Link>
 
         <button
           onClick={handleToggleNavDrawer}

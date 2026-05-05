@@ -14,15 +14,15 @@ import {
   getProductSizeOptions,
   getSimilarProducts
 } from "../api";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useAccountStore } from "../../stores/GlobalStore";
 import {
   showErrorMessage,
   showSuccessMessage,
-  updateLocalStorage
-} from "../../helper/helper";
+  setLocalStorage
+} from "../../helper/Helper";
 import { addToCart } from "../../cart/api";
-import { CartCreatePayload } from "../../cart/types";
+import { TypeCartCreatePayload } from "../../cart/types";
 
 const ProductDetails = () => {
 
@@ -35,8 +35,11 @@ const ProductDetails = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
+  const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
+
+  const loggedInUser = localStorage.getItem("loggedUser");
 
   const setLoading = useAccountStore(store => store.setIsLoading);
 
@@ -60,15 +63,13 @@ const ProductDetails = () => {
         return;
       }
 
-      // const loggedInUser = localStorage.getItem("loggedUser");
-      // console.log(loggedInUser);
+      if (!loggedInUser) {
+        
+        navigate("/login", { state: { from: location.pathname } });
+        return;
+      }
 
-      // if (!loggedInUser) {
-      //   navigate("/login");
-      //   return;
-      // }
-
-      const payload: CartCreatePayload = {
+      const payload: TypeCartCreatePayload = {
         productId: params.id,
         color: selectedColor,
         size: selectedSize,
@@ -85,8 +86,8 @@ const ProductDetails = () => {
         setSelectedColor(null);
 
         // localStorage.setItem("cartId", response.data.id);
-        updateLocalStorage("cartId", response.data.id);
-        updateLocalStorage("cartItemsCount", response.data.itemsCount.toString());
+        setLocalStorage("cartId", response.data.id);
+        setLocalStorage("cartItemsCount", response.data.itemsCount.toString());
         showSuccessMessage(response.successMessage);
       } else {
         throw new Error("Failed to add product to cart");

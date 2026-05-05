@@ -1,25 +1,35 @@
 import { ComponentType, useState } from 'react';
-// import * as yup from "yup";
 import * as Yup from "yup";
 import {
   Link,
+  useLocation,
   useNavigate
 } from 'react-router';
 import { login } from '../api';
-import { TypeLogin, TypeLoginUserData } from '../types';
+import {
+  TypeLogin,
+  TypeLoginUserData
+} from '../types';
 import { Form } from '../../form/Form';
 import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
-import { composeInitialState, loginUser } from '../../utils/Helpers';
+import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 import { useAccountStore } from '../../stores/GlobalStore';
-import axios from 'axios';
+import {
+  setLocalStorage,
+  showSuccessMessage
+} from '../../helper/Helper';
 
 const Login = () => {
 
+  const location = useLocation();
   const navigate = useNavigate();
 
+  console.log({ location });
+
   const setIsSignIn = useAccountStore(store => store?.setIsSignIn);
+  const setLoading = useAccountStore(store => store.setIsLoading);
 
   // const [userName, setUserName] = useState("");
   // const [password, setPassword] = useState("");
@@ -41,37 +51,33 @@ const Login = () => {
 
   const onSubmit = async (data: TypeLogin) => {
     try {
+      setLoading(true);
+
       const data = methods.getValues();
-
-      // const response = await login(data);
-
-      // const response = loginUser(data);
-
       const response = await login(data);
 
-      console.log({ response })
-      // if (response.success && response.data) {
-      //   const loggedUser: TypeLoginUserData = {
-      //     userId: response.data.id,
-      //     userLabel: response.data.firstName + " " + response.data.lastName,
-      //     firstName: response.data.firstName,
-      //     lastName: response.data.lastName,
-      //     email: response.data.email,
-      //     roleLabel: response.data.role,
-      //     isVerified: response.data.isVerified,
-      //     isDeleted: response.data.isDeleted
-      //   };
+      // console.log({ response })
+      if (response.data) {
 
-      //   localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
-      //   setIsSignIn(true);
-      //   navigate("/dashboard");
-      //   window.alert(response.message);
-      // } else {
-      //   window.alert(response.message);
-      // }
+        const loggedUser: TypeLoginUserData = {
+          userId: response.data.user.id,
+          userLabel: response.data.user.name,
+          email: response.data.user.email,
+          roleLabel: response.data.user.role,
+          accessToken: response.data.token
+        };
 
+        setLocalStorage("loggedUser", JSON.stringify(loggedUser));
+        setIsSignIn(true);
+        navigate(location.state?.from || "/dashboard");
+        showSuccessMessage(response.successMessage);
+      } else {
+        throw new Error();
+      }
     } catch (error) {
-
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -3,6 +3,8 @@ import { useAccountStore } from '../stores/GlobalStore';
 import { Outlet } from 'react-router';
 import { Toaster } from 'sonner';
 import { Loading } from '../elements/Loading';
+import { Header } from '../common/Header';
+import { Footer } from '../common/Footer';
 
 const Layout = () => {
 
@@ -18,8 +20,10 @@ const Layout = () => {
     <>
       {/* {isSignIn ? <Private /> : <Public />} */}
       {isLoading && <Loading />}
-      <Toaster position="top-right" duration={2000} />
+      <Toaster position="bottom-left" duration={2000} />
+      <Header />
       <Outlet />
+      <Footer />
     </>
   );
 };

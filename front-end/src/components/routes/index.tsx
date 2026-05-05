@@ -5,6 +5,7 @@ import {
   RouteObject
 } from "react-router";
 import { Loading } from '../elements/Loading';
+import { Common } from '../layout/Common';
 
 const Private = lazy(() => import("../layout/Private"));
 const Public = lazy(() => import("../layout/Public"));
@@ -45,34 +46,11 @@ const privateRoute = [
   },
 ];
 
-const publicRoute = [
-  {
-    path: "/",
-    index: true,
-    element: <Home />,
-    isSignIn: false
-  },
-  {
-    path: "/collection/all",
-    index: true,
-    element: <CollectionList />,
-    isSignIn: false
-  },
-  {
-    path: "/product/details/:id",
-    index: true,
-    element: <ProductDetails />,
-    isSignIn: false
-  },
-  {
-    path: "user-layout",
-    element: <UserLayout />,
-    isSignIn: false
-  },
+export const publicRoute = [
   {
     path: "login",
     element: <Login />,
-    isSignIn: false
+    isSignIn: false,
   },
   {
     path: "verify-otp",
@@ -91,14 +69,52 @@ const publicRoute = [
   }
 ];
 
+const commonRoute = [
+  {
+    path: "/",
+    index: true,
+    element: <Home />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "/collection/all",
+    index: true,
+    element: <CollectionList />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "/product/details/:id",
+    index: true,
+    element: <ProductDetails />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "user-layout",
+    element: <UserLayout />,
+    // isSignIn: false,
+    isCommon: true
+  },
+];
+
 // const decideParentRoute = (routes) => {
 //   const routeArray = [];
+
 //   routes.forEach(route => {
 //     let routeObj;
+
 //     if (route.isSignIn == true) {
 //       routeObj = {
 //         path: route.path,
 //         element: <Private>{route.element}</Private>
+//       }
+//       routeArray.push(routeObj);
+//     } else if (route.isCommon == true) {
+//       routeObj = {
+//         path: route.path,
+//         element: <Common>{route.element}</Common>
 //       }
 //       routeArray.push(routeObj);
 //     } else {
@@ -109,11 +125,13 @@ const publicRoute = [
 //       routeArray.push(routeObj);
 //     }
 //   })
+
 //   return routeArray;
 // };
 
 // const PUBLIC_ROUTE = decideParentRoute(publicRoute);
 // const PRIVATE_ROUTE = decideParentRoute(privateRoute);
+// const COMMON_ROUTE = decideParentRoute(commonRoute);
 
 export const route = createBrowserRouter([
   {
@@ -123,6 +141,7 @@ export const route = createBrowserRouter([
     children: [
       // ...PUBLIC_ROUTE,
       // ...PRIVATE_ROUTE,
+      // ...COMMON_ROUTE,
       {
         path: "/",
         element: <Suspense fallback={<Loading />}><Public /></Suspense>,
@@ -141,6 +160,19 @@ export const route = createBrowserRouter([
         children: [
           ...privateRoute.map(x => {
             return {
+              path: x.path,
+              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
+            };
+          })
+        ]
+      },
+      {
+        path: "/",
+        element: <Suspense fallback={<Loading />}><Common /></Suspense>,
+        children: [
+          ...commonRoute.map(x => {
+            return {
+              index: x.index,
               path: x.path,
               element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
             };

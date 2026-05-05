@@ -38,7 +38,9 @@ export const makePostRequest = async <T extends Record<string, any>>(
       console.log("Request has succeeded");
     }
 
-    return response.data;
+    return {
+      ...response.data,
+    };
   } catch (error) {
     console.log({ error })
 

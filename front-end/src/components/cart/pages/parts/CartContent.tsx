@@ -1,13 +1,13 @@
 // import React from 'react';
 
 import { Delete } from "@mui/icons-material";
-import { CartItem, ProductDeletePayload } from "../../types";
+import { TypeCartItem, TypeProductDeletePayload } from "../../types";
 import { useAccountStore } from "../../../stores/GlobalStore";
 import { deleteProductFromCart } from "../../api";
-import { showErrorMessage, showSuccessMessage } from "../../../helper/helper";
+import { showErrorMessage, showSuccessMessage } from "../../../helper/Helper";
 
 type TypeProps = {
-  products: CartItem[];
+  products: TypeCartItem[];
   doOnDelete?: () => void;
 }
 
@@ -15,12 +15,12 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
 
   const setLoading = useAccountStore(store => store.setIsLoading);
 
-  const handleDelete = async ({ productId, guestId, userId, size, color }: ProductDeletePayload) => {
+  const handleDelete = async ({ productId, guestId, userId, size, color }: TypeProductDeletePayload) => {
     // TODO: Implement remove from cart
     try {
       setLoading(true);
 
-      const payload: ProductDeletePayload = {
+      const payload: TypeProductDeletePayload = {
         productId,
         guestId,
         userId,
@@ -44,7 +44,7 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
   };
 
   return (
-    <div>
+    <>
       {
         products.map(product => (
           <div
@@ -85,6 +85,6 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
           </div>
         ))
       }
-    </div>
+    </>
   );
 };
