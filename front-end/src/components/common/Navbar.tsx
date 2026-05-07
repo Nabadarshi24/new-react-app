@@ -9,6 +9,8 @@ import {
 import { Link } from 'react-router';
 import { SearchBar } from './parts/SearchBar';
 import { CartDrawer } from '../cart/pages/CartDrawer';
+import { useAccountStore } from '../stores/GlobalStore';
+import AccountMenu from './parts/AccountMenu';
 
 export const Navbar = () => {
 
@@ -18,6 +20,7 @@ export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
 
+  const isSignIn = useAccountStore(store => store.state.isSignIn);
 
   const handleDrawerToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -72,10 +75,13 @@ export const Navbar = () => {
             <span className="tw:absolute tw:-top-1px tw:-right-14px tw:bg-[#ea2e0e] tw:text-white tw:text-xs tw:rounded-full tw:px-2 tw:py-0.5">{itemCounts}</span>
           }
         </button>
-        <Link to="/login" className="tw:hover:text-black">
-          <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
-        </Link>
-
+        {
+          isSignIn
+            ? <AccountMenu />
+            : <Link to="/login" className="tw:hover:text-black">
+              <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
+            </Link>
+        }
         <button
           onClick={handleToggleNavDrawer}
           className="tw:md:hidden tw:cursor-pointer"

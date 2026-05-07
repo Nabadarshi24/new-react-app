@@ -6,6 +6,8 @@ interface IUser {
   email: string;
   password: string;
   role: string;
+  refreshToken: string;
+  refreshTokenExpiry: Date;
   matchPassword(enteredPassword: string): Promise<boolean>;
 };
 
@@ -31,6 +33,14 @@ export const userSchema = new Schema<IUser>({
     type: String,
     enum: ["customer", "admin"],
     default: "customer",
+  },
+  refreshToken: {
+    type: String,
+    default: null,
+  },
+  refreshTokenExpiry: {
+    type: Date,
+    default: null,
   },
 }, {
   timestamps: true

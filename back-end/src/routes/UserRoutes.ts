@@ -33,7 +33,7 @@ router.post("/register", async (req: Request, res: Response) => {
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET!,
-      { expiresIn: "1h" },
+      { expiresIn: "30m" },
     );
 
     console.log(token);
@@ -82,8 +82,16 @@ router.post("/login", async (req: Request, res: Response) => {
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET!,
-      { expiresIn: "1h" },
+      { expiresIn: "30m" },
     );
+
+    const refreshToken = crypto.randomUUID();
+    const refreshTokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    // console.log({ refreshToken, refreshTokenExpiry })
+
+    user.refreshToken = refreshToken;
+    user.refreshTokenExpiry = refreshTokenExpiry;
+    await user.save();
 
     res.status(200).json({
       data: {
@@ -93,7 +101,8 @@ router.post("/login", async (req: Request, res: Response) => {
           email: user.email,
           role: user.role
         },
-        token
+        token,
+        refreshToken
       },
       success: true,
       successMessage: "User logged in successfully"
@@ -111,6 +120,53 @@ router.post("/login", async (req: Request, res: Response) => {
 router.get("/profile", protect, (req: Request, res: Response) => {
   console.log(req);
   res.json(req.body.user);
+});
+
+// @route POST /api/user/refresh-token
+// @desc Refresh user's token
+// @access Public
+
+router.post("/claim/access-token", async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+
+  try {
+    const user = await User.findOne({ refreshToken });
+    const isRefreshTokenExpired = user?.refreshTokenExpiry && user.refreshTokenExpiry > new Date();
+
+    if (!user || !isRefreshTokenExpired) {
+      return res.status(401).json({ message: "Invalid or expired refresh token" });
+    };
+
+    const payload = {
+      user: {
+        id: user._id,
+        role: user.role
+      }
+    };
+
+    const token = jwt.sign(
+      payload,
+      process.env.JWT_SECRET!,
+      { expiresIn: "30m" },
+    );
+
+    res.status(200).json({
+      data: {
+        // user: {
+        //   id: user._id,
+        //   name: user.name,
+        //   email: user.email,
+        //   role: user.role
+        // },
+        token
+      },
+      success: true,
+      successMessage: "Token refreshed successfully"
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 export default router;
