@@ -74,6 +74,7 @@ export type TypeLoginResponse = {
     role: string;
   };
   token: string;
+  refreshToken: string;
 };
 
 export type TypeSignInOtpResponse = {

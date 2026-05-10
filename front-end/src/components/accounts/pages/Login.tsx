@@ -68,6 +68,8 @@ const Login = () => {
         };
 
         setLocalStorage("loggedUser", JSON.stringify(loggedUser));
+        setLocalStorage("accessToken", response.data.token);
+        setLocalStorage("refreshToken", response.data.refreshToken);
         setIsSignIn(true);
         navigate(location.state?.from || "/dashboard");
         showSuccessMessage(response.successMessage);

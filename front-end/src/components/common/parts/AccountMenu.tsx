@@ -30,13 +30,20 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
 
+  const handleProfileNavigate = () => {
+    navigate('/profile');
+    handleClose();
+  };
+
   const handleLogout = () => {
     // TODO: Implement logout logic
     try {
       setLoading(true);
 
       setIsSignIn(false);
-      localStorage.removeItem("loggedUser")
+      localStorage.removeItem("loggedUser");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       navigate('/login');
       handleClose();
     } catch (error) {
@@ -102,7 +109,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleProfileNavigate}>
           <Avatar /> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>
