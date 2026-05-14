@@ -57,10 +57,26 @@ export const Navbar = () => {
       </div>
 
       <div className="tw:hidden tw:md:flex tw:space-x-6">
-        <Link to="/collection/all" className="nav-link">Men</Link>
-        <Link to="#" className="nav-link">Women</Link>
-        <Link to="#" className="nav-link">Top Wear</Link>
-        <Link to="#" className="nav-link">Bottom Wear</Link>
+        <Link
+          to="/collection/all?gender=men"
+          className="nav-link">
+          Men
+        </Link>
+        <Link
+          to="/collection/all?gender=women"
+          className="nav-link">
+          Women
+        </Link>
+        <Link
+          to="/collection/all?category=top_wear"
+          className="nav-link">
+          Top Wear
+        </Link>
+        <Link
+          to="/collection/all?category=bottom_wear"
+          className="nav-link">
+          Bottom Wear
+        </Link>
       </div>
 
       <div className="tw:flex tw:items-center tw:justify-between tw:gap-4">

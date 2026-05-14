@@ -145,7 +145,6 @@ export const SidebarFilter = () => {
       const params = Object.fromEntries(searchParams);
       console.log({ params });
 
-
       const currentFilters = {
         category: params.category || "",
         gender: params.gender || "",
@@ -168,7 +167,7 @@ export const SidebarFilter = () => {
 
   useEffect(() => {
     void onMount();
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="tw:p-4">
