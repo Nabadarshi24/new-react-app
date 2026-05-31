@@ -23,8 +23,8 @@ const seedData = async () => {
     await Cart.deleteMany();
     await Aspect.deleteMany();
 
-    await Product.cleanIndexes();
-    await ProductVariant.cleanIndexes();
+    await Product.collection.dropIndexes();
+    await ProductVariant.collection.dropIndexes();
 
     // Create admin user
     const adminUser = await User.create({
