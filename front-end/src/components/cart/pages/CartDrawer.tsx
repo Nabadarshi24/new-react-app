@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Close } from '@mui/icons-material';
 import { CartContent } from './parts/CartContent';
 import { useAccountStore } from '../../stores/GlobalStore';
@@ -18,6 +19,7 @@ export const CartDrawer = ({
 
   const [cartDetails, setcartDetails] = useState<TypeCart>();
 
+  const navigate = useNavigate();
   const setLoading = useAccountStore((store) => store.setIsLoading);
 
   const cartId = localStorage.getItem('cartId');
@@ -31,7 +33,7 @@ export const CartDrawer = ({
 
       if (response.data && response.success) {
         setcartDetails(response.data);
-        setLocalStorage("cartItemsCount", response.data.products.length.toString())
+        setLocalStorage("cartItemsCount", response.data.products.length.toString());
         // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
         // window.dispatchEvent(new Event("storage"));
       } else {
@@ -76,7 +78,13 @@ export const CartDrawer = ({
       </div>
 
       <div className="tw:sticky tw:bottom-0 tw:p-4">
-        <button className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'>
+        <button
+          className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
+          onClick={() => {
+            // TODO: Navigate to checkout page
+            navigate('/checkout');
+          }}
+        >
           Checkout
         </button>
         <p className='tw:text-sm tw:text-gray-500 tw:mt-2 tw:text-center'>Shipping, taxes and discount calculated at checkout</p>

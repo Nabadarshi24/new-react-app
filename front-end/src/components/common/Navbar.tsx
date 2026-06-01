@@ -91,6 +91,7 @@ export const Navbar = () => {
             <span className="tw:absolute tw:-top-1px tw:-right-14px tw:bg-[#ea2e0e] tw:text-white tw:text-xs tw:rounded-full tw:px-2 tw:py-0.5">{itemCounts}</span>
           }
         </button>
+
         {
           isSignIn
             ? <AccountMenu />
@@ -98,6 +99,7 @@ export const Navbar = () => {
               <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
             </Link>
         }
+
         <button
           onClick={handleToggleNavDrawer}
           className="tw:md:hidden tw:cursor-pointer"

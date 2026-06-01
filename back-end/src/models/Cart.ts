@@ -12,7 +12,7 @@ interface ICartItem {
 
 interface ICartSchema {
   user: Schema.Types.ObjectId;
-  guestId: string;
+  guestId: string | null;
   products: ICartItem[];
   totalPrice: number;
 }
@@ -42,7 +42,8 @@ const cartSchema = new Schema<ICartSchema>({
     ref: "User"
   },
   guestId: {
-    type: String
+    type: String,
+    default: null
   },
   products: [cartItemSchema],
   totalPrice: {

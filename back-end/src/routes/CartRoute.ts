@@ -40,7 +40,7 @@ const getCartById = async (id: string) => {
 
 cartRouter.post("/create", async (req: Request, res: Response) => {
   try {
-    const { productId, size, color, quantity, guestId, userId } = req.body;
+    const { productId, size, color, quantity, price, guestId, userId } = req.body;
     const product = await Product.findById(productId);
 
     if (!product) {
@@ -71,12 +71,12 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
           size,
           quantity,
           // TODO:
-          price: 0
-          // price: product.price,
+          price: price * quantity
+          // price: product.productVariants.find(variant => variant.colorAspectId === color)?.discountPrice! || product.defaultVariant.discountPrice!,
         })
       }
 
-      cart.totalPrice = cart.products.reduce((total, item) => total + (item.price * item.quantity), 0);
+      cart.totalPrice = cart.products.reduce((total, item) => total + item.price, 0);
       await cart.save();
       return res.status(200).json({
         data: {
@@ -100,14 +100,17 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
             size,
             quantity,
             // TODO:
-            price: 0
+            price: price * quantity
             // price: product.price
           }
         ],
         // TODO:
-        totalPrice: 0
+        // totalPrice: 0
         // totalPrice: product.price * quantity
       });
+
+      newCart.totalPrice = newCart.products.reduce((total, item) => total + item.price, 0);
+      await newCart.save();
 
       return res.status(200).json({
         data: {
@@ -173,15 +176,18 @@ cartRouter.delete("/delete", async (req: Request, res: Response) => {
 
   if (!cart) return res.status(404).json({ message: "Cart not found" });
 
+  // debugger
   const productIndex = cart.products.findIndex(product =>
     product.productId.toString() === productId &&
     product.size === size &&
     product.color === color
   );
 
+  console.log({ productIndex });
+
   if (productIndex > -1) {
     cart.products.splice(productIndex, 1);
-    cart.totalPrice = cart.products.reduce((total, item) => total + (item.price * item.quantity), 0);
+    cart.totalPrice = cart.products.reduce((total, item) => total + item.price, 0);
 
     await cart.save();
     return res.status(200).json({

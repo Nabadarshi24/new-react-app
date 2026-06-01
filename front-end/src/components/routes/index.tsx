@@ -22,6 +22,7 @@ const SignUp = lazy(() => import("../accounts/pages/SignUp"));
 const UserLayout = lazy(() => import("../layout/UserLayout"));
 const CollectionList = lazy(() => import("../products/pages/CollectionList"));
 const ProductDetails = lazy(() => import("../products/pages/ProductDetails"));
+const Checkout = lazy(() => import("../cart/pages/Checkout"));
 
 const privateRoute = [
   {
@@ -44,6 +45,11 @@ const privateRoute = [
     element: <Details />,
     isSignIn: true
   },
+  {
+    path: "/checkout",
+    element: <Checkout />,
+    isSignIn: true
+  }
 ];
 
 export const publicRoute = [

@@ -3,6 +3,7 @@ export type TypeCartCreatePayload = {
   color: string;
   size: string;
   quantity: number;
+  price: number;
   userId?: string;
   guestId?: string;
 };

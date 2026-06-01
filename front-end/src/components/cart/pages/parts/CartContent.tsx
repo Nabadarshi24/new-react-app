@@ -13,6 +13,9 @@ type TypeProps = {
 
 export const CartContent = ({ products, doOnDelete }: TypeProps) => {
 
+  const loggedInUser = localStorage.getItem("loggedUser");
+  const loggedInUserObj = loggedInUser ? JSON.parse(loggedInUser) : null;
+
   const setLoading = useAccountStore(store => store.setIsLoading);
 
   const handleDelete = async ({ productId, guestId, userId, size, color }: TypeProductDeletePayload) => {
@@ -74,7 +77,7 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
                 onClick={() => handleDelete({
                   productId: product.productId,
                   guestId: '',
-                  userId: '69f6e486d4bfdab0ac981138',
+                  userId: loggedInUserObj?.userId,
                   size: product.size,
                   color: product.color
                 })}

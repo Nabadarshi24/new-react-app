@@ -40,6 +40,7 @@ const ProductDetails = () => {
   const navigate = useNavigate();
 
   const loggedInUser = localStorage.getItem("loggedUser");
+  const loggedInUserObj = loggedInUser ? JSON.parse(loggedInUser) : null;
 
   const setLoading = useAccountStore(store => store.setIsLoading);
 
@@ -64,7 +65,7 @@ const ProductDetails = () => {
       }
 
       if (!loggedInUser) {
-        
+
         navigate("/login", { state: { from: location.pathname } });
         return;
       }
@@ -74,7 +75,8 @@ const ProductDetails = () => {
         color: selectedColor,
         size: selectedSize,
         quantity: selectedQuantity,
-        userId: "69f6e486d4bfdab0ac981138",
+        price: productDetails.productVariants.find((variant) => variant.colorAspectId === selectedColor)?.discountPrice ?? productDetails.defaultVariant.discountPrice,
+        userId: loggedInUserObj?.userId,
       }
 
       const response = await addToCart(payload);
@@ -218,8 +220,8 @@ const ProductDetails = () => {
             {/* Right Content */}
             <div className="tw:md:w-1/2 tw:md:ml-10">
               <h1 className="tw:text-2xl tw:md:text-3xl tw:font-semibold tw:mb-2">{productDetails.productName}</h1>
-              <p className="tw:text-lg tw:text-gray-600 tw:mb-1 tw:line-through">{productDetails.defaultVariant.price}</p>
-              <p className="tw:text-xl tw:text-gray-500 tw:mb-2">{productDetails.defaultVariant.discountPrice}</p>
+              <p className="tw:text-lg tw:text-gray-600 tw:mb-1 tw:line-through">{productDetails.productVariants.find((variant) => variant.colorAspectId === selectedColor)?.price ?? productDetails.defaultVariant.price}</p>
+              <p className="tw:text-xl tw:text-gray-500 tw:mb-2">{productDetails.productVariants.find((variant) => variant.colorAspectId === selectedColor)?.discountPrice ?? productDetails.defaultVariant.discountPrice}</p>
               <p className="tw:text-gray-600 tw:mb-4">{productDetails.description}</p>
 
               <div className="tw:mb-4">
