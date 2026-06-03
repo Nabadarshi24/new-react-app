@@ -39,3 +39,14 @@ export type TypeProductDeletePayload = {
   size: string;
   color: string;
 };
+
+export type TypeShippingAddress = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phone: string;
+}

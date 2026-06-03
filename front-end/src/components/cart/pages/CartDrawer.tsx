@@ -66,14 +66,18 @@ export const CartDrawer = ({
 
       <div className="tw:flex-grow tw:p-4 tw:overflow-y-auto">
         <div className="tw:flex tw:items-center tw:justify-between tw:p-4">
-          <h2>Shopping Cart</h2>
+          <h1>Shopping Cart</h1>
         </div>
+
         {
-          cartDetails?.products &&
-          <CartContent
-            products={cartDetails.products}
-            doOnDelete={loadCartDetails}
-          />
+          (cartDetails?.products && cartDetails.products.length > 0)
+            ? <CartContent
+              products={cartDetails.products}
+              doOnDelete={loadCartDetails}
+            />
+            : <div className="tw:text-center tw:py-8">
+              <p className="tw:text-gray-500">Your cart is empty!</p>
+            </div>
         }
       </div>
 
@@ -83,6 +87,7 @@ export const CartDrawer = ({
           onClick={() => {
             // TODO: Navigate to checkout page
             navigate('/checkout');
+            handleDrawerToggle();
           }}
         >
           Checkout
