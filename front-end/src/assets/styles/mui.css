@@ -21,9 +21,9 @@
   width: 100%;
 }
 
-.MuiSvgIcon-root {
-  fill: #FFFFFF;
-}
+/* .MuiSvgIcon-root {
+  fill: #FFFFFF !important;
+} */
 
 .MuiFormControl-root.MuiTextField-root {
   width: 100%;

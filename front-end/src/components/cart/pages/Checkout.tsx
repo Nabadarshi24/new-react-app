@@ -53,7 +53,7 @@ const Checkout = () => {
                 disabled
               />
             </div>
-            {/* <h3 className="tw:text-lg tw:mb-4">Delivery</h3> */}
+            <h3 className="tw:text-lg tw:mb-4">Delivery</h3>
             <div className="col-md-6">
               <Input
                 name={names.firstName}

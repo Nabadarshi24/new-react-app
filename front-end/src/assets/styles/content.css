@@ -65,6 +65,12 @@
 
 /* #region navbar */
 
+.navbar-logo {
+  color: black;
+  font-size: 24px;
+  font-weight: 500;
+}
+
 .nav-link {
   color: #364153;
   font-size: 14px;
@@ -76,7 +82,7 @@
   color: #000000;
 }
 
-/* #endregion navbar */
+/* #endregion */
 
 .content {
   /* color: #ffffff; */
@@ -198,14 +204,20 @@
   letter-spacing: -0.05em;
 }
 
-@media (min-width: 992px) {
+@media (width >=992px) {
   .checkout-container {
     flex-direction: row;
-    max-width: 1280px;
+    max-width: 992px;
   }
 
   .checkout-container>div {
     flex: 1;
+  }
+}
+
+@media (width >=1280px) {
+  .checkout-container {
+    max-width: 1280px;
   }
 }
 

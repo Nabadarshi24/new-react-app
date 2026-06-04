@@ -50,7 +50,7 @@ export const Navbar = () => {
   return (
     <div className="tw:container tw:mx-auto tw:flex tw:justify-between tw:items-center tw:py-4 tw:px-4">
       <div>
-        <Link to="/" className='tw:text-2xl tw:font-medium tw:text-black'>
+        <Link to="/" className='navbar-logo'>
           {/* <img src="/images/nav_logo.png" alt="" /> */}
           Rabbit
         </Link>
