@@ -4,6 +4,8 @@ import {
   Navigate,
   RouteObject
 } from "react-router";
+import { Loading } from '../elements/Loading';
+import { Common } from '../layout/Common';
 
 const Private = lazy(() => import("../layout/Private"));
 const Public = lazy(() => import("../layout/Public"));
@@ -19,6 +21,8 @@ const ForgotPassword = lazy(() => import("../accounts/pages/ForgotPassword"));
 const SignUp = lazy(() => import("../accounts/pages/SignUp"));
 const UserLayout = lazy(() => import("../layout/UserLayout"));
 const CollectionList = lazy(() => import("../products/pages/CollectionList"));
+const ProductDetails = lazy(() => import("../products/pages/ProductDetails"));
+const Checkout = lazy(() => import("../cart/pages/Checkout"));
 
 const privateRoute = [
   {
@@ -41,30 +45,18 @@ const privateRoute = [
     element: <Details />,
     isSignIn: true
   },
+  {
+    path: "/checkout",
+    element: <Checkout />,
+    isSignIn: true
+  }
 ];
 
-const publicRoute = [
-  {
-    path: "/",
-    index: true,
-    element: <Home />,
-    isSignIn: false
-  },
-  {
-    path: "/collections/:collection",
-    index: true,
-    element: <CollectionList />,
-    isSignIn: false
-  },
-  {
-    path: "user-layout",
-    element: <UserLayout />,
-    isSignIn: false
-  },
+export const publicRoute = [
   {
     path: "login",
     element: <Login />,
-    isSignIn: false
+    isSignIn: false,
   },
   {
     path: "verify-otp",
@@ -83,14 +75,52 @@ const publicRoute = [
   }
 ];
 
+const commonRoute = [
+  {
+    path: "/",
+    index: true,
+    element: <Home />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "/collection/all",
+    index: true,
+    element: <CollectionList />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "/product/details/:id",
+    index: true,
+    element: <ProductDetails />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "user-layout",
+    element: <UserLayout />,
+    // isSignIn: false,
+    isCommon: true
+  },
+];
+
 // const decideParentRoute = (routes) => {
 //   const routeArray = [];
+
 //   routes.forEach(route => {
 //     let routeObj;
+
 //     if (route.isSignIn == true) {
 //       routeObj = {
 //         path: route.path,
 //         element: <Private>{route.element}</Private>
+//       }
+//       routeArray.push(routeObj);
+//     } else if (route.isCommon == true) {
+//       routeObj = {
+//         path: route.path,
+//         element: <Common>{route.element}</Common>
 //       }
 //       routeArray.push(routeObj);
 //     } else {
@@ -101,41 +131,56 @@ const publicRoute = [
 //       routeArray.push(routeObj);
 //     }
 //   })
+
 //   return routeArray;
 // };
 
 // const PUBLIC_ROUTE = decideParentRoute(publicRoute);
 // const PRIVATE_ROUTE = decideParentRoute(privateRoute);
+// const COMMON_ROUTE = decideParentRoute(commonRoute);
 
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}><Layout /></Suspense>,
+    element: <Suspense fallback={<Loading />}><Layout /></Suspense>,
     // element: <Private />,
     children: [
       // ...PUBLIC_ROUTE,
       // ...PRIVATE_ROUTE,
+      // ...COMMON_ROUTE,
       {
         path: "/",
-        element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}><Public /></Suspense>,
+        element: <Suspense fallback={<Loading />}><Public /></Suspense>,
         children: [
           ...publicRoute.map(x => {
             return {
               path: x.path,
-              element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}>{x.element}</Suspense>
+              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
             };
           })
         ]
       },
-
       {
         path: "/",
-        element: <Private />,
+        element: <Suspense fallback={<Loading />}><Private /></Suspense>,
         children: [
           ...privateRoute.map(x => {
             return {
               path: x.path,
-              element: <Suspense fallback={<div className="tw:text-black">Loading...</div>}>{x.element}</Suspense>
+              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
+            };
+          })
+        ]
+      },
+      {
+        path: "/",
+        element: <Suspense fallback={<Loading />}><Common /></Suspense>,
+        children: [
+          ...commonRoute.map(x => {
+            return {
+              index: x.index,
+              path: x.path,
+              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
             };
           })
         ]

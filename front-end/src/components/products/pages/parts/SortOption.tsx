@@ -7,9 +7,15 @@ export const SortOption = () => {
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const sortBy = event.target.value;
-    searchParams.set("sortBy", sortBy);
-    setSearchParams(searchParams);
+    if (sortBy === "") {
+      searchParams.delete("sortBy");
+      setSearchParams(searchParams);
+    } else {
+      searchParams.set("sortBy", sortBy);
+      setSearchParams(searchParams);
+    }
   };
+
   return (
     <div className="tw:mb-4 tw:flex tw:items-center tw:justify-end">
       <select

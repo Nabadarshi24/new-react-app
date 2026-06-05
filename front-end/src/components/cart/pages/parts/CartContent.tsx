@@ -1,36 +1,57 @@
 // import React from 'react';
 
 import { Delete } from "@mui/icons-material";
+import { TypeCartItem, TypeProductDeletePayload } from "../../types";
+import { useAccountStore } from "../../../stores/GlobalStore";
+import { deleteProductFromCart } from "../../api";
+import { showErrorMessage, showSuccessMessage } from "../../../helper/Helper";
 
-const products = [
-  {
-    id: 1,
-    name: "T-shirt",
-    size: "M",
-    color: "Red",
-    price: 15,
-    quantity: 1,
-    image: "https://picsum.photos/200?random=1"
-  },
-  {
-    id: 2,
-    name: "Jeans",
-    size: "L",
-    color: "Blue",
-    price: 15,
-    quantity: 1,
-    image: "https://picsum.photos/200?random=2"
-  }
-]
+type TypeProps = {
+  products: TypeCartItem[];
+  doOnDelete?: () => void;
+}
 
-export const CartContent = () => {
+export const CartContent = ({ products, doOnDelete }: TypeProps) => {
+
+  const loggedInUser = localStorage.getItem("loggedUser");
+  const loggedInUserObj = loggedInUser ? JSON.parse(loggedInUser) : null;
+
+  const setLoading = useAccountStore(store => store.setIsLoading);
+
+  const handleDelete = async ({ productId, guestId, userId, size, color }: TypeProductDeletePayload) => {
+    // TODO: Implement remove from cart
+    try {
+      setLoading(true);
+
+      const payload: TypeProductDeletePayload = {
+        productId,
+        guestId,
+        userId,
+        size,
+        color
+      };
+
+      const response = await deleteProductFromCart(payload);
+      if (response?.success) {
+        showSuccessMessage(response.successMessage);
+
+        // TODO: Refresh cart data
+        doOnDelete?.();
+      }
+    } catch (error) {
+      console.log(error);
+      showErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div>
+    <>
       {
         products.map(product => (
           <div
-            key={product.id}
+            key={product.productId}
             className='tw:flex tw:items-start tw:justify-between tw:py-4 tw:border-b'
           >
             <div className="tw:flex tw:items-start">
@@ -51,11 +72,22 @@ export const CartContent = () => {
             </div>
             <div>
               <p>$ {product.price.toLocaleString()}</p>
-              <button className="tw:cursor-pointer tw:mt-2 tw:text-red-600"><Delete /></button>
+              <button
+                className="tw:cursor-pointer tw:mt-2 tw:text-red-600"
+                onClick={() => handleDelete({
+                  productId: product.productId,
+                  guestId: '',
+                  userId: loggedInUserObj?.userId,
+                  size: product.size,
+                  color: product.color
+                })}
+              >
+                <Delete />
+              </button>
             </div>
           </div>
         ))
       }
-    </div>
+    </>
   );
 };

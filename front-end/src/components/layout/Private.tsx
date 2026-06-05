@@ -22,27 +22,21 @@ const Private = ({ children }: TypeProps) => {
   //   navigate("/login");
   // };
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   if (!isSignIn) {
-  //     console.log("yy")
-  //     navigate("/login");
-  //   }
-  // }, [isSignIn]);
+    if (!isSignIn) {
+      console.log("yy")
+      navigate("/login");
+    }
+  }, [isSignIn]);
 
   return (
-    <>
-      <Header />
-
-      <div className="sidebar-with-content">
-        <div className="content">
-          <Outlet/>
-          {children}
-        </div>
+    <div className="sidebar-with-content">
+      <div className="content private-content">
+        <Outlet />
+        {/* {children} */}
       </div>
-
-      <Footer />
-    </>
+    </div>
   )
 };
 

@@ -2,11 +2,12 @@ import { ComponentType } from 'react'
 import { Hero } from './parts/Hero';
 import { GenderCollection } from './parts/GenderCollection';
 import { NewArrivals } from './parts/NewArrivals';
-import { ProductDetails } from '../../products/pages/ProductDetails';
+// import { ProductDetails } from '../../products/pages/ProductDetails';
 import { ProductGrid } from '../../products/pages/parts/ProductGrid';
 import { TypeSimilarProduct } from '../../products/types';
 import { FeaturedCollection } from '../../products/pages/FeaturedCollection';
 import { FeaturedSection } from '../../products/pages/FeaturedSection';
+import ProductDetails from '../../products/pages/ProductDetails';
 
 const placeHolderProducts: TypeSimilarProduct[] = [
   {
@@ -67,8 +68,8 @@ export const Home = () => {
       <NewArrivals />
 
       {/* Best Seller */}
-      <h2 className='tw:text-3xl tw:text-center tw:font-bold tw:mb-4'>Best Seller</h2>
-      <ProductDetails />
+      {/* <h2 className='tw:text-3xl tw:text-center tw:font-bold tw:mb-4'>Best Seller</h2>
+      <ProductDetails /> */}
 
       <div className="tw:container tw:mx-auto">
         <h2 className='tw:text-3xl tw:text-center tw:font-bold tw:mb-4'>Top Wears For Women</h2>

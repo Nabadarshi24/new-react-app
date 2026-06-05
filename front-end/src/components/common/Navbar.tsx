@@ -1,4 +1,5 @@
 // import React from 'react'
+import { useEffect, useState } from 'react';
 import {
   AccountCircleOutlined,
   Close,
@@ -8,11 +9,18 @@ import {
 import { Link } from 'react-router';
 import { SearchBar } from './parts/SearchBar';
 import { CartDrawer } from '../cart/pages/CartDrawer';
-import { useState } from 'react';
+import { useAccountStore } from '../stores/GlobalStore';
+import AccountMenu from './parts/AccountMenu';
 
 export const Navbar = () => {
+
+  const cartItems = localStorage.getItem("cartItemsCount");
+
+  const [itemCounts, setItemCounts] = useState(cartItems);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+
+  const isSignIn = useAccountStore(store => store.state.isSignIn);
 
   const handleDrawerToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -22,35 +30,75 @@ export const Navbar = () => {
     setIsNavDrawerOpen(!isNavDrawerOpen);
   };
 
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      // The event object tells you exactly what changed
+      const nv = localStorage.getItem('cartItemsCount');
+
+      // setData(event.newValue);
+      setItemCounts(nv || '0');
+    };
+
+    // Listen for changes from OTHER tabs
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
   return (
     <div className="tw:container tw:mx-auto tw:flex tw:justify-between tw:items-center tw:py-4 tw:px-4">
       <div>
-        <Link to="/" className='tw:text-2xl tw:font-medium tw:text-black'>
+        <Link to="/" className='navbar-logo'>
           {/* <img src="/images/nav_logo.png" alt="" /> */}
           Rabbit
         </Link>
       </div>
 
       <div className="tw:hidden tw:md:flex tw:space-x-6">
-        <Link to="/collections/all" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Men</Link>
-        <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Women</Link>
-        <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Top Wear</Link>
-        <Link to="#" className="tw:text-gray-700 tw:hover:text-black tw:text-sm tw:font-medium tw:uppercase">Bottom Wear</Link>
+        <Link
+          to="/collection/all?gender=men"
+          className="nav-link">
+          Men
+        </Link>
+        <Link
+          to="/collection/all?gender=women"
+          className="nav-link">
+          Women
+        </Link>
+        <Link
+          to="/collection/all?category=top_wear"
+          className="nav-link">
+          Top Wear
+        </Link>
+        <Link
+          to="/collection/all?category=bottom_wear"
+          className="nav-link">
+          Bottom Wear
+        </Link>
       </div>
 
       <div className="tw:flex tw:items-center tw:justify-between tw:gap-4">
-        <Link to="/login" className="tw:hover:text-black">
-          <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
-        </Link>
+        <SearchBar />
         <button
           onClick={handleDrawerToggle}
           className="tw:relative tw:cursor-pointer tw:hover:text-black"
         >
           <ShoppingBagOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
-          <span className="tw:absolute tw:-top-1px tw:-right-14px tw:bg-[#ea2e0e] tw:text-white tw:text-xs tw:rounded-full tw:px-2 tw:py-0.5">4</span>
+          {
+            itemCounts && parseInt(itemCounts) > 0 &&
+            <span className="tw:absolute tw:-top-1px tw:-right-14px tw:bg-[#ea2e0e] tw:text-white tw:text-xs tw:rounded-full tw:px-2 tw:py-0.5">{itemCounts}</span>
+          }
         </button>
 
-        <SearchBar />
+        {
+          isSignIn
+            ? <AccountMenu />
+            : <Link to="/login" className="tw:hover:text-black">
+              <AccountCircleOutlined className='tw:text-gray-700 tw:h-6 tw:w-6' />
+            </Link>
+        }
 
         <button
           onClick={handleToggleNavDrawer}

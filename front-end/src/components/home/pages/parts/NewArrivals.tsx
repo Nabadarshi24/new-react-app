@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { TypeNewArrival } from '../../types';
 import { icons } from '../../../utils/Helpers';
 import { Link } from 'react-router';
@@ -123,20 +127,22 @@ export const NewArrivals = () => {
 
   const handleOnMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
+
     const currentX = e.pageX - scrollRef.current?.offsetLeft;
     const scrollAmount = currentX - startX;
     scrollRef.current.scrollLeft = scrollLeft - scrollAmount;
-    // console.log({
-    //   currentX,
-    //   scrollAmount,
-    //   scrollLeft,
-    //   startX,
-    //   pageX: e.pageX
-    // })
+
+    console.log({
+      currentX,
+      scrollAmount,
+      scrollLeft,
+      startX,
+      pageX: e.pageX
+    })
   };
 
   const onButtonScroll = (direction: string) => {
-    const scrollAmount = direction == "left" ? -300 : 300;
+    const scrollAmount = direction === "left" ? -300 : 300;
     scrollRef.current?.scrollBy({
       left: scrollAmount,
       behavior: "smooth"

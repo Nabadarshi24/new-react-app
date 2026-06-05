@@ -4,23 +4,18 @@ export type TypeLogin = {
 };
 
 export type TypeSignUp = {
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
   password: string;
-  userRole: string;
+  role: string;
 };
 
 export type TypeLoginUserData = {
   userId: string;
   userLabel: string;
-  firstName: string;
-  lastName: string;
-  userName?: string;
   roleLabel: string;
   email: string;
-  isVerified: boolean;
-  isDeleted: boolean;
+  accessToken: string;
 };
 
 export type TypeUserData = {
@@ -32,7 +27,14 @@ export type TypeUserData = {
   role: string;
   isVerified: boolean;
   isDeleted: boolean;
-}
+};
+
+export type TypeRegistrationPayload = {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+};
 
 export type TypeSignInOtpPayload = {
   authKey: string;
@@ -62,6 +64,17 @@ export type TypeSignInResponse = {
   twoFactorAuthInstructions: string;
   trustThisDeviceLabel: string;
   authData: TypeAuthData;
+};
+
+export type TypeLoginResponse = {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+  token: string;
+  refreshToken: string;
 };
 
 export type TypeSignInOtpResponse = {

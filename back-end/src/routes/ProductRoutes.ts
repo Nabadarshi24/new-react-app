@@ -1,6 +1,10 @@
 import express, { Request, Response } from "express";
-import Product from "../models/Products";
+import Product, { IProduct } from "../models/Product";
 import { admin, protect } from "../middleware/authMiddleware";
+import { Aspect } from "../models/Aspect";
+import { IAspect } from "../data/aspect";
+import "../models/ProductVariant";
+import { productVariants } from "../data/productVariant";
 
 const router = express.Router();
 
@@ -102,15 +106,15 @@ router.put("/update/:id", protect, admin, async (req, res) => {
 
       product.productName = productName || product.productName;
       product.description = description || product.description;
-      product.price = price || product.price;
-      product.discountPrice = discountPrice || product.discountPrice;
-      product.countInStock = countInStock || product.countInStock;
+      // product.price = price || product.price;
+      // product.discountPrice = discountPrice || product.discountPrice;
+      // product.countInStock = countInStock || product.countInStock;
       product.category = category || product.category;
       product.brand = brand || product.brand;
-      product.sizes = sizes || product.sizes;
-      product.colors = colors || product.colors;
+      // product.sizes = sizes || product.sizes;
+      // product.colors = colors || product.colors;
       product.collections = collections || product.collections;
-      product.material = material || product.material;
+      product.materialAspectId = material || product.materialAspectId;
       product.gender = gender || product.gender;
       product.images = images || product.images;
       product.isFeatured = isFeatured !== undefined ? isFeatured : product.isFeatured;
@@ -120,7 +124,7 @@ router.put("/update/:id", protect, admin, async (req, res) => {
       product.tags = tags || product.tags;
       product.dimensions = dimensions || product.dimensions;
       product.weight = weight || product.weight;
-      product.sku = sku || product.sku;
+      // product.sku = sku || product.sku;
 
       const updatedProduct = await product.save();
       res.status(201).json(updatedProduct);
@@ -152,7 +156,7 @@ router.delete("/delete/:id", protect, admin, async (req, res) => {
   }
 });
 
-// @route GET /api/products
+// @route GET /api/product/all
 // @desc Get all products with optional query & filters
 // @access Public
 router.get("/all", async (req: Request, res: Response) => {
@@ -172,6 +176,9 @@ router.get("/all", async (req: Request, res: Response) => {
       search
     } = req.query;
 
+    const pageIndex = parseInt(req.query.pageIndex as string) || 1;
+    const pageSize = parseInt(req.query.pageSize as string) || 10;
+
     let query: Record<string, any> = {};
 
     // Filter logic
@@ -183,11 +190,11 @@ router.get("/all", async (req: Request, res: Response) => {
       query.category = category;
     }
 
-    if (material) query.material = { $in: material.toString().split(",") };
-    if (brand) query.brand = { $in: brand.toString().split(",") };
-    if (size) query.size = { $in: size.toString().split(",") };
-    if (color) query.color = { $in: [color] };
     if (gender) query.gender = gender;
+    if (color) query.colors = { $in: color.toString().split(",") };
+    if (size) query.sizes = { $in: size.toString().split(",") };
+    if (material) query.materialAspectId = { $in: material.toString().split(",") };
+    if (brand) query.brand = { $in: brand.toString().split(",") };
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = minPrice;
@@ -202,12 +209,13 @@ router.get("/all", async (req: Request, res: Response) => {
 
     // Sort by logic
     let sort = {};
+
     if (sortBy) {
       switch (sortBy) {
-        case "priceAsc":
+        case "asc":
           sort = { price: 1 };
           break;
-        case "priceDesc":
+        case "desc":
           sort = { price: -1 };
           break;
         case "popularity":
@@ -219,9 +227,34 @@ router.get("/all", async (req: Request, res: Response) => {
     }
 
     // Fetched products and apply sorting and limit
-    let products = await Product.find(query).sort(sort).limit(Number(limit) || 0);
+    let products: IProduct[] = await Product.find(query)
+      .populate("productVariants")
+      .populate("minPrice")
+      .populate("maxPrice")
+      .sort(sort)
+      .limit(Number(limit) || 0);
 
-    res.json(products);
+    // console.log({ productVariants: products[0].productVariants });
+
+    // products = products.map(product => ({
+    //   ...product,
+    //   minPrice: product.productVariants.reduce((acc, x) => acc < x.price ? acc : x.price, product.productVariants[0].price),
+    //   maxPrice: product.productVariants.reduce((acc, x) => acc > x.price ? acc : x.price, product.productVariants[0].price)
+    // }));
+
+    // console.log({ products });
+
+    res.json({
+      data: {
+        items: products,
+        pageIndex: pageIndex,
+        totalPages: Math.ceil(products.length / pageSize),
+        totalCount: products.length,
+        hasPreviousPage: pageIndex > 1,
+        hasNextPage: pageIndex < Math.ceil(products.length / pageSize)
+      },
+      success: true
+    });
 
   } catch (error) {
     console.error(error);
@@ -266,10 +299,45 @@ router.get("/new-arrivals", async (req: Request, res: Response) => {
 // @access Public
 router.get("/details/:id", async (req: Request, res: Response) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id)
+      // .populate("defaultVariant productVariants materialAspect")
+      .populate("defaultVariant materialAspect")
+      // .populate("productVariants")
+      // .populate("productVariants.sizeAspect")
+      // .populate("materialAspect")
+      // .populate("countInStock")
+      // .populate("minPrice")
+      // .populate("maxPrice")
+      .populate({
+        path: "productVariants",
+        model: "ProductVariant",
+        populate: {
+          path: "colorAspect",
+          model: "Aspect"
+        }
+      })
+      .populate({
+        path: "productVariants",
+        model: "ProductVariant",
+        populate: {
+          path: "sizeAspect",
+          model: "Aspect"
+        }
+      });
 
     if (product) {
-      res.json(product);
+
+      // const producttDetails: IProduct = {
+      //   ...product.toObject(),
+      //   minPrice: product.productVariants.reduce((acc, x) => acc < x.price ? acc : x.price, product.productVariants[0].price),
+      //   maxPrice: product.productVariants.reduce((acc, x) => acc > x.price ? acc : x.price, product.productVariants[0].price)
+      // };
+
+      // res.json(producttDetails);
+      res.json({
+        data: product,
+        success: true,
+      });
     } else {
       res.status(404).json({ message: "Product not found" });
     }
@@ -291,15 +359,60 @@ router.get("/similar/:id", async (req: Request, res: Response) => {
         _id: { $ne: id }, // Exclude the current product
         gender: product.gender,
         category: product.category,
-      }).limit(4);
+      }).populate("productVariants").limit(4);
 
-      res.json(similarProducts);
+      res.json({
+        data: similarProducts,
+        success: true
+      });
     } else {
       res.status(404).json({ message: "Product not found" });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// @route GET /api/product/filter-option
+// @desc Get all product filter options
+// @access Public
+router.get("/filter-option", async (req: Request, res: Response) => {
+  try {
+    const options = await Aspect.find({});
+
+    if (!options || options.length === 0) {
+      return res.status(404).json({ message: "Filter options not found" });
+    }
+
+    res.status(200).json({
+      data: options,
+      success: true
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// @route GET /api/product/size-option
+// @desc Get all product size options
+// @access Public
+router.get("/size-option", async (req: Request, res: Response) => {
+  try {
+    const options = await Aspect.find({});
+
+    if (!options || options.length === 0) {
+      return res.status(404).json({ message: "Filter options not found" });
+    }
+
+    res.status(200).json({
+      data: options.filter(option => option.type === "size"),
+      success: true
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

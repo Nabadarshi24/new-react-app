@@ -8,10 +8,10 @@ import { TypeSignUp, TypeUserData } from '../types';
 import { Form } from '../../form/Form';
 import { Input } from '../../form/Input';
 import { SubmitButton } from '../../form/SubmitButton';
-import { composeInitialState, createUser } from '../../utils/Helpers';
+import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 import { Select, TypeDropdownOptions } from '../../form/Select';
-import axios from 'axios';
+import { registration } from '../api';
 
 const SignUp = () => {
 
@@ -28,25 +28,23 @@ const SignUp = () => {
     },
     {
       text: "User",
-      value: "user",
+      value: "customer",
       isDisabled: false
     }
   ];
 
   const { initialState, names, labels } = composeInitialState<TypeSignUp>({
+    name: "",
     email: "",
-    firstName: "",
-    lastName: "",
-    userRole: "",
-    password: ""
+    password: "",
+    role: ""
   });
 
   const schema = Yup.object<TypeSignUp>().shape({
     email: Yup.string().email().required().label(labels.email),
-    firstName: Yup.string().required().label(labels.firstName),
-    lastName: Yup.string().required().label(labels.lastName),
+    name: Yup.string().required().label(labels.name),
     password: Yup.string().required().label(labels.password),
-    userRole: Yup.string().required().label(labels.userRole)
+    role: Yup.string().required().label(labels.role)
   })
 
   const methods = useHookForm<TypeSignUp>({
@@ -60,7 +58,7 @@ const SignUp = () => {
       console.log({ data });
 
       // const response = createUser(data);
-      const response = await axios.post("http://localhost:3000/api/sign-up", data);
+      const response = await registration(data);
 
       console.log({ response });
 
@@ -94,15 +92,8 @@ const SignUp = () => {
           <div className="row">
             <div className="col-12">
               <Input
-                name={names.firstName}
-                label={labels.firstName}
-                required
-              />
-            </div>
-            <div className="col-12">
-              <Input
-                name={names.lastName}
-                label={labels.lastName}
+                name={names.name}
+                label={labels.name}
                 required
               />
             </div>
@@ -124,8 +115,8 @@ const SignUp = () => {
             </div>
             <div className="col-12">
               <Select
-                name={names.userRole}
-                label={labels.userRole}
+                name={names.role}
+                label={labels.role}
                 options={roles}
                 required
               />

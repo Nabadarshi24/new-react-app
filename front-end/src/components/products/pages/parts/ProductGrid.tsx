@@ -1,10 +1,10 @@
 // import React from 'react'
 
 import { Link } from "react-router";
-import { TypeSimilarProduct } from "../../types";
+import { TypeProduct } from "../../types";
 
 type TypeProps = {
-  products: TypeSimilarProduct[];
+  products: TypeProduct[];
 };
 
 export const ProductGrid = ({ products }: TypeProps) => {
@@ -13,7 +13,7 @@ export const ProductGrid = ({ products }: TypeProps) => {
       {
         products.map((product) => (
           <Link
-            to={`/product/${product._id}`}
+            to={`/product/details/${product._id}`}
             key={product._id}
             className="tw:block"
           >
@@ -21,12 +21,18 @@ export const ProductGrid = ({ products }: TypeProps) => {
               <div className="tw:w-full tw:h-96 tw:mb-4">
                 <img
                   src={product.images[0].url}
-                  alt={product.name}
+                  alt={product.images[0].altText}
                   className="tw:w-full tw:h-full tw:object-cover tw:rounded-lg"
                 />
               </div>
-              <h3 className="tw:text-sm tw:mb-2">{product.name}</h3>
-              <p className="tw:text-gray-500 tw:font-medium tw:text-sm tw:tracking-tighter">$ {product.price}</p>
+              <h3 className="tw:text-sm tw:mb-2">{product.images[0].altText}</h3>
+              <p className="tw:text-gray-500 tw:font-medium tw:text-sm tw:tracking-tighter">
+                {
+                  product.minPrice === product.maxPrice
+                    ? `$${product.minPrice}`
+                    : `$${product.minPrice} - $${product.maxPrice}`
+                }
+              </p>
             </div>
           </Link>
         ))

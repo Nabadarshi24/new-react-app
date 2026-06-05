@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { SaveOptions, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 
 interface IUser {
@@ -6,6 +6,8 @@ interface IUser {
   email: string;
   password: string;
   role: string;
+  refreshToken: string;
+  refreshTokenExpiry: Date;
   matchPassword(enteredPassword: string): Promise<boolean>;
 };
 
@@ -32,24 +34,40 @@ export const userSchema = new Schema<IUser>({
     enum: ["customer", "admin"],
     default: "customer",
   },
+  refreshToken: {
+    type: String,
+    default: null,
+  },
+  refreshTokenExpiry: {
+    type: Date,
+    default: null,
+  },
 }, {
   timestamps: true
 });
 
 // Password Hash Middleware
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+// userSchema.pre("save", async function (next: () => void) {
+//   if (!this.isModified("password")) {
+//     return next();
+//   }
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+//   next();
+// });
+
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 // Mtach User entered password with hashed password
 userSchema.methods.matchPassword = async function (password: string): Promise<boolean> {
   return await bcrypt.compare(password, this.password);
 };
+
+console.log(mongoose.version);
 
 const User = mongoose.model<IUser>("User", userSchema);
 
