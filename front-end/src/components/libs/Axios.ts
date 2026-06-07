@@ -93,7 +93,7 @@ export const makePostRequest = async <T extends Record<string, any>>(
     return {
       ...response.data,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.log({ error })
 
     if (error.code === "ECONNABORTED") {
@@ -131,7 +131,7 @@ export const makeGetRequest = async <T extends Record<string, any>>(
     }
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log({ error })
 
     if (error.code === "ECONNABORTED") {
@@ -196,7 +196,7 @@ export const makeDeleteRequest = async <T extends Record<string, any>>(
     }
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log({ error })
 
     // if (error.code === "ECONNABORTED") {
