@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import Cart from "../models/Cart";
 import { admin, protect } from "../middleware/authMiddleware";
-import Product from "../models/Products";
+import Product from "../models/Product";
 
 const cartRouter = express.Router();
 
@@ -251,6 +251,7 @@ cartRouter.get("/details/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const cart = await Cart.findById(id);
+    // debugger;
 
     if (cart) {
       res.json({
@@ -259,7 +260,7 @@ cartRouter.get("/details/:id", async (req: Request, res: Response) => {
         successMessage: "Cart retrieved successfully"
       });
     } else {
-      res.status(404).json({ message: "Cart not found" });
+      return res.status(404).json({ message: "Cart not found" });
     }
   } catch (error) {
     console.log(error);

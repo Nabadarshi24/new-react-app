@@ -37,7 +37,7 @@ export const CartDrawer = ({
         // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
         // window.dispatchEvent(new Event("storage"));
       } else {
-        console.log('Failed to load cart details');
+        // showErrorMessage(response.message);
       }
     } catch (error) {
       console.log({ error });
@@ -55,7 +55,10 @@ export const CartDrawer = ({
 
   return (
     <div className={`tw:fixed tw:top-0 tw:right-0 tw:w-3/4 tw:sm:w-1/2 tw:md:w-[30rem] tw:h-full tw:bg-white tw:shadow-lg tw:transform tw:transition-transform tw:duration-300 tw:flex tw:flex-col tw:z-50 ${isDrawerOpen ? "tw:translate-x-0" : "tw:translate-x-full"}`}>
-      <div className="tw:flex tw:justify-end tw:p-4">
+      <div className="tw:flex tw:items-center tw:justify-between tw:p-4">
+        <div className="tw:flex tw:items-center tw:justify-between">
+          <h1>Shopping Cart</h1>
+        </div>
         <button
           className='tw:cursor-pointer'
           onClick={handleDrawerToggle}
@@ -65,9 +68,6 @@ export const CartDrawer = ({
       </div>
 
       <div className="tw:flex-grow tw:p-4 tw:overflow-y-auto">
-        <div className="tw:flex tw:items-center tw:justify-between tw:p-4">
-          <h1>Shopping Cart</h1>
-        </div>
 
         {
           (cartDetails?.products && cartDetails.products.length > 0)
