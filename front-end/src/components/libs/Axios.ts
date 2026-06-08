@@ -145,6 +145,10 @@ export const makeGetRequest = async <T extends Record<string, any>>(
     const response = error.response as AxiosResponse<ApiResponseObject<T>>;
 
     if (response.status >= 400 && response.status <= 500) {
+      if(response.status === 400) {
+        let errorMessage = response.data.errorMessage;
+        throw new Error(errorMessage);
+      }
       if(response.status === 404) {
         throw new Error(`Resource not found (status code ${response.status}).`);
       }

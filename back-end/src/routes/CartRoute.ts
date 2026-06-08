@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import Cart from "../models/Cart";
 import { admin, protect } from "../middleware/authMiddleware";
 import Product from "../models/Product";
+import { error } from "console";
 
 const cartRouter = express.Router();
 
@@ -250,8 +251,11 @@ cartRouter.get("/details/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    if (!id || id === "null") {
+      return res.status(400).json({ errorMessage: "Invalid cart ID" });
+    }
+
     const cart = await Cart.findById(id);
-    // debugger;
 
     if (cart) {
       res.json({

@@ -37,7 +37,7 @@ export const CartDrawer = ({
         // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
         // window.dispatchEvent(new Event("storage"));
       } else {
-        // showErrorMessage(response.message);
+        showErrorMessage(response.errorMessage);
       }
     } catch (error) {
       console.log({ error });

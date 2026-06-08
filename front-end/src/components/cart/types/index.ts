@@ -41,7 +41,7 @@ export type TypeProductDeletePayload = {
 };
 
 export type TypeShippingAddress = {
-  email: string;
+  // email: string;
   firstName: string;
   lastName: string;
   address: string;

@@ -13,7 +13,8 @@ export type TypeResponseObject<T extends Record<string, any>> = {
   data?: T;
   success?: boolean;
   successMessage?: string;
-  errors?: any[] | Record<string, any>;
+  // errors?: any[] | Record<string, any>;
+  errorMessage: string;
   notes?: string[];
   alerts?: string[];
   faultTags?: string[];
