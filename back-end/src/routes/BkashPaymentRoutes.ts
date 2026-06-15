@@ -1,17 +1,19 @@
 import express, { Request, Response } from "express";
 import axios from "axios";
-import globals from "node-global-storage";
+import * as globals from "node-global-storage";
 import { bkashAuth } from "../middleware/bkashMiddleware";
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from "crypto";
 
 const router = express.Router();
+
+console.log(globals.getValue("id_token"));
 
 const id_token = globals.getValue('id_token') as string;
 
 const bkashHeaders = {
   "Content-Type": "application/json",
   "Accept": "application/json",
-  "Authorization": id_token,
+  "Authorization": globals.getValue('id_token') as string,
   "X-App-Key": process.env.BKASH_API_KEY!
 }
 
@@ -39,10 +41,15 @@ router.post("/payment/create", bkashAuth, async (req: Request, res: Response) =>
       amount,
       currency: "BDT",
       intent: "sale",
-      merchantInvoiceNumber: "INV" + uuidv4().substring(0, 5),
+      merchantInvoiceNumber: "INV" + randomUUID().substring(0, 5),
       // invoice_number: "INV123",
     }, {
-      headers: bkashHeaders,
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": req.body.id_token,
+        "X-App-Key": process.env.BKASH_API_KEY!
+      },
     });
 
     res.status(200).json({ bkashURL: response.data.bkashURL });

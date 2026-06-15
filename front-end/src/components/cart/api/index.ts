@@ -4,6 +4,7 @@ import {
   makePostRequest
 } from "../../libs/Axios";
 import {
+  TypeBkashPaymentCreatePayload,
   TypeCart,
   TypeCartCreate,
   TypeCartCreatePayload,
@@ -21,3 +22,7 @@ export const getCartDetails = async (id: string) => {
 export const deleteProductFromCart = async (payload: TypeProductDeletePayload) => {
   return await makeDeleteRequest(`/cart/delete`, payload);
 };
+
+export const createPayment = async (payload: TypeBkashPaymentCreatePayload) => {
+  return await makePostRequest(`/bkash/payment/create/`, payload)
+}

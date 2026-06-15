@@ -7,6 +7,7 @@ import { Form } from "../../form/Form";
 import { Input } from "../../form/Input";
 import { useState } from "react";
 import { SubmitButton } from "../../form/SubmitButton";
+import { createPayment } from "../api";
 
 const Checkout = () => {
 
@@ -38,9 +39,16 @@ const Checkout = () => {
     schema
   });
 
-  const handleBkashPayment = () => {
-    // TODO: Implement bkash payment logic
-    console.log("Bkash payment clicked");
+  const handleBkashPayment = async () => {
+    try {
+      const payload = {
+        amount: 50
+      }
+      const response = await createPayment(payload)
+      console.log(response?.data)
+    } catch (error) {
+
+    }
   };
 
   const onSubmit = async () => {

@@ -29,17 +29,17 @@ export const CartDrawer = ({
     try {
       setLoading(true);
 
-      const response = await getCartDetails(cartId);
+      const response = await getCartDetails(cartId as string);
 
-      if (response.data && response.success) {
+      if (response?.data && response.success) {
         setcartDetails(response.data);
         setLocalStorage("cartItemsCount", response.data.products.length.toString());
         // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
         // window.dispatchEvent(new Event("storage"));
       } else {
-        showErrorMessage(response.errorMessage);
+        showErrorMessage(response?.errorMessage as string);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log({ error });
       showErrorMessage(error.message)
     } finally {

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import axios from "axios";
-import globals from "node-global-storage";
+import * as globals from "node-global-storage";
 
 // class BkashMiddleware {
 export const bkashAuth = async (req: Request, res: Response, next: NextFunction) => {
@@ -20,6 +20,10 @@ export const bkashAuth = async (req: Request, res: Response, next: NextFunction)
     });
 
     globals.setValue("id_token", response.data.id_token, { protected: true });
+    req.body = {
+      ...req.body,
+      id_token: response.data.id_token
+    }
     next();
   } catch (error: any) {
     console.log(error);
