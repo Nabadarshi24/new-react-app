@@ -38,6 +38,19 @@ const Checkout = () => {
     schema
   });
 
+  const handleBkashPayment = () => {
+    // TODO: Implement bkash payment logic
+    console.log("Bkash payment clicked");
+  };
+
+  const onSubmit = async () => {
+    try {
+      setCheckoutId("123");
+    } catch (error) {
+
+    }
+  };
+
   return (
     <div className="checkout-container">
       {/* Left Section */}
@@ -45,7 +58,7 @@ const Checkout = () => {
         <h2 className="tw:!text-2xl tw:uppercase tw:!mb-6">Checkout</h2>
         <Form
           methods={methods}
-          onSubmit={() => { }}
+          onSubmit={onSubmit}
         // className="tw:max-w-md tw:p-8 tw:rounded-lg tw:border-gray-500 tw:shadow-sm"
         >
           <div className="row">
@@ -117,7 +130,13 @@ const Checkout = () => {
                   />
                 </div>
                 : <div>
-                  <h3 className="tw:!text-lg tw:!mb-4">Pay with paypal</h3>
+                  <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
+                  <button
+                    className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
+                    onClick={handleBkashPayment}
+                  >
+                    Bkash Payment
+                  </button>
                 </div>
             }
           </div>

@@ -12,6 +12,7 @@ import uploadRoutes from "./routes/UploadRoutes";
 import subscribeRoutes from "./routes/SubscribeRoute";
 import userAdminRoutes from "./routes/UserAdminRoutes";
 import adminOrderRoutes from "./routes/AdminOrderRoutes";
+import bkashPaymentRoutes from "./routes/BkashPaymentRoutes";
 
 const app = express();
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use("/api/checkout", checkoutRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/subscribe", subscribeRoutes);
+app.use("/api/bkash", bkashPaymentRoutes);
 
 // Admin Routes
 app.use("/api/admin/user", userAdminRoutes);
