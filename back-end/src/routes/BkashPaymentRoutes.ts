@@ -3,6 +3,7 @@ import axios from "axios";
 import * as globals from "node-global-storage";
 import { bkashAuth } from "../middleware/bkashMiddleware";
 import { randomUUID } from "crypto";
+import https from "https";
 
 const router = express.Router();
 
@@ -16,6 +17,10 @@ const bkashHeaders = {
   "Authorization": globals.getValue('id_token') as string,
   "X-App-Key": process.env.BKASH_API_KEY!
 }
+
+const agent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 // const bkash_headers = async () => {
 //   return {
@@ -35,15 +40,18 @@ router.post("/payment/create", bkashAuth, async (req: Request, res: Response) =>
 
   try {
     const response = await axios.post(process.env.BKASH_CREATE_PAYMENT_URL!, {
-      mode: "0011",
-      PaymentAddress: " ",
-      callback_url: "http://localhost:5000/api/bkash/payment/callback",
-      amount,
+      mode: "0000",
+      payerReference: "PAYER123",
+      paymentAddress: "Shewrapara, Dhaka",
+      callbackURL: "http://localhost:5000/api/bkash/payment/callback",
+      // agreementID: "TokenizedMerchant01L3IKB6H1565072174986",
+      amount: amount.toString(),
       currency: "BDT",
       intent: "sale",
       merchantInvoiceNumber: "INV" + randomUUID().substring(0, 5),
       // invoice_number: "INV123",
     }, {
+      httpsAgent: agent,
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -52,10 +60,18 @@ router.post("/payment/create", bkashAuth, async (req: Request, res: Response) =>
       },
     });
 
-    res.status(200).json({ bkashURL: response.data.bkashURL });
+    res.status(200).json({
+      data: {
+        bkashURL: response.data.bkashURL
+      },
+      success: true
+    });
   } catch (error: any) {
     console.log(error);
-    res.status(401).json({ message: error.response?.data?.message || 'Something went wrong' });
+    // console.log("Status:", error.response?.status);
+    // console.log("Data:", error.response?.data);
+    // console.log("Headers:", error.response?.headers);
+    res.status(500).json({ message: error.response?.data?.message || 'Something went wrong' });
   }
 });
 

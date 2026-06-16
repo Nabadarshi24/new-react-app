@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import axios from "axios";
 import * as globals from "node-global-storage";
+import https from "https";
+
+const agent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 // class BkashMiddleware {
 export const bkashAuth = async (req: Request, res: Response, next: NextFunction) => {
@@ -11,6 +16,7 @@ export const bkashAuth = async (req: Request, res: Response, next: NextFunction)
       app_key: process.env.BKASH_API_KEY!,
       app_secret: process.env.BKASH_SECRET_KEY!,
     }, {
+      httpsAgent: agent,
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -27,7 +33,7 @@ export const bkashAuth = async (req: Request, res: Response, next: NextFunction)
     next();
   } catch (error: any) {
     console.log(error);
-    res.status(401).json({ message: error.response?.data?.message || "Unauthorized" });
+    res.status(500).json({ message: error.response?.data?.message });
   }
 };
 // };

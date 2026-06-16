@@ -45,6 +45,12 @@ const Checkout = () => {
         amount: 50
       }
       const response = await createPayment(payload)
+      debugger
+      if (response.data && response.success) {
+        // TODO: redirect to bkash payment page
+        console.log({ data: response.data })
+        window.location.href = response.data.bkashURL;
+      }
       console.log(response?.data)
     } catch (error) {
 
