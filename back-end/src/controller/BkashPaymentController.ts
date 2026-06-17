@@ -3,6 +3,7 @@ import axios from "axios";
 import * as globals from "node-global-storage";
 import { randomUUID } from "crypto";
 import https from "https";
+import { Payment } from "../models/PaymentModel";
 
 const agent = new https.Agent({
   rejectUnauthorized: false,
@@ -18,7 +19,7 @@ export class PaymentController {
     }
   };
 
-  payment_create = async (req: Request, res: Response) => {
+  paymentCreate = async (req: Request, res: Response) => {
     console.log(req.body);
     const { amount } = req.body;
 
@@ -60,7 +61,7 @@ export class PaymentController {
     }
   }
 
-  call_back = async (req: Request, res: Response) => {
+  callback = async (req: Request, res: Response) => {
     const { paymentID, status } = req.query
 
     if (status === 'cancel' || status === 'failure') {
@@ -72,14 +73,14 @@ export class PaymentController {
           headers: await this.bkash_headers()
         })
         if (data && data.statusCode === '0000') {
-          //const userId = globals.get('userId')
-          // await paymentModel.create({
-          //   userId: Math.random() * 10 + 1,
-          //   paymentID,
-          //   trxID: data.trxID,
-          //   date: data.paymentExecuteTime,
-          //   amount: parseInt(data.amount)
-          // })
+          const userId = globals.getValue('userId')
+          await Payment.create({
+            userId,
+            paymentID,
+            trxID: data.trxID,
+            date: data.paymentExecuteTime,
+            amount: parseInt(data.amount)
+          })
 
           return res.redirect(`http://localhost:5173/success`)
         } else {
@@ -90,7 +91,7 @@ export class PaymentController {
         return res.redirect(`http://localhost:5173/error?message=${error.message}`)
       }
     }
-  }
+  };
 
   // refund = async (req, res) => {
   //   const { trxID } = req.params;

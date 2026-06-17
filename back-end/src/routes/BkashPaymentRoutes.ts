@@ -9,6 +9,6 @@ const paymentController = new PaymentController();
 // @route POST /api/bkash/payment/create
 // @desc Create bkash payment
 // @access Public
-router.post("/payment/create", bkashAuth, paymentController.payment_create);
+router.post("/payment/create", bkashAuth, paymentController.paymentCreate);
 
 export default router;
