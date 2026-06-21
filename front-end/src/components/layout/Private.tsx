@@ -31,12 +31,12 @@ const Private = ({ children }: TypeProps) => {
   }, [isSignIn]);
 
   return (
-    <div className="sidebar-with-content">
-      <div className="content private-content">
-        <Outlet />
-        {/* {children} */}
-      </div>
+    // <div className="sidebar-with-content">
+    <div className="content private-content">
+      <Outlet />
+      {/* {children} */}
     </div>
+    // </div>
   )
 };
 

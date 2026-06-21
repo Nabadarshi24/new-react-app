@@ -11,4 +11,9 @@ const paymentController = new PaymentController();
 // @access Public
 router.post("/payment/create", bkashAuth, paymentController.paymentCreate);
 
+// @route GET /api/bkash/payment/callback
+// @desc Handle bkash payment callback
+// @access Public
+router.get("/payment/callback", bkashAuth, paymentController.callback);
+
 export default router;

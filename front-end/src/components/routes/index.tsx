@@ -23,6 +23,8 @@ const UserLayout = lazy(() => import("../layout/UserLayout"));
 const CollectionList = lazy(() => import("../products/pages/CollectionList"));
 const ProductDetails = lazy(() => import("../products/pages/ProductDetails"));
 const Checkout = lazy(() => import("../cart/pages/Checkout"));
+const OrderConfirmation = lazy(() => import("../cart/pages/OrderConfirmation"));
+const BkashError = lazy(() => import("../cart/pages/BkashError"));
 
 const privateRoute = [
   {
@@ -48,6 +50,11 @@ const privateRoute = [
   {
     path: "/checkout",
     element: <Checkout />,
+    isSignIn: true
+  },
+  {
+    path: "/order-confirmation",
+    element: <OrderConfirmation />,
     isSignIn: true
   }
 ];
@@ -100,6 +107,12 @@ const commonRoute = [
   {
     path: "user-layout",
     element: <UserLayout />,
+    // isSignIn: false,
+    isCommon: true
+  },
+  {
+    path: "/bkash/error",
+    element: <BkashError />,
     // isSignIn: false,
     isCommon: true
   },

@@ -20,7 +20,7 @@ export class PaymentController {
   };
 
   paymentCreate = async (req: Request, res: Response) => {
-    console.log(req.body);
+    // console.log(req.body);
     const { amount } = req.body;
 
     try {
@@ -38,12 +38,6 @@ export class PaymentController {
       }, {
         httpsAgent: agent,
         headers: await this.bkash_headers()
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   "Accept": "application/json",
-        //   "Authorization": req.body.id_token,
-        //   "X-App-Key": process.env.BKASH_API_KEY!
-        // },
       });
 
       res.status(200).json({
@@ -62,33 +56,35 @@ export class PaymentController {
   }
 
   callback = async (req: Request, res: Response) => {
-    const { paymentID, status } = req.query
+    const { paymentID, status } = req.query;
+    console.log("Callback:", { paymentID, status })
 
     if (status === 'cancel' || status === 'failure') {
-      return res.redirect(`http://localhost:5173/error?message=${status}`)
+      return res.redirect(`http://localhost:5173/bkash/error?message=${status}`)
     }
     if (status === 'success') {
       try {
         const { data } = await axios.post(process.env.BKASH_EXECUTE_PAYMENT_URL!, { paymentID }, {
           headers: await this.bkash_headers()
         })
+
         if (data && data.statusCode === '0000') {
           const userId = globals.getValue('userId')
           await Payment.create({
-            userId,
+            userId: Math.random() * 10 + 1,
             paymentID,
             trxID: data.trxID,
             date: data.paymentExecuteTime,
             amount: parseInt(data.amount)
           })
 
-          return res.redirect(`http://localhost:5173/success`)
+          return res.redirect(`http://localhost:5173/bkash/success`)
         } else {
-          return res.redirect(`http://localhost:5173/error?message=${data.statusMessage}`)
+          return res.redirect(`http://localhost:5173/bkash/error?message=${data.statusMessage}`)
         }
       } catch (error: any) {
         console.log(error)
-        return res.redirect(`http://localhost:5173/error?message=${error.message}`)
+        return res.redirect(`http://localhost:5173/bkash/error?message=${error.message}`)
       }
     }
   };
