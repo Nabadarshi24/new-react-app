@@ -28,10 +28,10 @@ const seedData = async () => {
 
     // Create admin user
     const adminUser = await User.create({
-      name: "Admin User",
-      email: "admin@example.com",
+      name: "Super Admin",
+      email: "superadmin@example.com",
       password: "Admin1234$#",
-      role: "admin"
+      role: "super_admin"
     });
 
     //  Assign the default user ID to each product

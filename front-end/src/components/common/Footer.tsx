@@ -27,7 +27,7 @@ export const Footer = () => {
 
   return (
     <footer className='tw:border-t tw:py-12'>
-      <div className="tw:container tw:mx-auto tw:grid tw:grid-cols-1 tw:md:grid-cols-4 tw:gap-8 tw:px-4 tw:lg:px-0">
+      <div className="tw:container tw:mx-auto tw:grid tw:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-4 tw:gap-8 tw:px-4">
         <div>
           <h3 className='tw:text-lg tw:font-semibold tw:mb-4'>Newsletter</h3>
           <p className='tw:text-gray-500 tw:mb-4'>Be the first to hear about new products, exclusive events, and online offers.</p>

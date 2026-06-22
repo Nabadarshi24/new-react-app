@@ -31,7 +31,7 @@ export const userSchema = new Schema<IUser>({
   },
   role: {
     type: String,
-    enum: ["customer", "admin"],
+    enum: ["super_admin", "admin", "customer"],
     default: "customer",
   },
   refreshToken: {

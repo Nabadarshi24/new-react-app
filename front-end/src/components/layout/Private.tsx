@@ -32,7 +32,7 @@ const Private = ({ children }: TypeProps) => {
 
   return (
     // <div className="sidebar-with-content">
-    <div className="content private-content">
+    <div className="tw:container tw:mx-auto tw:px-4 tw:py-4 content private-content">
       <Outlet />
       {/* {children} */}
     </div>

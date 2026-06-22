@@ -41,9 +41,10 @@ export default function AccountMenu() {
       setLoading(true);
 
       setIsSignIn(false);
-      localStorage.removeItem("loggedUser");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      // localStorage.removeItem("loggedUser");
+      // localStorage.removeItem("accessToken");
+      // localStorage.removeItem("refreshToken");
+      localStorage.clear();
       navigate('/login');
       handleClose();
     } catch (error) {

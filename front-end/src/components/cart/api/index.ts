@@ -3,6 +3,7 @@ import {
   makeGetRequest,
   makePostRequest
 } from "../../libs/Axios";
+import { TypeFilterOption } from "../../products/types";
 import {
   TypeBkashPaymentCreatePayload,
   TypeCart,
@@ -13,6 +14,10 @@ import {
 
 export const addToCart = async (payload: TypeCartCreatePayload) => {
   return await makePostRequest<TypeCartCreate>("/cart/create", payload);
+};
+
+export const getPaymentMethodOptions = async () => {
+  return await makeGetRequest<TypeFilterOption>(`/payment/method-options`);
 };
 
 export const getCartDetails = async (id: string) => {

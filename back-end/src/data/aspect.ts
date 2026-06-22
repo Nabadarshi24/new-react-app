@@ -2,7 +2,7 @@ import { getuid } from "process";
 import { v4 } from "uuid";
 
 export interface IAspect {
-  id: string  ;
+  id: string;
   value: string;
   label: string;
   type: string;
@@ -194,5 +194,17 @@ export const aspects: IAspect[] = [
     label: "Polo Classics",
     value: "polo_classics",
     type: "brand"
+  },
+  {
+    id: "payment_method_cash_on_delivery",
+    label: "Cash on Delivery",
+    value: "cash_on_delivery",
+    type: "payment_method"
+  },
+  {
+    id: "payment_method_online_payment",
+    label: "Online Payment",
+    value: "online_payment",
+    type: "payment_method"
   }
 ];

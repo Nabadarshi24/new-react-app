@@ -379,7 +379,7 @@ router.get("/similar/:id", async (req: Request, res: Response) => {
 // @access Public
 router.get("/filter-option", async (req: Request, res: Response) => {
   try {
-    const options = await Aspect.find({});
+    const options = await Aspect.find({ type: { $in: ["category", "gender", "color", "size", "material", "brand"] } });
 
     if (!options || options.length === 0) {
       return res.status(404).json({ message: "Filter options not found" });

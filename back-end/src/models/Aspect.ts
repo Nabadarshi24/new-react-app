@@ -23,7 +23,7 @@ const aspectSchema = new mongoose.Schema<IAspect>({
   },
   type: {
     type: String,
-    enum: ["category", "gender", "color", "size", "material", "brand"],
+    enum: ["category", "gender", "color", "size", "material", "brand", "payment_method"],
     required: true
   }
 });

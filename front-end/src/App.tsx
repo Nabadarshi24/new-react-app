@@ -1,6 +1,6 @@
 import { RouterProvider } from 'react-router';
-import './assets/styles/index.css';
 // import 'bootstrap/dist/css/bootstrap.css';
+import './assets/styles/index.css';
 import { route } from './components/routes/index';
 import { Loading } from './components/elements/Loading';
 import { Suspense } from 'react';
