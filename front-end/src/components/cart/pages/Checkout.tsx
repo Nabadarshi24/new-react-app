@@ -77,7 +77,7 @@ const Checkout = () => {
       const response = await createPayment(payload)
       // debugger
 
-      if (response.data && response.success) {
+      if (response?.data && response.success) {
         // TODO: redirect to bkash payment page
         console.log({ data: response.data })
         window.location.href = response.data.bkashURL;
