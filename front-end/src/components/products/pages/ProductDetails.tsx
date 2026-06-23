@@ -4,7 +4,7 @@ import {
   useState
 } from "react";
 import {
-  TypeFilterOption,
+  TypeFormOption,
   TypeProduct
 } from "../types";
 import { toast } from "sonner";
@@ -28,7 +28,7 @@ const ProductDetails = () => {
 
   const [productDetails, setProductDetails] = useState<TypeProduct>();
   const [similarProducts, setSimilarProducts] = useState<TypeProduct[]>([]);
-  const [sizeOptions, setSizeOptions] = useState<TypeFilterOption[]>([]);
+  const [sizeOptions, setSizeOptions] = useState<TypeFormOption[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);

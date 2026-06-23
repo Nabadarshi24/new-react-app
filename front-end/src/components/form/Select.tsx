@@ -1,7 +1,6 @@
 import {
   memo,
   ReactNode,
-  useEffect,
   useState
 } from 'react';
 import {
@@ -54,20 +53,26 @@ export const Select = memo(({
     <Controller
       name={name}
       control={methods.control}
-      render={({ field }) => {
+      render={({ field, fieldState }) => {
         return (
-          <FormControl>
-            <InputLabel id={`${Math.random()}-label`}>{(!isFocused && placeholder) ? placeholder : label}</InputLabel>
+          <FormControl required={rest.required ?? false}>
+            <InputLabel
+              id={`${Math.random()}-label`}
+              error={!!fieldState.error}
+            >
+              {(!isFocused && placeholder) ? placeholder : label}
+            </InputLabel>
 
             <MuiSelect
-              name={name}
+              // name={field.name}
               value={field.value}
               label={label}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onChange={(e) => field.onChange(e)}
               labelId={`${Math.random()}-label`}
-              {...rest}
+              error={!!fieldState.error}
+              {...field}
             >
               {
                 options.map((option, index) => {
@@ -84,8 +89,8 @@ export const Select = memo(({
             </MuiSelect>
 
             {
-              errorMessage &&
-              <FormHelperText>{errorMessage}</FormHelperText>
+              fieldState.error &&
+              <FormHelperText error>{fieldState.error.message}</FormHelperText>
             }
           </FormControl>
         )

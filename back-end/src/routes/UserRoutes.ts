@@ -82,7 +82,7 @@ router.post("/login", async (req: Request, res: Response) => {
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET!,
-      { expiresIn: "5s" },
+      { expiresIn: "1h" },
     );
 
     const refreshToken = crypto.randomUUID();
@@ -147,7 +147,7 @@ router.post("/claim/access-token", async (req: Request, res: Response) => {
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET!,
-      { expiresIn: "5s" },
+      { expiresIn: "1h" },
     );
 
     res.status(200).json({

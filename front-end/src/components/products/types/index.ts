@@ -87,7 +87,7 @@ export type TypeSimilarProduct = {
   }[];
 };
 
-export type TypeFilterOption = {
+export type TypeFormOption = {
   id: string;
   value: string;
   label: string;

@@ -7,11 +7,11 @@ import {
   ApiResponseObject
 } from "../../libs/types";
 import {
-  TypeFilterOption,
+  TypeFormOption,
   TypeProduct
 } from "../types";
 
-export const getFilterOptions = async (): Promise<ApiResponseObject<TypeFilterOption[]>> => {
+export const getFilterOptions = async (): Promise<ApiResponseObject<TypeFormOption[]>> => {
   return await makeGetRequest("/product/filter-option");
 };
 
@@ -33,7 +33,7 @@ export const getSimilarProducts = async (id: string): Promise<ApiResponseObject<
   return await makeGetRequest(`/product/similar/${id}`);
 };
 
-export const getProductSizeOptions = async (): Promise<ApiResponseObject<TypeFilterOption[]>> => {
+export const getProductSizeOptions = async (): Promise<ApiResponseObject<TypeFormOption[]>> => {
   return await makeGetRequest("/product/size-option");
 };
 

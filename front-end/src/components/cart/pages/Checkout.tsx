@@ -7,14 +7,19 @@ import { Form } from "../../form/Form";
 import { Input } from "../../form/Input";
 import { useEffect, useState } from "react";
 import { SubmitButton } from "../../form/SubmitButton";
-import { createPayment, getCartDetails, getPaymentMethodOptions } from "../api";
+import {
+  createPayment,
+  getCartDetails,
+  getPaymentMethodOptions
+} from "../api";
 import { useAccountStore } from "../../stores/GlobalStore";
 import { showErrorMessage } from "../../helper/Helper";
-import { TypeFilterOption } from "../../products/types";
+import { TypeFormOption } from "../../products/types";
+import { Select } from "../../form/Select";
 
 const Checkout = () => {
 
-  const [paymentMethodOption, setPaymentMethodOption] = useState<TypeFilterOption>();
+  const [paymentMethodOption, setPaymentMethodOption] = useState<TypeFormOption[]>([]);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
   const [cart, setCart] = useState<TypeCart>();
 
@@ -29,7 +34,8 @@ const Checkout = () => {
     city: "",
     postalCode: "",
     country: "",
-    phone: ""
+    phone: "",
+    paymentMethod: ""
   });
 
   const schema = Yup.object<TypeShippingAddress>().shape({
@@ -40,7 +46,8 @@ const Checkout = () => {
     city: Yup.string().required().label(labels.city),
     postalCode: Yup.string().required().label(labels.postalCode),
     country: Yup.string().required().label(labels.country),
-    phone: Yup.string().required().label(labels.phone)
+    phone: Yup.string().required().label(labels.phone),
+    paymentMethod: Yup.string().required().label(labels.paymentMethod)
   });
 
   const methods = useHookForm<TypeShippingAddress>({
@@ -144,6 +151,7 @@ const Checkout = () => {
                     disabled
                   />
                 </div>
+
                 <h3 className="tw:text-lg tw:mb-4">Delivery</h3>
                 <div className="col-md-6">
                   <Input
@@ -192,6 +200,19 @@ const Checkout = () => {
                     name={names.phone}
                     label={labels.phone}
                     required
+                  />
+                </div>
+
+                <h3 className="tw:text-lg tw:mb-4">Payment Method</h3>
+                <div className="col-12">
+                  <Select
+                    required
+                    name={names.paymentMethod}
+                    label={labels.paymentMethod}
+                    options={paymentMethodOption.map((option) => ({
+                      text: option.label,
+                      value: option.value
+                    }))}
                   />
                 </div>
               </div>

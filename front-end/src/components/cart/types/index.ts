@@ -49,6 +49,7 @@ export type TypeShippingAddress = {
   postalCode: string;
   country: string;
   phone: string;
+  paymentMethod: string;
 };
 
 export type TypeBkashPaymentCreatePayload = {

@@ -57,7 +57,7 @@ export const CartDrawer = ({
     <div className={`tw:fixed tw:top-0 tw:right-0 tw:w-3/4 tw:sm:w-1/2 tw:md:w-[30rem] tw:h-full tw:bg-white tw:shadow-lg tw:transform tw:transition-transform tw:duration-300 tw:flex tw:flex-col tw:z-50 ${isDrawerOpen ? "tw:translate-x-0" : "tw:translate-x-full"}`}>
       <div className="tw:flex tw:items-center tw:justify-between tw:p-4">
         <div className="tw:flex tw:items-center tw:justify-between">
-          <h1>Shopping Cart</h1>
+          <h1 className='tw:text-2xl tw:font-semibold tw:uppercase'>Shopping Cart</h1>
         </div>
         <button
           className='tw:cursor-pointer'

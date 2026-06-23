@@ -1,13 +1,13 @@
 import { Category } from '@mui/icons-material';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { TypeFilter, TypeFilterOption } from '../../types';
+import { TypeFilter, TypeFormOption } from '../../types';
 import { getAllProducts, getFilterOptions } from '../../api';
 import axios from 'axios';
 
 export const SidebarFilter = () => {
   // const [priceRange, setPriceRange] = useState([0, 100]);
-  const [filterOptions, setFilterOptions] = useState<TypeFilterOption[]>([]);
+  const [filterOptions, setFilterOptions] = useState<TypeFormOption[]>([]);
   const [filters, setFilters] = useState<TypeFilter>({
     category: "",
     gender: "",

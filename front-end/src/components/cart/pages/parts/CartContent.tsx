@@ -5,6 +5,7 @@ import { TypeCartItem, TypeProductDeletePayload } from "../../types";
 import { useAccountStore } from "../../../stores/GlobalStore";
 import { deleteProductFromCart } from "../../api";
 import { showErrorMessage, showSuccessMessage } from "../../../helper/Helper";
+import { useState } from "react";
 
 type TypeProps = {
   products: TypeCartItem[];
@@ -13,6 +14,7 @@ type TypeProps = {
 
 export const CartContent = ({ products, doOnDelete }: TypeProps) => {
 
+  const [quantity, setQuantity] = useState<number | null>(null)
   const loggedInUser = localStorage.getItem("loggedUser");
   const loggedInUserObj = loggedInUser ? JSON.parse(loggedInUser) : null;
 
@@ -46,6 +48,19 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
     }
   };
 
+  const handleQuantityChange = (action: string, productId: string) => {
+    const product = products.find(p => p.productId === productId);
+    if (!product) return;
+
+    if (action == "increase") {
+      setQuantity(product.quantity + 1);
+    } else if (action == "decrease") {
+      if (product.quantity > 1) {
+        setQuantity(product.quantity - 1);
+      }
+    }
+  };
+
   return (
     <>
       {
@@ -64,9 +79,19 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
                 <h3>{product.name}</h3>
                 <p className="tw:text-sm tw:text-gray-500">Size: {product.size} | Color: {product.color}</p>
                 <div className="tw:flex tw:items-center tw:mt-2">
-                  <button className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold">-</button>
-                  <span className="tw:mx-4">{product.quantity}</span>
-                  <button className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold">+</button>
+                  <button
+                    onClick={() => handleQuantityChange("decrease", product.productId)}
+                    className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
+                  >
+                    -
+                  </button>
+                  <span className="tw:mx-4">{quantity ?? product.quantity}</span>
+                  <button
+                    onClick={() => handleQuantityChange("increase", product.productId)}
+                    className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
