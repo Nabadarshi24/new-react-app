@@ -8,6 +8,7 @@ export type TypeCartCreatePayload = {
   guestId?: string;
 };
 export type TypeCartItem = {
+  _id: string;
   productId: string;
   name: string;
   image: string;

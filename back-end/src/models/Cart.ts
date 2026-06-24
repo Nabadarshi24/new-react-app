@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 interface ICartItem {
+  _id: string;
   productId: Schema.Types.ObjectId;
   name: string;
   image: string;
@@ -18,6 +19,10 @@ interface ICartSchema {
 }
 
 const cartItemSchema = new Schema<ICartItem>({
+  _id: {
+    type: String,
+    required: true
+  },
   productId: {
     type: Schema.Types.ObjectId,
     ref: "Product",

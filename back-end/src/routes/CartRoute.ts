@@ -3,6 +3,7 @@ import Cart from "../models/Cart";
 import { admin, protect } from "../middleware/authMiddleware";
 import Product from "../models/Product";
 import { error } from "console";
+import mongoose from "mongoose";
 
 const cartRouter = express.Router();
 
@@ -65,6 +66,7 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
         cart.products[productIndex].quantity += quantity;
       } else {
         cart.products.push({
+          _id: crypto.randomUUID(),
           productId,
           name: product.productName,
           image: product.images[0].url,
@@ -94,6 +96,7 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
         guestId: guestId ? guestId : "guest_" + new Date().getTime(),
         products: [
           {
+            _id: crypto.randomUUID(),
             productId,
             name: product.productName,
             image: product.images[0].url,

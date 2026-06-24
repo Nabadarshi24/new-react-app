@@ -48,15 +48,19 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
     }
   };
 
-  const handleQuantityChange = (action: string, productId: string) => {
-    const product = products.find(p => p.productId === productId);
+  const handleQuantityChange = (action: string, _id: string, productId: string, color: string, size: string) => {
+    console.log("handleQuantityChange", action, _id, color, size);
+    const product = products.find(p => p._id === _id && p.color === color && p.size === size);
+    console.log({ product });
     if (!product) return;
 
     if (action == "increase") {
-      setQuantity(product.quantity + 1);
+      console.log("increase");
+      setQuantity(prev => prev ? prev + 1 : product.quantity + 1);
     } else if (action == "decrease") {
-      if (product.quantity > 1) {
-        setQuantity(product.quantity - 1);
+      if (quantity > 1) {
+        console.log("decrease");
+        setQuantity(prev => prev ? prev - 1 : product.quantity - 1);
       }
     }
   };
@@ -66,7 +70,7 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
       {
         products.map(product => (
           <div
-            key={product.productId}
+            key={product._id}
             className='tw:flex tw:items-start tw:justify-between tw:py-4 tw:border-b'
           >
             <div className="tw:flex tw:items-start">
@@ -80,14 +84,14 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
                 <p className="tw:text-sm tw:text-gray-500">Size: {product.size} | Color: {product.color}</p>
                 <div className="tw:flex tw:items-center tw:mt-2">
                   <button
-                    onClick={() => handleQuantityChange("decrease", product.productId)}
+                    onClick={() => handleQuantityChange("decrease", product._id, product.productId, product.color, product.size)}
                     className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
                   >
                     -
                   </button>
                   <span className="tw:mx-4">{quantity ?? product.quantity}</span>
                   <button
-                    onClick={() => handleQuantityChange("increase", product.productId)}
+                    onClick={() => handleQuantityChange("increase", product._id, product.productId, product.color, product.size)}
                     className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
                   >
                     +
@@ -96,7 +100,7 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
               </div>
             </div>
             <div>
-              <p>$ {product.price.toLocaleString()}</p>
+              <p>$ {((product.price / product.quantity) * (quantity ?? product.quantity)).toLocaleString()}</p>
               <button
                 className="tw:cursor-pointer tw:mt-2 tw:text-red-600"
                 onClick={() => handleDelete({
