@@ -48,9 +48,9 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
     }
   };
 
-  const handleQuantityChange = (action: string, _id: string, productId: string, color: string, size: string) => {
-    console.log("handleQuantityChange", action, _id, color, size);
-    const product = products.find(p => p._id === _id && p.color === color && p.size === size);
+  const handleQuantityChange = (action: string, _id: string) => {
+    console.log("handleQuantityChange", action, _id);
+    const product = products.find(p => p._id === _id);
     console.log({ product });
     if (!product) return;
 
@@ -84,14 +84,14 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
                 <p className="tw:text-sm tw:text-gray-500">Size: {product.size} | Color: {product.color}</p>
                 <div className="tw:flex tw:items-center tw:mt-2">
                   <button
-                    onClick={() => handleQuantityChange("decrease", product._id, product.productId, product.color, product.size)}
+                    onClick={() => handleQuantityChange("decrease", product._id)}
                     className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
                   >
                     -
                   </button>
                   <span className="tw:mx-4">{quantity ?? product.quantity}</span>
                   <button
-                    onClick={() => handleQuantityChange("increase", product._id, product.productId, product.color, product.size)}
+                    onClick={() => handleQuantityChange("increase", product._id)}
                     className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
                   >
                     +
