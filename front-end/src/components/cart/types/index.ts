@@ -33,6 +33,12 @@ export type TypeCartCreate = {
   itemsCount: number;
 };
 
+export type TypeEditCartPayload = {
+  _id: string;
+  userId: string
+  quantity: number;
+};
+
 export type TypeProductDeletePayload = {
   productId: string;
   guestId: string;

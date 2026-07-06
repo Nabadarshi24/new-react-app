@@ -9,6 +9,7 @@ import {
   TypeCart,
   TypeCartCreate,
   TypeCartCreatePayload,
+  TypeEditCartPayload,
   TypeProductDeletePayload
 } from "../types";
 
@@ -22,6 +23,10 @@ export const getPaymentMethodOptions = async () => {
 
 export const getCartDetails = async (id: string) => {
   return await makeGetRequest<TypeCart>(`/cart/details/${id}`);
+};
+
+export const editCartQuantity = async (payload: TypeEditCartPayload) => {
+  return await makePostRequest<TypeCart>("/cart/edit", payload);
 };
 
 export const deleteProductFromCart = async (payload: TypeProductDeletePayload) => {

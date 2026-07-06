@@ -131,27 +131,32 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
   }
 });
 
-// @route PUT /api/cart/edit
+// @route POST /api/cart/edit
 // @desc Update product quantity in the cart for a guest or logged in user
 // @access Public
 
-cartRouter.put("/edit", async (req: Request, res: Response) => {
+cartRouter.post("/edit", async (req: Request, res: Response) => {
   console.log({ req })
   try {
-    const { quantity, productId, size, color, guestId, userId } = req.body;
-    console.log({ productId })
+    const { quantity, _id, size, color, guestId, userId } = req.body;
+    // console.log({ productId })
 
     let cart = await getCart(userId, guestId);
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
     const productIndex = cart.products.findIndex(product =>
-      product.productId.toString() === productId &&
-      product.size === size &&
-      product.color === color
+      product._id.toString() === _id
+      // &&
+      // product.size === size &&
+      // product.color === color
     );
 
     if (productIndex > -1) {
       if (quantity > 0) {
+        cart.products[productIndex].price = quantity > cart.products[productIndex].quantity
+          ? (cart.products[productIndex].price / (quantity - 1)) * quantity
+          : (cart.products[productIndex].price / cart.products[productIndex].quantity) * quantity;
+
         cart.products[productIndex].quantity = quantity;
       } else {
         cart.products.splice(productIndex, 1); // Remove product if quantity is 0
@@ -159,7 +164,11 @@ cartRouter.put("/edit", async (req: Request, res: Response) => {
       cart.totalPrice = cart.products.reduce((total, item) => total + (item.price * item.quantity), 0);
 
       await cart.save();
-      return res.status(200).json(cart);
+      return res.status(200).json({
+        data: cart,
+        success: true,
+        successMessage: "Product quantity updated successfully"
+      });
     } else {
       return res.status(404).json({ message: "Product not found in cart" });
     }

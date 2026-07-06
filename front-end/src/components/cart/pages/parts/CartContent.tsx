@@ -3,18 +3,23 @@
 import { Delete } from "@mui/icons-material";
 import { TypeCartItem, TypeProductDeletePayload } from "../../types";
 import { useAccountStore } from "../../../stores/GlobalStore";
-import { deleteProductFromCart } from "../../api";
+import { deleteProductFromCart, editCartQuantity } from "../../api";
 import { showErrorMessage, showSuccessMessage } from "../../../helper/Helper";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type TypeProps = {
   products: TypeCartItem[];
   doOnDelete?: () => void;
 }
 
-export const CartContent = ({ products, doOnDelete }: TypeProps) => {
+export const CartContent = ({
+  products,
+  doOnDelete
+}: TypeProps) => {
 
-  const [quantity, setQuantity] = useState<number | null>(null)
+  // const [cartProducts, setCartProducts] = useState(products)
+  // const [quantity, setQuantity] = useState<number | null>(null)
+
   const loggedInUser = localStorage.getItem("loggedUser");
   const loggedInUserObj = loggedInUser ? JSON.parse(loggedInUser) : null;
 
@@ -48,22 +53,35 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
     }
   };
 
-  const handleQuantityChange = (action: string, _id: string) => {
-    console.log("handleQuantityChange", action, _id);
-    const product = products.find(p => p._id === _id);
-    console.log({ product });
-    if (!product) return;
+  const handleQuantityChange = useCallback(async (action: string, _id: string) => {
+    try {
+      setLoading(true);
+      const product = products.find(p => p._id === _id);
+      if (!product) return;
 
-    if (action == "increase") {
-      console.log("increase");
-      setQuantity(prev => prev ? prev + 1 : product.quantity + 1);
-    } else if (action == "decrease") {
-      if (quantity > 1) {
-        console.log("decrease");
-        setQuantity(prev => prev ? prev - 1 : product.quantity - 1);
+      let newQuantity;
+
+      if (action == "increase") {
+        newQuantity = product.quantity + 1;
+      } else if (action == "decrease") {
+        if (product.quantity > 1) {
+          newQuantity = product.quantity - 1;
+        }
       }
+
+      const response = await editCartQuantity({ _id, userId: loggedInUserObj?.userId, quantity: newQuantity });
+
+      if (response?.success && response.data) {
+        // showSuccessMessage(response.successMessage);
+        // setCartProducts(response.data.products);
+        doOnDelete();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [products]);
 
   return (
     <>
@@ -89,7 +107,7 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
                   >
                     -
                   </button>
-                  <span className="tw:mx-4">{quantity ?? product.quantity}</span>
+                  <span className="tw:mx-4">{product.quantity}</span>
                   <button
                     onClick={() => handleQuantityChange("increase", product._id)}
                     className="tw:cursor-pointer tw:border tw:rounded tw:px-[10px] tw:py-[5px] tw:text-xl tw:font-bold"
@@ -100,7 +118,7 @@ export const CartContent = ({ products, doOnDelete }: TypeProps) => {
               </div>
             </div>
             <div>
-              <p>$ {((product.price / product.quantity) * (quantity ?? product.quantity)).toLocaleString()}</p>
+              <p>$ {(product.price).toLocaleString()}</p>
               <button
                 className="tw:cursor-pointer tw:mt-2 tw:text-red-600"
                 onClick={() => handleDelete({
