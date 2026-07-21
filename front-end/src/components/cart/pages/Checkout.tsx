@@ -261,22 +261,22 @@ const Checkout = () => {
             }
 
             {
-              !checkoutId
-                ? <div className="col-12">
+              // !checkoutId ?
+              <div className="col-12">
                   <SubmitButton
                     className="tw:!bg-black tw:!w-full"
                     label="Confirm Order"
                   />
                 </div>
-                : <div>
-                  <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
-                  <button
-                    className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
-                    onClick={handleBkashPayment}
-                  >
-                    Bkash Payment
-                  </button>
-                </div>
+                // : <div>
+                //   <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
+                //   <button
+                //     className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
+                //     onClick={handleBkashPayment}
+                //   >
+                //     Bkash Payment
+                //   </button>
+                // </div>
             }
           </div>
         </div>

@@ -138,7 +138,14 @@ cartRouter.post("/create", async (req: Request, res: Response) => {
 cartRouter.post("/edit", async (req: Request, res: Response) => {
   console.log({ req })
   try {
-    const { quantity, _id, size, color, guestId, userId } = req.body;
+    const {
+      quantity,
+      _id,
+      // size,
+      // color,
+      guestId,
+      userId
+    } = req.body;
     // console.log({ productId })
 
     let cart = await getCart(userId, guestId);
@@ -161,7 +168,7 @@ cartRouter.post("/edit", async (req: Request, res: Response) => {
       } else {
         cart.products.splice(productIndex, 1); // Remove product if quantity is 0
       }
-      cart.totalPrice = cart.products.reduce((total, item) => total + (item.price * item.quantity), 0);
+      cart.totalPrice = cart.products.reduce((total, item) => total + item.price, 0);
 
       await cart.save();
       return res.status(200).json({
