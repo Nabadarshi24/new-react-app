@@ -19,7 +19,7 @@ import { useAccountStore } from "../../stores/GlobalStore";
 import {
   showErrorMessage,
   showSuccessMessage,
-  setLocalStorage
+  setLocalStorageItem
 } from "../../helper/Helper";
 import { addToCart } from "../../cart/api";
 import { TypeCartCreatePayload } from "../../cart/types";
@@ -88,8 +88,8 @@ const ProductDetails = () => {
         setSelectedColor(null);
 
         // localStorage.setItem("cartId", response.data.id);
-        setLocalStorage("cartId", response.data.id);
-        setLocalStorage("cartItemsCount", response.data.itemsCount.toString());
+        setLocalStorageItem("cartId", response.data.id);
+        setLocalStorageItem("cartItemsCount", response.data.itemsCount.toString());
         showSuccessMessage(response.successMessage);
       } else {
         throw new Error("Failed to add product to cart");

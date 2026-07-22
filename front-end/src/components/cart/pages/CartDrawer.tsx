@@ -5,7 +5,7 @@ import { CartContent } from './parts/CartContent';
 import { useAccountStore } from '../../stores/GlobalStore';
 import { getCartDetails } from '../api';
 import { TypeCart } from '../types';
-import { showErrorMessage, setLocalStorage } from '../../helper/Helper';
+import { showErrorMessage, setLocalStorageItem, removeLocalStorageItem } from '../../helper/Helper';
 
 type TypeProps = {
   isDrawerOpen: boolean;
@@ -33,7 +33,7 @@ export const CartDrawer = ({
 
       if (response?.data && response.success) {
         setcartDetails(response.data);
-        setLocalStorage("cartItemsCount", response.data.products.length.toString());
+        setLocalStorageItem("cartItemsCount", response.data.products.length.toString());
         // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
         // window.dispatchEvent(new Event("storage"));
       } else {

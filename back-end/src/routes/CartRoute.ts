@@ -283,7 +283,9 @@ cartRouter.get("/details/:id", async (req: Request, res: Response) => {
         successMessage: "Cart retrieved successfully"
       });
     } else {
-      return res.status(404).json({ message: "Cart not found" });
+      return res.status(404).json({
+        errorMessage: "Cart not found"
+      });
     }
   } catch (error) {
     console.log(error);

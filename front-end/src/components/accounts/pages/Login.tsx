@@ -17,7 +17,7 @@ import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 import { useAccountStore } from '../../stores/GlobalStore';
 import {
-  setLocalStorage,
+  setLocalStorageItem,
   showSuccessMessage
 } from '../../helper/Helper';
 
@@ -67,9 +67,9 @@ const Login = () => {
           accessToken: response.data.token
         };
 
-        setLocalStorage("loggedUser", JSON.stringify(loggedUser));
-        setLocalStorage("accessToken", response.data.token);
-        setLocalStorage("refreshToken", response.data.refreshToken);
+        setLocalStorageItem("loggedUser", JSON.stringify(loggedUser));
+        setLocalStorageItem("accessToken", response.data.token);
+        setLocalStorageItem("refreshToken", response.data.refreshToken);
         setIsSignIn(true);
         navigate(location.state?.from || "/dashboard");
         showSuccessMessage(response.successMessage);

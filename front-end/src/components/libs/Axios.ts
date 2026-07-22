@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ApiResponseObject } from "./types";
-import { setLocalStorage } from "../helper/Helper";
+import { removeLocalStorageItem, setLocalStorageItem } from "../helper/Helper";
 // import { T } from "react-router/dist/development/route-data-H2S3hwhf";
 
 const navigate = (path: string) => {
@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
     // Check for 401 and ensure we haven't retried this request yet
     if (error.response.status === 401
       //  && !originalRequest._retry
-      ) {
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -51,7 +51,7 @@ axiosInstance.interceptors.response.use(
         console.log("Refresh token response:", refreshTokenResponse);
 
         // Save new token
-        setLocalStorage("accessToken", refreshTokenResponse.data.data.token);
+        setLocalStorageItem("accessToken", refreshTokenResponse.data.data.token);
 
         // Update header and retry the original request
         originalRequest.headers.Authorization = `Bearer ${refreshTokenResponse.data.data.accessToken}`;
@@ -145,13 +145,18 @@ export const makeGetRequest = async <T extends Record<string, any>>(
     const response = error.response as AxiosResponse<ApiResponseObject<T>>;
 
     if (response.status >= 400 && response.status <= 500) {
-      if(response.status === 400) {
+      if (response.status === 400) {
         let errorMessage = response.data.errorMessage;
         throw new Error(errorMessage);
       }
-      if(response.status === 404) {
+      if (response.status === 404) {
+
+        removeLocalStorageItem("cartId");
+        removeLocalStorageItem("cartItemsCount");
         throw new Error(`Resource not found (status code ${response.status}).`);
       }
+
+      
       // if (response.status === 401) {
       //   // TODO: Refresh token
       //   console.log("Token expired, refreshing...");

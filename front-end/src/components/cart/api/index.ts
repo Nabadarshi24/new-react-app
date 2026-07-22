@@ -9,6 +9,7 @@ import {
   TypeCart,
   TypeCartCreate,
   TypeCartCreatePayload,
+  TypeCheckoutCreatePayload,
   TypeEditCartPayload,
   TypeProductDeletePayload
 } from "../types";
@@ -35,4 +36,8 @@ export const deleteProductFromCart = async (payload: TypeProductDeletePayload) =
 
 export const createPayment = async (payload: TypeBkashPaymentCreatePayload) => {
   return await makePostRequest(`/bkash/payment/create/`, payload)
+}
+
+export const createCheckout = async (payload: TypeCheckoutCreatePayload) => {
+  return await makePostRequest(`/checkout/create`, payload)
 }

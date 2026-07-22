@@ -8,8 +8,16 @@ export const showErrorMessage = (message: string) => {
   toast.error(message, { duration: 2000, style: { background: "red", color: "#fff" } });
 };
 
-export const setLocalStorage = (key: string, value: string) => {
+export const setLocalStorageItem = (key: string, value: string) => {
   localStorage.setItem(key, value);
+
+  // Create and dispatch the event manually
+  const event = new Event("storage");
+  window.dispatchEvent(event);
+};
+
+export const removeLocalStorageItem = (key: string) => {
+  localStorage.removeItem(key);
 
   // Create and dispatch the event manually
   const event = new Event("storage");

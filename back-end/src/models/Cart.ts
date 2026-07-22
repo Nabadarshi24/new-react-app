@@ -16,6 +16,7 @@ interface ICartSchema {
   guestId: string | null;
   products: ICartItem[];
   totalPrice: number;
+  lastModified: Date;
 }
 
 const cartItemSchema = new Schema<ICartItem>({
@@ -55,6 +56,11 @@ const cartSchema = new Schema<ICartSchema>({
     type: Number,
     default: 0,
     required: true
+  },
+  lastModified: {
+    type: Date,
+    default: Date.now,
+    expires: "60s"
   }
 },
   { timestamps: true }

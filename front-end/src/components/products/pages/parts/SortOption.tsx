@@ -1,12 +1,15 @@
 // import React from 'react'
+import { useCallback } from 'react';
 import { useSearchParams } from 'react-router';
 
 export const SortOption = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSortChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const sortBy = event.target.value;
+    // console.log({ sortBy })
+
     if (sortBy === "") {
       searchParams.delete("sortBy");
       setSearchParams(searchParams);
@@ -14,13 +17,15 @@ export const SortOption = () => {
       searchParams.set("sortBy", sortBy);
       setSearchParams(searchParams);
     }
-  };
+  }, [searchParams, setSearchParams]);
+
+  console.log({ search: searchParams.get("sortBy") })
 
   return (
     <div className="tw:mb-4 tw:flex tw:items-center tw:justify-end">
       <select
         id="sort"
-        value={searchParams.get("sortBy") || ""}
+        value={searchParams.get("sortBy")}
         className="tw:p-2 tw:border tw:border-gray-300 tw:rounded-md tw:focus:outline-none"
         onChange={handleSortChange}
       >

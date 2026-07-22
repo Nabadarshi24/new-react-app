@@ -31,9 +31,16 @@ router.post("/create", protect, async (req: Request, res: Response) => {
 
     // await newCheckout.save();
     await Checkout.create(newCheckout);
-
     console.log(`Checkout created for user: ${req.body.user._id}`);
-    res.status(201).json(newCheckout);
+
+    await Cart.findOneAndDelete({ user: req.body.user._id });
+    console.log(`Cart deleted for user: ${req.body.user._id}`);
+
+    res.status(201).json({
+      data: newCheckout,
+      success: true,
+      successMessage: "Checkout created successfully"
+    });
 
   } catch (error) {
     console.log({ error });

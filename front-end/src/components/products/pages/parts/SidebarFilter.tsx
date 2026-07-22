@@ -153,7 +153,8 @@ export const SidebarFilter = () => {
         material: params.material ? params.material.split(",") : [],
         brand: params.brand ? params.brand.split(",") : [],
         minPrice: params.minPrice ? parseInt(params.minPrice) : 0,
-        maxPrice: params.maxPrice ? parseInt(params.maxPrice) : 100
+        maxPrice: params.maxPrice ? parseInt(params.maxPrice) : 100,
+        sortBy: params.sortBy || ""
       };
 
       // setFilters(currentFilters);

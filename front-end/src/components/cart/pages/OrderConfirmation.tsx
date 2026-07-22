@@ -1,14 +1,36 @@
-import { useState } from "react";
+import {
+  useEffect,
+  useState
+} from "react";
+import { useNavigate } from "react-router";
 
 const OrderConfirmation = () => {
 
   const [checkoutDetails, setCheckoutDetails] = useState(null);
+
+  const navigate = useNavigate();
 
   const calculateEstimatedDeliveryDate = (createdAt: Date) => {
     const orderDate = new Date(createdAt);
     orderDate.setDate(orderDate.getDate() + 7);
     return orderDate.toLocaleDateString();
   };
+
+  useEffect(() => {
+    // Prevent the default back button transition
+    window.history.pushState(null, "", window.location.href);
+
+    const handlePopState = () => {
+      // Programmatically route to the new custom path
+      navigate("/collection/all");
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
 
   return (
     <div className='tw:max-w-4xl tw:mx-auto tw:p-6 tw:bg-white tw:rounded-lg tw:shadow-md'>

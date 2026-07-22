@@ -8,23 +8,26 @@ import { Input } from "../../form/Input";
 import { useEffect, useState } from "react";
 import { SubmitButton } from "../../form/SubmitButton";
 import {
+  createCheckout,
   createPayment,
   getCartDetails,
   getPaymentMethodOptions
 } from "../api";
 import { useAccountStore } from "../../stores/GlobalStore";
-import { showErrorMessage } from "../../helper/Helper";
+import { removeLocalStorageItem, showErrorMessage, showSuccessMessage } from "../../helper/Helper";
 import { TypeFormOption } from "../../products/types";
 import { Select } from "../../form/Select";
+import { useNavigate } from "react-router";
 
 const Checkout = () => {
 
   const [paymentMethodOption, setPaymentMethodOption] = useState<TypeFormOption[]>([]);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
-  const [cart, setCart] = useState<TypeCart>();
+  const [cartDetails, setCartDetails] = useState<TypeCart>();
 
   const cartId = localStorage.getItem('cartId');
   const setLoading = useAccountStore((store) => store.setIsLoading);
+  const navigate = useNavigate();
 
   const { initialState, names, labels } = composeInitialState<TypeShippingAddress>({
     // email: "",
@@ -63,7 +66,7 @@ const Checkout = () => {
       const response = await getCartDetails(cartId as string);
 
       if (response?.data && response.success) {
-        setCart(response.data);
+        setCartDetails(response.data);
         // window.dispatchEvent(new Event("storage"));
       } else {
         showErrorMessage(response?.errorMessage as string);
@@ -118,9 +121,38 @@ const Checkout = () => {
 
   const onSubmit = async () => {
     try {
-      setCheckoutId("123");
-    } catch (error) {
+      setLoading(true);
 
+      const formData = methods.getValues();
+
+      const shippingAddress = {
+        address: formData.address,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        country: formData.country
+      };
+
+      const checkoutPayload = {
+        shippingAddress,
+        checkoutItems: cartDetails?.products,
+        paymentMethod: formData.paymentMethod,
+        totalPrice: cartDetails?.totalPrice
+      };
+
+      const response = await createCheckout(checkoutPayload);
+
+      if (response.success && response.data) {
+        showSuccessMessage(response.successMessage);
+        removeLocalStorageItem("cartId");
+        removeLocalStorageItem("cartItemsCount");
+        navigate('/order-confirmation');
+      } else {
+        throw new Error(response?.errorMessage as string);
+      }
+    } catch (error: any) {
+      showErrorMessage(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -221,12 +253,12 @@ const Checkout = () => {
           {/* Right Section */}
           <div className="col-12 col-md-6">
             {
-              cart &&
+              cartDetails &&
               <div className="tw:bg-gray-50 tw:rounded-lg tw:p-6">
                 <h3 className="tw:text-lg tw:mb-4">Order Summary</h3>
                 <div className="tw:border-t tw:py-4 tw:mb-4">
                   {
-                    cart.products.map((product) => (
+                    cartDetails.products.map((product) => (
                       <div key={product.productId} className="tw:flex tw:items-start tw:justify-between tw:py-2 tw:border-b">
                         <div className="tw:flex tw:items-start">
                           <img
@@ -247,7 +279,7 @@ const Checkout = () => {
                 </div>
                 <div className="tw:flex tw:items-center tw:justify-between tw:text-lg tw:mb-4">
                   <p>Subtotal</p>
-                  <p className="tw:text-xl">${cart.totalPrice.toLocaleString()}</p>
+                  <p className="tw:text-xl">${cartDetails.totalPrice.toLocaleString()}</p>
                 </div>
                 <div className="tw:flex tw:items-center tw:justify-between tw:text-lg">
                   <p>Shipping</p>
@@ -255,7 +287,7 @@ const Checkout = () => {
                 </div>
                 <div className="tw:flex tw:items-center tw:justify-between tw:text-lg tw:mt-4 tw:border-t tw:pt-4">
                   <p>Total</p>
-                  <p>${cart.totalPrice.toLocaleString()}</p>
+                  <p>${cartDetails.totalPrice.toLocaleString()}</p>
                 </div>
               </div>
             }
@@ -263,20 +295,20 @@ const Checkout = () => {
             {
               // !checkoutId ?
               <div className="col-12">
-                  <SubmitButton
-                    className="tw:!bg-black tw:!w-full"
-                    label="Confirm Order"
-                  />
-                </div>
-                // : <div>
-                //   <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
-                //   <button
-                //     className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
-                //     onClick={handleBkashPayment}
-                //   >
-                //     Bkash Payment
-                //   </button>
-                // </div>
+                <SubmitButton
+                  className="tw:!bg-black tw:!w-full"
+                  label="Confirm Order"
+                />
+              </div>
+              // : <div>
+              //   <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
+              //   <button
+              //     className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
+              //     onClick={handleBkashPayment}
+              //   >
+              //     Bkash Payment
+              //   </button>
+              // </div>
             }
           </div>
         </div>

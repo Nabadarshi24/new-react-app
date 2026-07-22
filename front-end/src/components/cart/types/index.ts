@@ -49,17 +49,25 @@ export type TypeProductDeletePayload = {
 
 export type TypeShippingAddress = {
   // email: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  phone: string;
-  paymentMethod: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
+  phone?: string;
+  paymentMethod?: string;
 };
 
 export type TypeBkashPaymentCreatePayload = {
   orderId?: string;
   amount: number;
 };
+
+export type TypeCheckoutCreatePayload = {
+  shippingAddress: TypeShippingAddress;
+  checkoutItems: TypeCartItem[];
+  paymentMethod: string;
+  totalPrice: number;
+};
+
