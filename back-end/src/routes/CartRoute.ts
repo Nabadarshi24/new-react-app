@@ -271,7 +271,10 @@ cartRouter.get("/details/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
 
     if (!id || id === "null") {
-      return res.status(400).json({ errorMessage: "Invalid cart ID" });
+      return res.status(400).json({ 
+        errorMessage: "Invalid cart ID",
+        success: false
+      });
     }
 
     const cart = await Cart.findById(id);
@@ -283,7 +286,9 @@ cartRouter.get("/details/:id", async (req: Request, res: Response) => {
         successMessage: "Cart retrieved successfully"
       });
     } else {
-      return res.status(404).json({
+      return res.status(200).json({
+        data: null,
+        success: false,
         errorMessage: "Cart not found"
       });
     }

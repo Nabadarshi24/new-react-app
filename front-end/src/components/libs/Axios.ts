@@ -151,8 +151,9 @@ export const makeGetRequest = async <T extends Record<string, any>>(
       }
       if (response.status === 404) {
 
-        removeLocalStorageItem("cartId");
-        removeLocalStorageItem("cartItemsCount");
+        // removeLocalStorageItem("cartId");
+        // removeLocalStorageItem("cartItemsCount");
+        // error.response.statusCode = response.status;
         throw new Error(`Resource not found (status code ${response.status}).`);
       }
 

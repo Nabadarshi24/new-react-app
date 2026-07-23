@@ -18,6 +18,7 @@ export type TypeResponseObject<T extends Record<string, any>> = {
   notes?: string[];
   alerts?: string[];
   faultTags?: string[];
+  statusCode?: number;
 };
 
 export type ApiResponseList<T extends Record<string, any> = Record<string, any>> = TypeResponseObject<RequestResponseListData<T>>;

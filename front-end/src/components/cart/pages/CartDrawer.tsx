@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Close } from '@mui/icons-material';
 import { CartContent } from './parts/CartContent';
@@ -16,28 +16,33 @@ export const CartDrawer = ({
   isDrawerOpen,
   handleDrawerToggle
 }: TypeProps) => {
+  const cartId = localStorage.getItem('cartId');
 
   const [cartDetails, setcartDetails] = useState<TypeCart>();
 
   const navigate = useNavigate();
   const setLoading = useAccountStore((store) => store.setIsLoading);
 
-  const cartId = localStorage.getItem('cartId');
-
-  const loadCartDetails = async () => {
+  const loadCartDetails = useCallback(async (cartId: string) => {
     // TODO: Load cart details from API
     try {
       setLoading(true);
 
       const response = await getCartDetails(cartId as string);
-
+      
+      // debugger
       if (response?.data && response.success) {
         setcartDetails(response.data);
         setLocalStorageItem("cartItemsCount", response.data.products.length.toString());
         // localStorage.setItem("cartItemsCount", response.data.products.length.toString());
         // window.dispatchEvent(new Event("storage"));
       } else {
-        showErrorMessage(response?.errorMessage as string);
+        // debugger
+        removeLocalStorageItem("cartId");
+        removeLocalStorageItem("cartItemsCount");
+        setcartDetails(undefined);
+        throw new Error(response?.errorMessage as string);
+        // showErrorMessage(response?.errorMessage as string);
       }
     } catch (error: any) {
       console.log({ error });
@@ -45,13 +50,15 @@ export const CartDrawer = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [cartDetails]);
 
   useEffect(() => {
-    if (isDrawerOpen) {
-      loadCartDetails()
+    if (isDrawerOpen && cartId) {
+      loadCartDetails(cartId)
     }
   }, [isDrawerOpen])
+
+  console.log({ cartDetails })
 
   return (
     <div className={`tw:fixed tw:top-0 tw:right-0 tw:w-3/4 tw:sm:w-1/2 tw:md:w-[30rem] tw:h-full tw:bg-white tw:shadow-lg tw:transform tw:transition-transform tw:duration-300 tw:flex tw:flex-col tw:z-50 ${isDrawerOpen ? "tw:translate-x-0" : "tw:translate-x-full"}`}>
@@ -73,7 +80,11 @@ export const CartDrawer = ({
           (cartDetails?.products && cartDetails.products.length > 0)
             ? <CartContent
               products={cartDetails.products}
-              doOnDelete={loadCartDetails}
+              doOnDelete={() => {
+                if (cartId) {
+                  loadCartDetails(cartId);
+                }
+              }}
             />
             : <div className="tw:text-center tw:py-8">
               <p className="tw:text-gray-500">Your cart is empty!</p>
