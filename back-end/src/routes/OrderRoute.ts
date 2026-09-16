@@ -29,14 +29,17 @@ router.get("/details/:id", protect, async (req: Request, res: Response) => {
     const order = await Order.findById(req.params.id).populate("user", "name email");
 
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ errorMessage: "Order not found" });
     }
 
     // Return full order details
-    res.status(200).json(order);
+    res.status(200).json({
+      success: true,
+      data: order
+    });
   } catch (error) {
     console.log("Error getting order:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, errorMessage: "Server error" });
   }
 });
 

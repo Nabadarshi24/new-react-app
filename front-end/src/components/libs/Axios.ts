@@ -74,7 +74,7 @@ axiosInstance.interceptors.response.use(
 
 export const makePostRequest = async <T extends Record<string, any>>(
   url: string,
-  data: Record<string, any>
+  data?: Record<string, any>
 ) => {
   const requestConfig: AxiosRequestConfig = {
     url,

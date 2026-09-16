@@ -4,6 +4,7 @@ import * as globals from "node-global-storage";
 import { randomUUID } from "crypto";
 import https from "https";
 import { Payment } from "../models/PaymentModel";
+import Checkout from "../models/Checkout";
 
 const agent = new https.Agent({
   rejectUnauthorized: false,
@@ -20,40 +21,92 @@ export class PaymentController {
   };
 
   paymentCreate = async (req: Request, res: Response) => {
-    // console.log(req.body);
-    const { amount } = req.body;
+    const { checkoutId } = req.body;
 
     try {
-      const response = await axios.post(process.env.BKASH_CREATE_PAYMENT_URL!, {
-        mode: "0000",
-        payerReference: "PAYER123",
-        paymentAddress: "Shewrapara, Dhaka",
-        callbackURL: "http://localhost:5000/api/bkash/payment/callback",
-        // agreementID: "TokenizedMerchant01L3IKB6H1565072174986",
-        amount: amount.toString(),
-        currency: "BDT",
-        intent: "sale",
-        merchantInvoiceNumber: "INV" + randomUUID().substring(0, 5),
-        // invoice_number: "INV123",
-      }, {
-        httpsAgent: agent,
-        headers: await this.bkash_headers()
-      });
+      const checkout = await Checkout.findById(checkoutId);
 
-      res.status(200).json({
+      if (!checkout) {
+        return res.status(404).json({
+          message: "Checkout not found"
+        });
+      }
+
+      if (checkout.isFinalized) {
+        return res.status(400).json({
+          message: "Checkout already finalized"
+        });
+      }
+
+      if (checkout.isPaid) {
+        return res.status(400).json({
+          message: "Checkout is already paid"
+        });
+      }
+
+      const response = await axios.post(
+        process.env.BKASH_CREATE_PAYMENT_URL!,
+        {
+          // Use the mode appropriate for your
+          // bKash merchant/payment flow.
+          mode: "0000",
+
+          payerReference: String(checkout.user),
+
+          paymentAddress: "Shewrapara, Dhaka",
+
+          callbackURL:
+            "http://localhost:5000/api/bkash/payment/callback",
+
+          amount: checkout.totalPrice.toString(),
+
+          currency: "BDT",
+
+          intent: "sale",
+
+          merchantInvoiceNumber:
+            "INV" + randomUUID().substring(0, 5)
+        },
+        {
+          httpsAgent: agent,
+
+          headers: await this.bkash_headers()
+        }
+      );
+
+      // VERY IMPORTANT:
+      // Save bKash payment ID against checkout
+      checkout.paymentDetails = {
+        paymentID: response.data.paymentID,
+        merchantInvoiceNumber:
+          response.data.merchantInvoiceNumber
+      };
+
+      checkout.paymentStatus = "Pending";
+
+      await checkout.save();
+
+      return res.status(200).json({
         data: {
           bkashURL: response.data.bkashURL
         },
+
         success: true
       });
+
     } catch (error: any) {
-      console.log(error);
-      // console.log("Status:", error.response?.status);
-      // console.log("Data:", error.response?.data);
-      // console.log("Headers:", error.response?.headers);
-      res.status(500).json({ message: error.response?.data?.message || 'Something went wrong' });
+
+      console.log(
+        error.response?.data || error
+      );
+
+      return res.status(500).json({
+        message:
+          error.response?.data?.message ||
+          "Something went wrong"
+      });
     }
-  }
+  };
 
   callback = async (req: Request, res: Response) => {
     const { paymentID, status } = req.query;

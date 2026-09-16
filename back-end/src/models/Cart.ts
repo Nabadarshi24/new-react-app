@@ -57,14 +57,17 @@ const cartSchema = new Schema<ICartSchema>({
     default: 0,
     required: true
   },
-  lastModified: {
-    type: Date,
-    default: Date.now,
-    expires: "60s"
-  }
+  // lastModified: {
+  //   type: Date,
+  //   default: Date.now,
+  //   expires: 7200
+  // }
 },
   { timestamps: true }
 );
+
+// Explicitly add the TTL index to the managed 'updatedAt' field
+cartSchema.index({ updatedAt: 1 }, { expireAfterSeconds: 7200 });
 
 const Cart = mongoose.model<ICartSchema>("Cart", cartSchema);
 

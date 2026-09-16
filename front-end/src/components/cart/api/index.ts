@@ -11,6 +11,7 @@ import {
   TypeCartCreatePayload,
   TypeCheckoutCreatePayload,
   TypeEditCartPayload,
+  TypeOrderDetails,
   TypeProductDeletePayload
 } from "../types";
 
@@ -34,10 +35,18 @@ export const deleteProductFromCart = async (payload: TypeProductDeletePayload) =
   return await makeDeleteRequest(`/cart/delete`, payload);
 };
 
-export const createPayment = async (payload: TypeBkashPaymentCreatePayload) => {
-  return await makePostRequest(`/bkash/payment/create/`, payload)
-}
+export const createPayment = async (checkoutId: string) => {
+  return await makePostRequest(`/bkash/payment/create/`, { checkoutId })
+};
 
 export const createCheckout = async (payload: TypeCheckoutCreatePayload) => {
   return await makePostRequest(`/checkout/create`, payload)
-}
+};
+
+export const finalizeOrder = async (checkoutId: string) => {
+  return await makePostRequest(`/checkout/${checkoutId}/finalize`)
+};
+
+export const getOrderDetails = async (orderId: string) => {
+  return await makeGetRequest<TypeOrderDetails>(`/orders/details/${orderId}`)
+};

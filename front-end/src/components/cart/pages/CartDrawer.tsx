@@ -29,7 +29,7 @@ export const CartDrawer = ({
       setLoading(true);
 
       const response = await getCartDetails(cartId as string);
-      
+
       // debugger
       if (response?.data && response.success) {
         setcartDetails(response.data);
@@ -57,8 +57,6 @@ export const CartDrawer = ({
       loadCartDetails(cartId)
     }
   }, [isDrawerOpen])
-
-  console.log({ cartDetails })
 
   return (
     <div className={`tw:fixed tw:top-0 tw:right-0 tw:w-3/4 tw:sm:w-1/2 tw:md:w-[30rem] tw:h-full tw:bg-white tw:shadow-lg tw:transform tw:transition-transform tw:duration-300 tw:flex tw:flex-col tw:z-50 ${isDrawerOpen ? "tw:translate-x-0" : "tw:translate-x-full"}`}>
@@ -95,6 +93,7 @@ export const CartDrawer = ({
       <div className="tw:sticky tw:bottom-0 tw:p-4">
         <button
           className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
+          disabled={!cartId}
           onClick={() => {
             // TODO: Navigate to checkout page
             navigate('/checkout');

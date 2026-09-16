@@ -10,6 +10,7 @@ import { SubmitButton } from "../../form/SubmitButton";
 import {
   createCheckout,
   createPayment,
+  finalizeOrder,
   getCartDetails,
   getPaymentMethodOptions
 } from "../api";
@@ -18,6 +19,9 @@ import { removeLocalStorageItem, showErrorMessage, showSuccessMessage } from "..
 import { TypeFormOption } from "../../products/types";
 import { Select } from "../../form/Select";
 import { useNavigate } from "react-router";
+import FullyFixedDraggableChips from "../../elements/DragableChipInput";
+import HorizontalChipInputTS from "../../elements/HorizontalChipInput";
+import MultiLineChipGrid from "../../elements/DragableChipInput";
 
 const Checkout = () => {
 
@@ -58,6 +62,9 @@ const Checkout = () => {
     schema
   });
 
+  const watchPaymentMethod = methods.watch("paymentMethod");
+  console.log({ watchPaymentMethod });
+
   const loadCartDetails = async () => {
     // TODO: Load cart details from API
     try {
@@ -79,12 +86,10 @@ const Checkout = () => {
     }
   };
 
-  const handleBkashPayment = async () => {
+  const handleBkashPayment = async (checkoutId: string) => {
     try {
-      const payload = {
-        amount: 50
-      }
-      const response = await createPayment(payload)
+
+      const response = await createPayment(checkoutId)
       // debugger
 
       if (response?.data && response.success) {
@@ -119,6 +124,28 @@ const Checkout = () => {
     }
   };
 
+  const handleFinalizeOrder = async (checkoutId: string) => {
+    try {
+      setLoading(true);
+
+      const response = await finalizeOrder(checkoutId);
+
+      if (response.success && response.data) {
+        // TODO: redirect to order success page
+        showSuccessMessage(response.successMessage);
+        removeLocalStorageItem("cartId");
+        removeLocalStorageItem("cartItemsCount");
+        navigate(`/order-confirmation/${response.data.orderId}`);
+      } else {
+        throw new Error(response?.errorMessage as string);
+      }
+    } catch (error: any) {
+      showErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -142,10 +169,9 @@ const Checkout = () => {
       const response = await createCheckout(checkoutPayload);
 
       if (response.success && response.data) {
-        showSuccessMessage(response.successMessage);
-        removeLocalStorageItem("cartId");
-        removeLocalStorageItem("cartItemsCount");
-        navigate('/order-confirmation');
+        watchPaymentMethod === "online_payment"
+          ? handleBkashPayment(response.data._id)
+          : handleFinalizeOrder(response.data._id);
       } else {
         throw new Error(response?.errorMessage as string);
       }
@@ -183,6 +209,10 @@ const Checkout = () => {
                     disabled
                   />
                 </div>
+
+                {/* <div className="col-12">
+                  <MultiLineChipGrid />
+                </div> */}
 
                 <h3 className="tw:text-lg tw:mb-4">Delivery</h3>
                 <div className="col-md-6">
@@ -292,24 +322,16 @@ const Checkout = () => {
               </div>
             }
 
-            {
-              // !checkoutId ?
-              <div className="col-12">
-                <SubmitButton
-                  className="tw:!bg-black tw:!w-full"
-                  label="Confirm Order"
-                />
-              </div>
-              // : <div>
-              //   <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
-              //   <button
-              //     className='tw:w-full tw:bg-black tw:text-white tw:py-3 tw:rounded-lg tw:font-semibold tw:text-center tw:cursor-pointer tw:hover:bg-gray-800'
-              //     onClick={handleBkashPayment}
-              //   >
-              //     Bkash Payment
-              //   </button>
-              // </div>
-            }
+            <div className="col-12">
+              {
+                watchPaymentMethod === "online_payment" &&
+                <h3 className="tw:!text-lg tw:!mb-4">Pay with bkash</h3>
+              }
+              <SubmitButton
+                className="tw:!bg-black tw:!w-full"
+                label={watchPaymentMethod !== "online_payment" ? "Confirm Order" : "Bkash Payment"}
+              />
+            </div>
           </div>
         </div>
       </Form>

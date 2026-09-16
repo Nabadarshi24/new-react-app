@@ -60,8 +60,7 @@ export type TypeShippingAddress = {
 };
 
 export type TypeBkashPaymentCreatePayload = {
-  orderId?: string;
-  amount: number;
+  checkoutId: string;
 };
 
 export type TypeCheckoutCreatePayload = {
@@ -71,3 +70,17 @@ export type TypeCheckoutCreatePayload = {
   totalPrice: number;
 };
 
+export type TypeOrderDetails = {
+  _id: string;
+  user: Record<string, any>;
+  shippingAddress: TypeShippingAddress;
+  orderItems: TypeCartItem[];
+  totalPrice: number;
+  paymentMethod: string;
+  isPaid: boolean;
+  isDelivered: boolean;
+  paymentStatus: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};

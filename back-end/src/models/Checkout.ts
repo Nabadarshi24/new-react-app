@@ -5,8 +5,18 @@ interface ICheckoutItem {
   name: string;
   image: string;
   price: number;
+  size: string;
+  color: string;
   quantity: number;
 };
+
+interface IPaymentDetails {
+  paymentID?: string;
+  trxID?: string;
+  paymentExecuteTime?: string;
+  amount?: string | number;
+  merchantInvoiceNumber?: string;
+}
 
 interface ICheckout {
   user: mongoose.Types.ObjectId;
@@ -22,7 +32,7 @@ interface ICheckout {
   isPaid: boolean;
   paidAt: Date;
   paymentStatus: string;
-  paymentDetails: Schema.Types.Mixed;
+  paymentDetails: IPaymentDetails;
   isFinalized: boolean;
   finalizedAt: Date;
 }
@@ -45,9 +55,37 @@ const checkoutItemSchema = new Schema<ICheckoutItem>({
     type: Number,
     required: true
   },
+  size: {
+    type: String,
+    required: true
+  },
+  color: {
+    type: String,
+    required: true
+  },
   quantity: {
     type: Number,
     required: true
+  }
+},
+  { _id: false }
+);
+
+const paymentDetailsSchema = new Schema<IPaymentDetails>({
+  paymentID: {
+    type: String
+  },
+  trxID: {
+    type: String
+  },
+  paymentExecuteTime: {
+    type: String
+  },
+  amount: {
+    type: Number
+  },
+  merchantInvoiceNumber: {
+    type: String
   }
 },
   { _id: false }
@@ -84,10 +122,12 @@ const checkoutSchema = new Schema<ICheckout>({
   },
   paymentStatus: {
     type: String,
+    enum: ["Pending", "Paid", "Failed"],
     default: "Pending"
   },
   paymentDetails: {
-    type: Schema.Types.Mixed // Store payment related details(transactionId, paypal response)
+    type: paymentDetailsSchema,
+    default: null
   },
   isFinalized: {
     type: Boolean,

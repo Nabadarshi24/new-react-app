@@ -53,7 +53,7 @@ const privateRoute = [
     isSignIn: true
   },
   {
-    path: "/order-confirmation",
+    path: "/order-confirmation/:orderId",
     element: <OrderConfirmation />,
     isSignIn: true
   }
