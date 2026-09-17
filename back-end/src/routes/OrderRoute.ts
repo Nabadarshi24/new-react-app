@@ -13,10 +13,14 @@ router.get("/my-orders", protect, async (req: Request, res: Response) => {
     // Find authenticated user orders
     const myOrders = await Order.find({ user: req.body.user._id }).sort({ createdAt: -1 }); //Sort by most recent orders
 
-    res.status(201).json(myOrders);
+    res.status(201).json({
+      success: true,
+      successMessage: "Orders retrieved successfully",
+      data: myOrders
+    });
   } catch (error) {
     console.log("Error getting user orders:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, errorMessage: "Server error" });
   }
 });
 

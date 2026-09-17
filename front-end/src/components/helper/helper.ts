@@ -23,3 +23,10 @@ export const removeLocalStorageItem = (key: string) => {
   const event = new Event("storage");
   window.dispatchEvent(event);
 };
+
+export const formatColor = (color: string) => {
+  return color
+    .replace(/^color_/, "")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};

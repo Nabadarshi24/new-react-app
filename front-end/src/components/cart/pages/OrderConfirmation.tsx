@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router";
 import { getOrderDetails } from "../api";
 import { useAccountStore } from "../../stores/GlobalStore";
 import { TypeOrderDetails } from "../types";
+import { formatColor } from "../../helper/Helper";
 
 const OrderConfirmation = () => {
 
@@ -90,10 +91,10 @@ const OrderConfirmation = () => {
                     />
                     <div>
                       <h4 className="tw:text-md tw:font-semibold">{item.name}</h4>
-                      <p className="tw:text-sm tw:text-gray-500">{item.color} | {item.size.toUpperCase()}</p>
+                      <p className="tw:text-sm tw:text-gray-500">{formatColor(item.color)} | {item.size.toUpperCase()}</p>
                     </div>
                     <div className="tw:text-right tw:ml-auto">
-                      <p className="tw:text-md tw:font-semibold">{item.price}</p>
+                      <p className="tw:text-md tw:font-semibold">Price: {item.price}</p>
                       <p className="tw:rext-sm tw:text-gray-500">Qty: {item.quantity}</p>
                     </div>
                   </div>
