@@ -83,12 +83,8 @@ export type TypeSignInOtpResponse = {
 };
 
 export type TypeUserProfile = {
+  _id: string;
   email: string;
-  userName: string;
-  firstName: string;
-  lastName: string;
-  // password: string;
-  userRole: string;
-  isVerified?: boolean;
-  isDeleted?: boolean;
+  name: string;
+  role: string;
 };

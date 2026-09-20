@@ -50,3 +50,8 @@ export const finalizeOrder = async (checkoutId: string) => {
 export const getOrderDetails = async (orderId: string) => {
   return await makeGetRequest<TypeOrderDetails>(`/orders/details/${orderId}`)
 };
+
+export const getOrders = async () => {
+  return await makeGetRequest<TypeOrderDetails[]>(`/orders/my-orders`)
+};
+

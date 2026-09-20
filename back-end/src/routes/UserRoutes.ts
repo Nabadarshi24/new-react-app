@@ -119,7 +119,11 @@ router.post("/login", async (req: Request, res: Response) => {
 
 router.get("/profile", protect, (req: Request, res: Response) => {
   console.log(req);
-  res.json(req.body.user);
+  res.json({
+    data: req.body.user,
+    success: true,
+    successMessage: "User profile retrieved successfully"
+  });
 });
 
 // @route POST /api/user/claim/access-token
