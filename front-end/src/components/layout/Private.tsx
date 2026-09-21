@@ -6,9 +6,10 @@ import { Footer } from '../common/Footer';
 
 type TypeProps = {
   children?: ReactNode;
+  role?: string;
 };
 
-const Private = ({ children }: TypeProps) => {
+const Private = ({ children, role }: TypeProps) => {
 
   const navigate = useNavigate();
 
@@ -24,11 +25,15 @@ const Private = ({ children }: TypeProps) => {
 
   useEffect(() => {
 
+    if(isSignIn && role === 'admin') {
+      navigate("/admin");
+    }
+
     if (!isSignIn) {
       console.log("yy")
       navigate("/login");
     }
-  }, [isSignIn]);
+  }, [isSignIn, role]);
 
   return (
     // <div className="sidebar-with-content">

@@ -6,12 +6,18 @@ import { useAccountStore } from '../../../stores/GlobalStore';
 import { getOrderDetails, getOrders } from '../../../cart/api';
 import { showErrorMessage } from '../../../helper/Helper';
 import { TypeOrderDetails } from '../../../cart/types';
+import { useNavigate } from 'react-router';
 
 export const MyOrders = () => {
 
   const [orders, setOrders] = useState<TypeOrderDetails[]>([]);
 
+  const navigate = useNavigate();
   const setLoading = useAccountStore(store => store.setIsLoading);
+
+  const handleClick = (orderId: string) => {
+    navigate(`/order/details/${orderId}`);
+  };
 
   const loadOrderDetails = async () => {
     // TODO: Implement order details loading logic
@@ -37,7 +43,7 @@ export const MyOrders = () => {
   }, [])
 
   return (
-    <div className="tw:max-w-7xl tw:mx-auto tw:p-4 tw:sm:p-6">
+    <div className="tw:max-w-7xl tw:mx-auto tw:pt-6">
       <h2 className="tw:text-xl tw:sm:text-2xl tw:font-bold tw:mb-6">My Orders</h2>
       {
         orders &&
@@ -60,7 +66,10 @@ export const MyOrders = () => {
                   orders.map(order => {
                     return (
                       <tr key={order._id} className="tw:border-b tw:border-gray-200 tw:hover:bg-gray-50 tw:cursor-pointer">
-                        <td className="tw:py-2 tw:px-2 tw:sm:px-4">
+                        <td
+                          onClick={() => handleClick(order._id)}
+                          className="tw:py-2 tw:px-2 tw:sm:px-4"
+                        >
                           <img
                             src={order.orderItems[0].image}
                             alt={order.orderItems[0].name}

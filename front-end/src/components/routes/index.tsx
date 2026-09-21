@@ -24,7 +24,10 @@ const CollectionList = lazy(() => import("../products/pages/CollectionList"));
 const ProductDetails = lazy(() => import("../products/pages/ProductDetails"));
 const Checkout = lazy(() => import("../cart/pages/Checkout"));
 const OrderConfirmation = lazy(() => import("../cart/pages/OrderConfirmation"));
+const OrderDetails = lazy(() => import("../order/pages/OrderDetails"));
 const BkashError = lazy(() => import("../cart/pages/BkashError"));
+
+const role = localStorage.getItem('role');
 
 const privateRoute = [
   {
@@ -55,6 +58,11 @@ const privateRoute = [
   {
     path: "/order-confirmation/:orderId",
     element: <OrderConfirmation />,
+    isSignIn: true
+  },
+  {
+    path: "/order/details/:orderId",
+    element: <OrderDetails />,
     isSignIn: true
   }
 ];
@@ -175,7 +183,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "/",
-        element: <Suspense fallback={<Loading />}><Private /></Suspense>,
+        element: <Suspense fallback={<Loading />}><Private role={role} /></Suspense>,
         children: [
           ...privateRoute.map(x => {
             return {
