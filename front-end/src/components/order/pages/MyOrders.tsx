@@ -2,13 +2,13 @@ import {
   useEffect,
   useState
 } from 'react';
-import { useAccountStore } from '../../../stores/GlobalStore';
-import { getOrderDetails, getOrders } from '../../../cart/api';
-import { showErrorMessage } from '../../../helper/Helper';
-import { TypeOrderDetails } from '../../../cart/types';
 import { useNavigate } from 'react-router';
+import { useAccountStore } from '../../stores/GlobalStore';
+import { TypeOrderDetails } from '../types';
+import { getOrders } from '../api';
+import { showErrorMessage } from '../../helper/Helper';
 
-export const MyOrders = () => {
+const MyOrders = () => {
 
   const [orders, setOrders] = useState<TypeOrderDetails[]>([]);
 
@@ -124,3 +124,5 @@ export const MyOrders = () => {
 
   );
 };
+
+export default MyOrders;

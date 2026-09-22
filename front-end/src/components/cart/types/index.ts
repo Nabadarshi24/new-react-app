@@ -7,6 +7,7 @@ export type TypeCartCreatePayload = {
   userId?: string;
   guestId?: string;
 };
+
 export type TypeCartItem = {
   _id: string;
   productId: string;
@@ -70,17 +71,3 @@ export type TypeCheckoutCreatePayload = {
   totalPrice: number;
 };
 
-export type TypeOrderDetails = {
-  _id: string;
-  user: Record<string, any>;
-  shippingAddress: TypeShippingAddress;
-  orderItems: TypeCartItem[];
-  totalPrice: number;
-  paymentMethod: string;
-  isPaid: boolean;
-  isDelivered: boolean;
-  paymentStatus: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-};

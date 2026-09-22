@@ -81,7 +81,11 @@ const CollectionList = () => {
         <SortOption />
 
         {/* Product Grid */}
-        <ProductGrid products={products} />
+        {
+          products.length > 0
+            ? <ProductGrid products={products} />
+            : <div className="tw:text-center tw:py-10">No products found</div>
+        }
       </div>
     </div>
   );

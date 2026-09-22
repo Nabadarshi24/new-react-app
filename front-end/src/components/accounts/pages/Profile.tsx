@@ -4,10 +4,10 @@ import {
   useEffect,
   useState
 } from 'react';
-import { MyOrders } from './parts/MyOrders';
 import { useAccountStore } from '../../stores/GlobalStore';
 import { getUserProfile } from '../../user/api';
 import { TypeUserProfile } from '../types';
+import MyOrders from '../../order/pages/MyOrders';
 
 const Profile = () => {
 

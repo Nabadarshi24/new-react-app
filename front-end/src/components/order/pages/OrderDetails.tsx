@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useAccountStore } from '../../stores/GlobalStore';
-import { TypeOrderDetails } from '../../cart/types';
 import { showErrorMessage } from '../../helper/Helper';
-import { getOrderDetails } from '../../cart/api';
+import { TypeOrderDetails } from '../types';
+import { getOrderDetails } from '../api';
 
 const OrderDetails = () => {
 
@@ -86,7 +86,7 @@ const OrderDetails = () => {
             <div className="overflow-x-auto">
               <h4 className='tw:text-lg tw:font-semibold tw:mb-4'>Products</h4>
 
-              <table className='tw:min-w-full tw:text-gray-600 tw:mb-4'>
+              <table className='tw:min-w-full tw:text-gray-600 tw:text-left tw:mb-4'>
                 <thead className='tw:bg-gray-100'>
                   <tr>
                     <th className='tw:py-2 tw:px-4'>Name</th>
@@ -105,7 +105,7 @@ const OrderDetails = () => {
                           className='tw:w-12 tw:h-12 tw:object-cover tw:rounded-lg tw:mr-4'
                         />
                         <Link
-                          to={`/product/details/${item._id}`}
+                          to={`/product/details/${item.productId}`}
                           className='tw:text-blue-500 tw:hover:underline'
                         >
                           {item.name}
@@ -122,7 +122,7 @@ const OrderDetails = () => {
 
             {/* Back to Orders Page */}
             <Link
-              to='/orders'
+              to='/my-orders'
               className='tw:bg-blue-500 tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:hover:bg-blue-600 tw:transition-colors'
             >
               Back to Orders

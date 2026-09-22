@@ -26,6 +26,7 @@ const Checkout = lazy(() => import("../cart/pages/Checkout"));
 const OrderConfirmation = lazy(() => import("../cart/pages/OrderConfirmation"));
 const OrderDetails = lazy(() => import("../order/pages/OrderDetails"));
 const BkashError = lazy(() => import("../cart/pages/BkashError"));
+const MyOrders = lazy(() => import("../order/pages/MyOrders"));
 
 const role = localStorage.getItem('role');
 
@@ -53,6 +54,11 @@ const privateRoute = [
   {
     path: "/checkout",
     element: <Checkout />,
+    isSignIn: true
+  },
+  {
+    path: "/my-orders",
+    element: <MyOrders />,
     isSignIn: true
   },
   {

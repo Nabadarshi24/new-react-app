@@ -11,7 +11,6 @@ import {
   TypeCartCreatePayload,
   TypeCheckoutCreatePayload,
   TypeEditCartPayload,
-  TypeOrderDetails,
   TypeProductDeletePayload
 } from "../types";
 
@@ -47,11 +46,4 @@ export const finalizeOrder = async (checkoutId: string) => {
   return await makePostRequest(`/checkout/${checkoutId}/finalize`)
 };
 
-export const getOrderDetails = async (orderId: string) => {
-  return await makeGetRequest<TypeOrderDetails>(`/orders/details/${orderId}`)
-};
-
-export const getOrders = async () => {
-  return await makeGetRequest<TypeOrderDetails[]>(`/orders/my-orders`)
-};
 
