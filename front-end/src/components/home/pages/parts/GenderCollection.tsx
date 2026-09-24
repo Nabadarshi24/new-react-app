@@ -17,7 +17,7 @@ export const GenderCollection = () => {
               Women's Collection
             </h2>
             <Link
-              to="/collections/all?gender=women"
+              to="/collection/all?gender=women"
               className="tw:text-gray-900 tw:underline"
             >
               Shop Now
@@ -35,7 +35,7 @@ export const GenderCollection = () => {
               Men's Collection
             </h2>
             <Link
-              to="/collections/all?gender=men"
+              to="/collection/all?gender=men"
               className="tw:text-gray-900 tw:underline"
             >
               Shop Now
