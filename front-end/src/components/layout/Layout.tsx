@@ -6,7 +6,11 @@ import { Loading } from '../elements/Loading';
 import { Header } from '../common/Header';
 import { Footer } from '../common/Footer';
 
-const Layout = () => {
+type TypeProps = {
+  role: string;
+};
+
+const Layout = ({ role }: TypeProps) => {
 
   const isSignIn = useAccountStore(stroe => stroe?.state?.isSignIn);
   const isLoading = useAccountStore(stroe => stroe?.state?.isLoading);
@@ -21,9 +25,15 @@ const Layout = () => {
       {/* {isSignIn ? <Private /> : <Public />} */}
       {isLoading && <Loading />}
       <Toaster position="bottom-left" duration={2000} />
-      <Header />
+      {
+        (role !== 'super_admin') &&
+        <Header />
+      }
       <Outlet />
-      <Footer />
+      {
+        (role !== 'super_admin') &&
+        <Footer />
+      }
     </>
   );
 };

@@ -29,17 +29,17 @@ axiosInstance.interceptors.request.use(request => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // debugger
+    debugger
     console.log({ error });
 
     const originalRequest = error.config;
 
     // Check for 401 and ensure we haven't retried this request yet
-    if (error.response.status === 401
+    if (
+      error.response.status === 401
       //  && !originalRequest._retry
     ) {
       originalRequest._retry = true;
-
       try {
         const refreshToken = localStorage.getItem('refreshToken');
 
@@ -157,7 +157,7 @@ export const makeGetRequest = async <T extends Record<string, any>>(
         throw new Error(`Resource not found (status code ${response.status}).`);
       }
 
-      
+
       // if (response.status === 401) {
       //   // TODO: Refresh token
       //   console.log("Token expired, refreshing...");

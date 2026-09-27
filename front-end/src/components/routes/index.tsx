@@ -12,6 +12,7 @@ const Public = lazy(() => import("../layout/Public"));
 const Layout = lazy(() => import("../layout/Layout"));
 const Home = lazy(() => import("../home/pages/Home"));
 const Dashboard = lazy(() => import("../dashboard/pages/Dashboard"));
+const AdminDashboard = lazy(() => import("../admin/pages/AdminDashboard"));
 const Profile = lazy(() => import("../accounts/pages/Profile"));
 const ListUser = lazy(() => import("../user/ListUser"));
 const Details = lazy(() => import("../user/parts/Details"));
@@ -28,12 +29,18 @@ const OrderDetails = lazy(() => import("../order/pages/OrderDetails"));
 const BkashError = lazy(() => import("../cart/pages/BkashError"));
 const MyOrders = lazy(() => import("../order/pages/MyOrders"));
 
-const role = localStorage.getItem('role');
+const role = localStorage.getItem('loggedUser') ? JSON.parse(localStorage.getItem('loggedUser')).roleLabel : '';
+console.log(role);
 
 const privateRoute = [
   {
     path: "dashboard",
     element: <Dashboard />,
+    isSignIn: true
+  },
+  {
+    path: "/admin/dashboard",
+    element: <AdminDashboard />,
     isSignIn: true
   },
   {
@@ -169,7 +176,7 @@ const commonRoute = [
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <Suspense fallback={<Loading />}><Layout /></Suspense>,
+    element: <Suspense fallback={<Loading />}><Layout role={role} /></Suspense>,
     // element: <Private />,
     children: [
       // ...PUBLIC_ROUTE,

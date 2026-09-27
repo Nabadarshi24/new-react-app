@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Header } from '../common/Header';
 import { Footer } from '../common/Footer';
+import Sidebar from '../admin/pages/Sidebar';
 
 type TypeProps = {
   children?: ReactNode;
@@ -25,8 +26,8 @@ const Private = ({ children, role }: TypeProps) => {
 
   useEffect(() => {
 
-    if(isSignIn && role === 'admin') {
-      navigate("/admin");
+    if (isSignIn && (role === 'admin' || role === 'super_admin')) {
+      navigate("/admin/dashboard");
     }
 
     if (!isSignIn) {
@@ -37,10 +38,17 @@ const Private = ({ children, role }: TypeProps) => {
 
   return (
     // <div className="sidebar-with-content">
-    <div className="tw:container tw:mx-auto tw:px-4 tw:py-4 content private-content">
-      <Outlet />
-      {/* {children} */}
-    </div>
+    role !== 'super_admin'
+      ? <div className="tw:container tw:mx-auto tw:px-4 tw:py-4 content private-content">
+        <Outlet />
+        {/* {children} */}
+      </div>
+      : <div className="tw:flex tw:min-h-screen tw:bg-slate-50">
+        <Sidebar />
+        <main className="tw:flex-1 tw:overflow-y-auto tw:px-10 tw:py-8">
+          <Outlet />
+        </main>
+      </div>
     // </div>
   )
 };

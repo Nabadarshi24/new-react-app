@@ -16,6 +16,7 @@ import userAdminRoutes from "./routes/UserAdminRoutes";
 import adminOrderRoutes from "./routes/AdminOrderRoutes";
 import bkashPaymentRoutes from "./routes/BkashPaymentRoutes";
 import paymentRoutes from "./routes/PaymentRoutes";
+import adminRoutes from "./routes/AdminRoutes";
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 const app = express();
@@ -47,5 +48,6 @@ app.use("/api/payment", paymentRoutes);
 // Admin Routes
 app.use("/api/admin/user", userAdminRoutes);
 app.use("/api/admin/order", adminOrderRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, () => console.log(`Server is running on port http://localhost:${PORT}`));
