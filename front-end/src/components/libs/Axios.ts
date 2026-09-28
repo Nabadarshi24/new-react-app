@@ -29,7 +29,6 @@ axiosInstance.interceptors.request.use(request => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    debugger
     console.log({ error });
 
     const originalRequest = error.config;

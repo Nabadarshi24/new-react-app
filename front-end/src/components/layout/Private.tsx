@@ -45,7 +45,7 @@ const Private = ({ children, role }: TypeProps) => {
       </div>
       : <div className="tw:flex tw:min-h-screen tw:bg-slate-50">
         <Sidebar />
-        <main className="tw:flex-1 tw:overflow-y-auto tw:px-10 tw:py-8">
+        <main className="tw:flex-1 tw:max-h-screen tw:overflow-y-auto tw:px-10 tw:py-8">
           <Outlet />
         </main>
       </div>

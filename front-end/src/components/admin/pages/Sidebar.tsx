@@ -6,11 +6,11 @@ import {
   Store,
 } from "@mui/icons-material";
 
-const navItems = [
+const sidebarItems = [
   { label: "Users", icon: Group, to: "/admin/users" },
   { label: "Products", icon: ShoppingBag, to: "/admin/products" },
   { label: "Orders", icon: Assignment, to: "/admin/orders" },
-  { label: "Shop", icon: Store, to: "/admin/shop" },
+  { label: "Shop", icon: Store, to: "/collection/all" },
 ];
 
 const linkBaseClasses =
@@ -18,7 +18,7 @@ const linkBaseClasses =
 
 const Sidebar = () => {
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     window.location.href = "/login";
   };
 
@@ -28,7 +28,7 @@ const Sidebar = () => {
         <h1 className="tw:mb-8 tw:px-2 tw:text-xl tw:font-bold tw:text-white">Rabbit</h1>
 
         <nav className="tw:flex tw:flex-col tw:gap-1">
-          {navItems.map((item) => {
+          {sidebarItems.map((item) => {
             const Icon = item.icon;
 
             return (
@@ -36,10 +36,9 @@ const Sidebar = () => {
                 key={item.label}
                 to={item.to}
                 className={({ isActive }) =>
-                  `${linkBaseClasses} ${
-                    isActive
-                      ? "tw:bg-slate-800 tw:text-white"
-                      : "tw:text-slate-300 tw:hover:bg-slate-800 tw:hover:text-white"
+                  `${linkBaseClasses} ${isActive
+                    ? "tw:bg-slate-800 tw:text-white"
+                    : "tw:text-slate-300 tw:hover:bg-slate-800 tw:hover:text-white"
                   }`
                 }
               >
@@ -52,7 +51,7 @@ const Sidebar = () => {
 
       <button
         onClick={handleLogout}
-        className="tw:flex tw:items-center tw:justify-center tw:gap-2 tw:rounded-lg tw:bg-red-500 tw:px-3 tw:py-2.5 tw:text-sm tw:font-semibold tw:text-white tw:transition-colors tw:hover:bg-red-600"
+        className="tw:cursor-pointer tw:rounded-lg tw:bg-red-500 tw:px-3 tw:py-2.5 tw:text-sm tw:font-semibold tw:text-white tw:transition-colors tw:hover:bg-red-600"
       >
         Logout
       </button>

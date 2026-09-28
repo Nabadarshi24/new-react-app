@@ -8,8 +8,8 @@ const router = express.Router();
 // app.use("/api/admin", adminRoutes);
 // Full path: GET /api/admin/dashboard
 router.get("/dashboard",
-    // protect,
-    // admin,
+    protect,
+    admin,
     getDashboardStats
 );
 
