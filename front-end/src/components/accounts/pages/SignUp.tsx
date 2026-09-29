@@ -12,10 +12,14 @@ import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 import { Select, TypeDropdownOptions } from '../../form/Select';
 import { registration } from '../api';
+import { showErrorMessage, showSuccessMessage } from '../../helper/Helper';
+import { useAccountStore } from '../../stores/GlobalStore';
 
 const SignUp = () => {
 
   const navigate = useNavigate();
+
+  const setLoading = useAccountStore(store => store.setIsLoading);
 
   // const [userData, setUserData] = useState<TypeUserData[]>();
   // const [password, setPassword] = useState("");
@@ -54,6 +58,7 @@ const SignUp = () => {
 
   const onSubmit = async () => {
     try {
+      setLoading(true);
       const data = methods.getValues();
       console.log({ data });
 
@@ -62,16 +67,18 @@ const SignUp = () => {
 
       console.log({ response });
 
-      // if (response.success && response.message) {
-      //   window.alert(response.message);
+      if (response.success && response.data) {
+        showSuccessMessage(response.successMessage);
 
-      //   navigate("/login");
-      // } else {
-      //   window.alert(response.message);
-      // }
-
+        navigate("/login");
+      } else {
+        throw new Error(response.errorMessage || "Registration failed");
+      }
     } catch (error) {
-
+      console.error("Registration error:", error);
+      showErrorMessage(error);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -18,8 +18,10 @@ import { useHookForm } from '../../libs/HookForm';
 import { useAccountStore } from '../../stores/GlobalStore';
 import {
   setLocalStorageItem,
+  showErrorMessage,
   showSuccessMessage
 } from '../../helper/Helper';
+import { AxiosError } from 'axios';
 
 const Login = () => {
 
@@ -55,9 +57,9 @@ const Login = () => {
 
       const data = methods.getValues();
       const response = await login(data);
+      console.log({ response })
 
-      // console.log({ response })
-      if (response.data) {
+      if (response.success && response.data) {
 
         const loggedUser: TypeLoginUserData = {
           userId: response.data.user.id,
@@ -68,16 +70,18 @@ const Login = () => {
         };
 
         setLocalStorageItem("loggedUser", JSON.stringify(loggedUser));
+        setLocalStorageItem("role", response.data.user.role);
         setLocalStorageItem("accessToken", response.data.token);
         setLocalStorageItem("refreshToken", response.data.refreshToken);
         setIsSignIn(true);
         navigate(location.state?.from || "/dashboard");
         showSuccessMessage(response.successMessage);
       } else {
-        throw new Error();
+        throw new Error(response.errorMessage);
       }
     } catch (error) {
-      console.log(error);
+      console.log({ error });
+      showErrorMessage(error.message);
     } finally {
       setLoading(false);
     }

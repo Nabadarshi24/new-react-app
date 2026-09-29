@@ -1,12 +1,14 @@
 import { NavLink } from "react-router";
 import {
   Assignment,
+  Dashboard,
   Group,
   ShoppingBag,
   Store,
 } from "@mui/icons-material";
 
 const sidebarItems = [
+  { label: "Dashboard", icon: Dashboard, to: "/admin/dashboard" },
   { label: "Users", icon: Group, to: "/admin/users" },
   { label: "Products", icon: ShoppingBag, to: "/admin/products" },
   { label: "Orders", icon: Assignment, to: "/admin/orders" },

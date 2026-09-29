@@ -23,6 +23,7 @@ const Layout = ({ role }: TypeProps) => {
   }, [isSignIn])
 
   console.log("current path", location.pathname);
+  console.log({role})
 
   return (
     <>

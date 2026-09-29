@@ -15,7 +15,7 @@ router.post("/register", async (req: Request, res: Response) => {
 
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ errorMessage: "User already exists" });
     }
     const newUser = new User({ name, email, password, role });
     await newUser.save();
@@ -46,7 +46,9 @@ router.post("/register", async (req: Request, res: Response) => {
           email: newUser.email,
           role: newUser.role
         },
-        token
+        token,
+        success: true,
+        successMessage: "User registered successfully"
       }
     });
   } catch (error) {
@@ -64,12 +66,12 @@ router.post("/login", async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ errorMessage: "Invalid email or password" });
     }
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ errorMessage: "Invalid email or password" });
     }
 
     const payload = {

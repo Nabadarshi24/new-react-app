@@ -1,5 +1,5 @@
 import { ComponentType, ReactNode, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
 import { Header } from '../common/Header';
 import { Footer } from '../common/Footer';
@@ -13,6 +13,7 @@ type TypeProps = {
 const Private = ({ children, role }: TypeProps) => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const isSignIn = useAccountStore(stroe => stroe?.state?.isSignIn);
   // const setIsSignIn = useAccountStore(stroe => stroe?.setIsSignIn);
@@ -25,20 +26,25 @@ const Private = ({ children, role }: TypeProps) => {
   // };
 
   useEffect(() => {
-
-    if (isSignIn && (role === 'admin' || role === 'super_admin')) {
+    if (
+      isSignIn &&
+      (role === 'admin' || role === 'super_admin')
+      && location.pathname.startsWith("/admin")
+    ) {
       navigate("/admin/dashboard");
     }
 
     if (!isSignIn) {
-      console.log("yy")
       navigate("/login");
     }
   }, [isSignIn, role]);
 
   return (
     // <div className="sidebar-with-content">
-    role !== 'super_admin'
+    (
+      role !== 'super_admin' ||
+      (role === 'super_admin' && !location.pathname.startsWith("/admin"))
+    )
       ? <div className="tw:container tw:mx-auto tw:px-4 tw:py-4 content private-content">
         <Outlet />
         {/* {children} */}

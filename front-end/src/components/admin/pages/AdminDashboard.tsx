@@ -71,7 +71,7 @@ const AdminDashboard = () => {
                 cardTitle={card.cardTitle}
                 cardLink={card.cardLink}
                 cardLinkText={card.cardLinkText}
-                cardValue={card.format ? parseFloat(card.format(dashboardDetails[card.statKey])) : dashboardDetails[card.statKey]}
+                cardValue={card.format ? `$${parseFloat(card.format(dashboardDetails[card.statKey]))}` : dashboardDetails[card.statKey]}
               />
             ))
           }

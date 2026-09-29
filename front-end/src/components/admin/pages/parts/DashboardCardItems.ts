@@ -14,7 +14,7 @@ export const dashboardCardItems: DashboardCardConfig[] = [
   {
     statKey: "revenue",
     cardTitle: "Revenue",
-    format: (value) => `$${value.toFixed(2)}`,
+    format: (value) => `${value.toFixed(2)}`,
   },
   {
     statKey: "totalOrders",

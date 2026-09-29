@@ -15,6 +15,7 @@ import AccountMenu from './parts/AccountMenu';
 export const Navbar = () => {
 
   const cartItems = localStorage.getItem("cartItemsCount");
+  const role = localStorage.getItem("role");
 
   const [itemCounts, setItemCounts] = useState(cartItems);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -80,6 +81,20 @@ export const Navbar = () => {
       </div>
 
       <div className="tw:flex tw:items-center tw:justify-between tw:gap-4">
+        {
+          (
+            (role === "super_admin" || role === "admin") &&
+            isSignIn
+          ) && (
+            <Link
+              to="/admin/dashboard"
+              className="tw:cursor-pointer tw:bg-black tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:text-sm"
+            >
+              Admin
+            </Link>
+          )
+        }
+
         <SearchBar />
         <button
           onClick={handleDrawerToggle}

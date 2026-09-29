@@ -106,7 +106,9 @@ export const makePostRequest = async <T extends Record<string, any>>(
     const response = error.response as AxiosResponse<ApiResponseObject<T>>;
 
     if (response.status >= 400 && response.status <= 500) {
-
+      if(response.status === 400) {
+        throw new Error(response.data.errorMessage);
+      }
     }
   }
 };

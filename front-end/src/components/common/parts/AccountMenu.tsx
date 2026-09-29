@@ -31,6 +31,7 @@ export default function AccountMenu() {
   };
 
   const handleProfileNavigate = () => {
+    console.log("/profile")
     navigate('/profile');
     handleClose();
   };

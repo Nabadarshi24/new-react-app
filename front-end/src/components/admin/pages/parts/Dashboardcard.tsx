@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 type TypeProps = {
   cardTitle: string;
-  cardValue: number;
+  cardValue: number | string;
   cardLink?: string;
   cardLinkText?: string;
 };
