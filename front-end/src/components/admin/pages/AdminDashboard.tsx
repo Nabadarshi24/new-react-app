@@ -5,6 +5,7 @@ import { getDashboardDetails } from "../api";
 import { useAccountStore } from "../../stores/GlobalStore";
 import { dashboardCardItems } from "./parts/DashboardCardItems";
 import Dashboardcard from "./parts/Dashboardcard";
+import { showErrorMessage } from "../../helper/Helper";
 
 // One table cell that works in both layouts:
 // - md and up (>= 768px): a normal table cell (the <thead> shows the labels)
@@ -44,9 +45,12 @@ const AdminDashboard = () => {
 
       if (response.success && response.data) {
         setDashboardDetails(response.data);
+      } else {
+        throw new Error(response.errorMessage);
       }
     } catch (error) {
       console.error(error);
+      showErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
@@ -108,7 +112,7 @@ const AdminDashboard = () => {
                     className="tw:block tw:overflow-hidden tw:border-x tw:border-b tw:border-slate-200 tw:bg-white tw:first:rounded-t-lg tw:first:border-t tw:last:rounded-b-lg tw:md:table-row tw:md:overflow-visible tw:md:border-0 tw:md:border-t tw:md:border-slate-100 tw:md:first:rounded-none tw:md:last:rounded-none"
                   >
                     <Cell label="Order ID" className="tw:font-medium tw:text-slate-700">
-                      <Link to={`/admin/orders/${order._id}`} className="tw:hover:underline">
+                      <Link to={`/admin/order/details/${order._id}`} className="tw:hover:underline">
                         {order._id}
                       </Link>
                     </Cell>

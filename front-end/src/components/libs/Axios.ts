@@ -150,6 +150,11 @@ export const makeGetRequest = async <T extends Record<string, any>>(
         let errorMessage = response.data.errorMessage;
         throw new Error(errorMessage);
       }
+
+      if(response.status === 403) {
+        throw new Error(response.data.errorMessage);
+      }
+
       if (response.status === 404) {
 
         // removeLocalStorageItem("cartId");

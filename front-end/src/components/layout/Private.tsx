@@ -10,13 +10,15 @@ type TypeProps = {
   role?: string;
 };
 
-const Private = ({ children, role }: TypeProps) => {
+const Private = ({ children }: TypeProps) => {
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const isSignIn = useAccountStore(stroe => stroe?.state?.isSignIn);
   // const setIsSignIn = useAccountStore(stroe => stroe?.setIsSignIn);
+
+  const role = localStorage.getItem('role');
 
   // const handleLogout = () => {
 

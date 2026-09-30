@@ -10,13 +10,15 @@ type TypeProps = {
   role: string;
 };
 
-const Layout = ({ role }: TypeProps) => {
+const Layout = () => {
 
   const location = useLocation();
 
   const isSignIn = useAccountStore(stroe => stroe?.state?.isSignIn);
   const isLoading = useAccountStore(stroe => stroe?.state?.isLoading);
   // console.log("aaaaa", { isSignIn })
+
+  const role = localStorage.getItem('role');
 
   useEffect(() => {
     // console.log("aaaaa", { isSignIn })
