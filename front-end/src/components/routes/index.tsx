@@ -6,6 +6,7 @@ import {
 } from "react-router";
 import { Loading } from '../elements/Loading';
 import { Common } from '../layout/Common';
+import AdminLayout from '../layout/AdminLayout';
 
 const Private = lazy(() => import("../layout/Private"));
 const Public = lazy(() => import("../layout/Public"));
@@ -255,12 +256,47 @@ export const route = createBrowserRouter([
         path: "/",
         element: <Suspense fallback={<Loading />}><Private /></Suspense>,
         children: [
-          ...privateRoute.map(x => {
-            return {
-              path: x.path,
-              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
-            };
-          })
+          // USER
+          {
+            element: (
+              <Suspense fallback={<Loading />}>
+                <UserLayout />
+              </Suspense>
+            ),
+            children: userRoutes.map((route) => ({
+              path: route.path,
+
+              element: (
+                <Suspense fallback={<Loading />}>
+                  {route.element}
+                </Suspense>
+              ),
+            })),
+          },
+
+          // ADMIN
+          {
+            path: "admin",
+            element: (
+              <Suspense fallback={<Loading />}>
+                <AdminLayout />
+              </Suspense>
+            ),
+            children: adminRoutes.map((route) => ({
+              path: route.path,
+              element: (
+                <Suspense fallback={<Loading />}>
+                  {route.element}
+                </Suspense>
+              ),
+            })),
+          }
+          // ...privateRoute.map(x => {
+          //   return {
+          //     path: x.path,
+          //     element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
+          //   };
+          // })
         ]
       },
       {

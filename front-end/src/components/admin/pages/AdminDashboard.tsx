@@ -62,7 +62,7 @@ const AdminDashboard = () => {
 
   return (
     dashboardDetails && (
-      <div>
+      <div className="tw:px-4 tw:py-6 tw:flex-1 tw:overflow-auto">
         <h1 className="tw:mb-6 tw:text-2xl tw:font-bold tw:text-slate-900">
           Admin Dashboard
         </h1>

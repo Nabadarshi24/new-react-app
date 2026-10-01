@@ -1,13 +1,20 @@
-// import React from 'react';
-import { ComponentType } from "react";
+// layout/UserLayout.tsx
+import { Outlet } from "react-router";
+import { Header } from "../common/Header";
+import { Footer } from "../common/Footer";
 
 const UserLayout = () => {
-
   return (
-    <div>
-      <h1>UserLayout</h1>
-    </div>
-  )
-}
+    <div className="tw:container tw:mx-auto tw:px-4 tw:py-4 content">
+      <Header />
 
-export default UserLayout as ComponentType;
+      <main>
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default UserLayout;

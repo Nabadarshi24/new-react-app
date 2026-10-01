@@ -25,28 +25,14 @@ const Layout = () => {
   }, [isSignIn])
 
   console.log("current path", location.pathname);
-  console.log({role})
+  console.log({ role })
 
   return (
     <>
       {/* {isSignIn ? <Private /> : <Public />} */}
       {isLoading && <Loading />}
       <Toaster position="bottom-left" duration={2000} />
-      {
-        (
-          role !== 'super_admin' ||
-          (role === 'super_admin' && !location.pathname.startsWith("/admin"))
-        ) &&
-        <Header />
-      }
       <Outlet />
-      {
-        (
-          role !== 'super_admin' ||
-          (role === 'super_admin' && !location.pathname.startsWith("/admin"))
-        ) &&
-        <Footer />
-      }
     </>
   );
 };

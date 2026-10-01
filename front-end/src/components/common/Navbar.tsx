@@ -1,18 +1,26 @@
 // import React from 'react'
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState
+} from 'react';
+import {
+  Link,
+  useNavigate
+} from 'react-router';
 import {
   AccountCircleOutlined,
   Close,
   MenuOutlined,
   ShoppingBagOutlined
 } from '@mui/icons-material';
-import { Link } from 'react-router';
 import { SearchBar } from './parts/SearchBar';
 import { CartDrawer } from '../cart/pages/CartDrawer';
 import { useAccountStore } from '../stores/GlobalStore';
 import AccountMenu from './parts/AccountMenu';
 
 export const Navbar = () => {
+
+  const navigate = useNavigate();
 
   const cartItems = localStorage.getItem("cartItemsCount");
   const role = localStorage.getItem("role");
@@ -29,6 +37,18 @@ export const Navbar = () => {
 
   const handleToggleNavDrawer = () => {
     setIsNavDrawerOpen(!isNavDrawerOpen);
+  };
+
+  const handleAdminNavigation = () => {
+    if (role === 'admin' || role === 'super_admin') {
+      navigate("/admin/dashboard", {
+        state: {
+          from: window.location.pathname,
+        },
+      });
+    } else {
+      window.location.href = '/';
+    }
   };
 
   useEffect(() => {
@@ -86,12 +106,12 @@ export const Navbar = () => {
             (role === "super_admin" || role === "admin") &&
             isSignIn
           ) && (
-            <Link
-              to="/admin/dashboard"
+            <button
+              onClick={handleAdminNavigation}
               className="tw:cursor-pointer tw:bg-black tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:text-sm"
             >
               Admin
-            </Link>
+            </button>
           )
         }
 
