@@ -6,6 +6,7 @@ import {
 } from "react-router";
 import { Loading } from '../elements/Loading';
 import { Common } from '../layout/Common';
+import AdminLayout from '../layout/AdminLayout';
 
 const Private = lazy(() => import("../layout/Private"));
 const Public = lazy(() => import("../layout/Public"));
@@ -32,7 +33,57 @@ const AdminOrders = lazy(() =>
   import("../admin/pages/AdminOrders").then(module => ({ default: module.AdminOrders }))
 );
 
-const role = localStorage.getItem('role');
+// const role = localStorage.getItem('role');
+
+const userRoutes = [
+  {
+    path: "dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "profile",
+    element: <Profile />,
+  },
+  {
+    path: "users",
+    element: <ListUser />,
+  },
+  {
+    path: "users/details/:userId",
+    element: <Details />,
+  },
+  {
+    path: "checkout",
+    element: <Checkout />,
+  },
+  {
+    path: "my-orders",
+    element: <MyOrders />,
+  },
+  {
+    path: "order-confirmation/:orderId",
+    element: <OrderConfirmation />,
+  },
+  {
+    path: "order/details/:orderId",
+    element: <OrderDetails />,
+  },
+];
+
+const adminRoutes = [
+  {
+    path: "/admin/dashboard",
+    element: <AdminDashboard />,
+  },
+  {
+    path: "/admin/orders",
+    element: <AdminOrders />,
+  },
+  {
+    path: "/admin/order/details/:orderId",
+    element: <OrderDetails />,
+  },
+];
 
 const privateRoute = [
   {
@@ -183,7 +234,7 @@ const commonRoute = [
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <Suspense fallback={<Loading />}><Layout role={role} /></Suspense>,
+    element: <Suspense fallback={<Loading />}><Layout /></Suspense>,
     // element: <Private />,
     children: [
       // ...PUBLIC_ROUTE,
@@ -203,14 +254,49 @@ export const route = createBrowserRouter([
       },
       {
         path: "/",
-        element: <Suspense fallback={<Loading />}><Private role={role} /></Suspense>,
+        element: <Suspense fallback={<Loading />}><Private /></Suspense>,
         children: [
-          ...privateRoute.map(x => {
-            return {
-              path: x.path,
-              element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
-            };
-          })
+          // USER
+          {
+            element: (
+              <Suspense fallback={<Loading />}>
+                <UserLayout />
+              </Suspense>
+            ),
+            children: userRoutes.map((route) => ({
+              path: route.path,
+
+              element: (
+                <Suspense fallback={<Loading />}>
+                  {route.element}
+                </Suspense>
+              ),
+            })),
+          },
+
+          // ADMIN
+          {
+            path: "admin",
+            element: (
+              <Suspense fallback={<Loading />}>
+                <AdminLayout />
+              </Suspense>
+            ),
+            children: adminRoutes.map((route) => ({
+              path: route.path,
+              element: (
+                <Suspense fallback={<Loading />}>
+                  {route.element}
+                </Suspense>
+              ),
+            })),
+          }
+          // ...privateRoute.map(x => {
+          //   return {
+          //     path: x.path,
+          //     element: <Suspense fallback={<Loading />}>{x.element}</Suspense>
+          //   };
+          // })
         ]
       },
       {

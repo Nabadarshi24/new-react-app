@@ -10,13 +10,14 @@ type TypeProps = {
   role?: string;
 };
 
-const Private = ({ children, role }: TypeProps) => {
+const Private = ({ children }: TypeProps) => {
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const isSignIn = useAccountStore(stroe => stroe?.state?.isSignIn);
-  // const setIsSignIn = useAccountStore(stroe => stroe?.setIsSignIn);
+
+  const role = localStorage.getItem('role');
 
   // const handleLogout = () => {
 
@@ -40,22 +41,9 @@ const Private = ({ children, role }: TypeProps) => {
   }, [isSignIn, role]);
 
   return (
-    // <div className="sidebar-with-content">
-    (
-      role !== 'super_admin' ||
-      (role === 'super_admin' && !location.pathname.startsWith("/admin"))
-    )
-      ? <div className="tw:container tw:mx-auto tw:px-4 tw:py-4 content private-content">
-        <Outlet />
-        {/* {children} */}
-      </div>
-      : <div className="tw:flex tw:min-h-screen tw:bg-slate-50">
-        <Sidebar />
-        <main className="tw:flex-1 tw:max-h-screen tw:overflow-y-auto tw:px-10 tw:py-8">
-          <Outlet />
-        </main>
-      </div>
-    // </div>
+    <div className="private-content">
+      <Outlet />
+    </div>
   )
 };
 

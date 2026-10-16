@@ -10,7 +10,7 @@ type TypeProps = {
   role: string;
 };
 
-const Layout = ({ role }: TypeProps) => {
+const Layout = () => {
 
   const location = useLocation();
 
@@ -18,33 +18,21 @@ const Layout = ({ role }: TypeProps) => {
   const isLoading = useAccountStore(stroe => stroe?.state?.isLoading);
   // console.log("aaaaa", { isSignIn })
 
+  const role = localStorage.getItem('role');
+
   useEffect(() => {
     // console.log("aaaaa", { isSignIn })
   }, [isSignIn])
 
   console.log("current path", location.pathname);
-  console.log({role})
+  console.log({ role })
 
   return (
     <>
       {/* {isSignIn ? <Private /> : <Public />} */}
       {isLoading && <Loading />}
       <Toaster position="bottom-left" duration={2000} />
-      {
-        (
-          role !== 'super_admin' ||
-          (role === 'super_admin' && !location.pathname.startsWith("/admin"))
-        ) &&
-        <Header />
-      }
       <Outlet />
-      {
-        (
-          role !== 'super_admin' ||
-          (role === 'super_admin' && !location.pathname.startsWith("/admin"))
-        ) &&
-        <Footer />
-      }
     </>
   );
 };

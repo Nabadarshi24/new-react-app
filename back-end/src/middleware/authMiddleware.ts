@@ -42,7 +42,7 @@ export const admin = (req: Request, res: Response, next: NextFunction) => {
     req.body.user.role !== "super_admin" &&
     req.body.user.role !== "admin"
   ) {
-    return res.status(401).json({ message: "Not authorized - User must be an admin" });
+    return res.status(403).json({ errorMessage: "Not authorized - User must be an admin" });
   }
   next();
 };
