@@ -3,14 +3,14 @@ import {
   useState
 } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getOrderDetails } from "../api";
 import { useAccountStore } from "../../stores/GlobalStore";
-import { TypeOrderDetails } from "../types";
 import { formatColor } from "../../helper/Helper";
+import { getOrderDetails } from "../../order/api";
+import { TypeOrderDetails } from "../../order/types";
 
 const OrderConfirmation = () => {
 
-  const [orderDetails, setOrderDetails] = useState<TypeOrderDetails>(null);
+  const [orderDetails, setOrderDetails] = useState<TypeOrderDetails>();
 
   const { orderId } = useParams();
   const navigate = useNavigate();
@@ -26,12 +26,12 @@ const OrderConfirmation = () => {
   const loadOrderDetails = async () => {
     try {
       setLoading(true);
-      const response = await getOrderDetails(orderId);
+      const response = await getOrderDetails(orderId!);
 
-      if (response.success && response.data) {
+      if (response?.success && response.data) {
         setOrderDetails(response.data);
       } else {
-        throw new Error(response.errorMessage);
+        throw new Error(response?.errorMessage);
       }
     } catch (error) {
       console.error("Error loading order details:", error);
