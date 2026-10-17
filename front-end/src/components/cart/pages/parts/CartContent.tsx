@@ -40,12 +40,12 @@ export const CartContent = ({
 
       const response = await deleteProductFromCart(payload);
       if (response?.success) {
-        showSuccessMessage(response.successMessage);
+        showSuccessMessage(response.successMessage!);
 
         // TODO: Refresh cart data
         doOnDelete?.();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       showErrorMessage(error.message);
     } finally {
@@ -69,15 +69,16 @@ export const CartContent = ({
         }
       }
 
-      const response = await editCartQuantity({ _id, userId: loggedInUserObj?.userId, quantity: newQuantity });
+      const response = await editCartQuantity({ _id, userId: loggedInUserObj?.userId, quantity: newQuantity! });
 
       if (response?.success && response.data) {
         // showSuccessMessage(response.successMessage);
         // setCartProducts(response.data.products);
-        doOnDelete();
+        doOnDelete?.();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      showErrorMessage(error.message);
     } finally {
       setLoading(false);
     }

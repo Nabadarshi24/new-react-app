@@ -10,6 +10,7 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  base: "/new-react-app/",
   server: {
     open: true
     // open: "/login"
