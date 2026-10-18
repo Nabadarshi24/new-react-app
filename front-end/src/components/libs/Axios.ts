@@ -9,7 +9,7 @@ const navigate = (path: string) => {
 
 // const renderFromLocal = import.meta.env.VITE_BACKEND_URL;
 
-const baseUrl = import.meta.env.PRODUCTION_BACKEND_URL;
+const baseUrl = import.meta.env.VITE_PRODUCTION_BACKEND_URL;
 
 export const axiosInstance = axios.create({
   baseURL: baseUrl,

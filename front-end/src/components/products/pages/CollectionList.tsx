@@ -59,18 +59,23 @@ const CollectionList = () => {
   }, [searchParams]);
 
   return (
-    <div className="tw:flex tw:flex-col tw:lg:flex-row">
+    <div className="tw:flex tw:flex-col tw:lg:flex-row tw:container tw:mx-auto">
+
       {/* Mobile Filter Button */}
-      <button
-        className="tw:lg:hidden tw:border tw:p-2 tw:flex tw:justify-center tw:items-center"
-        onClick={handleToggleSidebar}
-      >
-        <icons.FilterListAlt className="tw:mr-2" /> Filters
-      </button>
+      <div className="tw:p-4 tw:lg:hidden">
+        <button
+          className="tw:border tw:p-2 tw:flex tw:justify-center tw:items-center tw:w-full"
+          onClick={handleToggleSidebar}
+        >
+          <icons.FilterListAlt className="tw:mr-2" /> Filters
+        </button>
+      </div>
+
       {/* Filter Sidebar */}
       <div
         ref={sidebarRef}
-        className={`${isSidebarOpen ? "tw:translate-x-0" : "tw:-translate-x-full"} tw:fixed tw:left-0 tw:inset-y-0 tw:w-64 tw:h-full tw:bg-white tw:overflow-y-auto tw:z-50 tw:transition-transform tw:duration-300 tw:lg:static tw:lg:translate-x-0`}
+        className={`tw:fixed tw:top-[112px] tw:z-40 tw:w-64 tw:h-[calc(100dvh-112px)] tw:bg-white tw:overflow-y-auto tw:transition-transform tw:duration-300 
+          ${isSidebarOpen ? "tw:translate-x-0" : "tw:-translate-x-full"} tw:lg:static tw:lg:top-auto tw:lg:z-auto tw:lg:h-auto tw:lg:translate-x-0 tw:lg:overflow-visible `}
       >
         <SidebarFilter />
       </div>

@@ -30,7 +30,7 @@ const Private = ({ children }: TypeProps) => {
     if (
       isSignIn &&
       (role === 'admin' || role === 'super_admin')
-      && location.pathname.startsWith("/admin")
+      // && location.pathname.startsWith("/admin")
     ) {
       navigate("/admin/dashboard");
     }

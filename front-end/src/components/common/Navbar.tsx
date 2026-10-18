@@ -161,28 +161,28 @@ export const Navbar = () => {
           <h2 className='tw:text-xl tw:font-semibold tw:mb-4'>Menu</h2>
           <div className="tw:space-y-4">
             <Link
-              to="#"
+              to="/collection/all?gender=men"
               onClick={handleToggleNavDrawer}
               className="tw:block tw:text-gray-700 tw:hover:text-black"
             >
               Men
             </Link>
             <Link
-              to="#"
+              to="/collection/all?gender=women"
               onClick={handleToggleNavDrawer}
               className="tw:block tw:text-gray-700 tw:hover:text-black"
             >
               Women
             </Link>
             <Link
-              to="#"
+              to="/collection/all?category=top_wear"
               onClick={handleToggleNavDrawer}
               className="tw:block tw:text-gray-700 tw:hover:text-black"
             >
               Top Wear
             </Link>
             <Link
-              to="#"
+              to="/collection/all?category=bottom_wear"
               onClick={handleToggleNavDrawer}
               className="tw:block tw:text-gray-700 tw:hover:text-black"
             >

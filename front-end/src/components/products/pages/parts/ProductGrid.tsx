@@ -18,7 +18,7 @@ export const ProductGrid = ({ products }: TypeProps) => {
             className="tw:block"
           >
             <div className="tw:bg-white tw:p-4 tw:rounded-lg">
-              <div className="tw:w-full tw:h-96 tw:mb-4">
+              <div className="tw:w-full tw:h-76 tw:mb-4">
                 <img
                   src={product.images[0].url}
                   alt={product.images[0].altText}
