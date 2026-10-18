@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon",
+    "build": "tsc",
     "seed": "ts-node src/seed_data/seeder.ts"
   },
   "keywords": [],
