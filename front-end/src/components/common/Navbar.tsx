@@ -69,12 +69,9 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <div className="tw:container tw:mx-auto tw:flex tw:justify-between tw:items-center tw:py-4 tw:px-4">
-      <div>
-        <Link to="/" className='navbar-logo'>
-          {/* <img src="/images/nav_logo.png" alt="" /> */}
-          Rabbit
-        </Link>
+    <div className="tw:container tw:mx-auto tw:flex tw:justify-between tw:items-center tw:gap-2 tw:py-4 tw:px-3 tw:sm:px-4">
+      <div className="tw:shrink-0">
+        <Link to="/" className='navbar-logo'>Rabbit</Link>
       </div>
 
       <div className="tw:hidden tw:md:flex tw:space-x-6">
@@ -100,15 +97,12 @@ export const Navbar = () => {
         </Link>
       </div>
 
-      <div className="tw:flex tw:items-center tw:justify-between tw:gap-4">
+      <div className="tw:flex tw:items-center tw:justify-between tw:gap-2 tw:sm:gap-4">
         {
-          (
-            (role === "super_admin" || role === "admin") &&
-            isSignIn
-          ) && (
+          ((role === "super_admin" || role === "admin") && isSignIn) && (
             <button
               onClick={handleAdminNavigation}
-              className="tw:cursor-pointer tw:bg-black tw:text-white tw:px-4 tw:py-2 tw:rounded-lg tw:text-sm"
+              className="tw:cursor-pointer tw:bg-black tw:text-white tw:px-2 tw:sm:px-4 tw:py-1.5 tw:sm:py-2 tw:rounded-lg tw:text-xs tw:sm:text-sm"
             >
               Admin
             </button>

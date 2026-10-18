@@ -29,7 +29,7 @@ const ProductDetails = () => {
   const [productDetails, setProductDetails] = useState<TypeProduct>();
   const [similarProducts, setSimilarProducts] = useState<TypeProduct[]>([]);
   const [sizeOptions, setSizeOptions] = useState<TypeFormOption[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -71,18 +71,18 @@ const ProductDetails = () => {
       }
 
       const payload: TypeCartCreatePayload = {
-        productId: params.id,
+        productId: params.id!,
         color: selectedColor,
         size: selectedSize,
         quantity: selectedQuantity,
-        price: productDetails.productVariants.find((variant) => variant.colorAspectId === selectedColor)?.discountPrice ?? productDetails.defaultVariant.discountPrice,
+        price: productDetails?.productVariants.find((variant) => variant.colorAspectId === selectedColor)?.discountPrice! ?? productDetails?.defaultVariant.discountPrice,
         userId: loggedInUserObj?.userId,
       }
 
       const response = await addToCart(payload);
       // debugger
 
-      if (response.success) {
+      if (response?.data && response?.success) {
         setIsButtonDisabled(false);
         setSelectedSize(null);
         setSelectedColor(null);
@@ -90,12 +90,11 @@ const ProductDetails = () => {
         // localStorage.setItem("cartId", response.data.id);
         setLocalStorageItem("cartId", response.data.id);
         setLocalStorageItem("cartItemsCount", response.data.itemsCount.toString());
-        showSuccessMessage(response.successMessage);
+        showSuccessMessage(response.successMessage!);
       } else {
         throw new Error("Failed to add product to cart");
       }
-    } catch (error) {
-      console.log({ error });
+    } catch (error: any) {
       showErrorMessage(error.message);
     } finally {
       setLoading(false);
@@ -154,7 +153,7 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    if (productDetails?.images.length > 0) {
+    if (productDetails && productDetails?.images.length > 0) {
       setSelectedImage(productDetails.images[0].url);
     }
   }, [productDetails]);
@@ -203,7 +202,7 @@ const ProductDetails = () => {
             </div>
 
             {/* Mobile Thumbnail */}
-            <div className="tw:md:hidden tw:flex tw:overscroll-x-scroll tw:space-x-4 tw:mb-4">
+            <div className="tw:md:hidden tw:flex tw:overflow-x-auto tw:space-x-4 tw:mb-4">
               {
                 productDetails.images.map((image) => (
                   <img
@@ -249,21 +248,22 @@ const ProductDetails = () => {
 
               <div className="tw:mb-4">
                 <p className="tw:text-gray-700">Size:</p>
-                <div className="tw:mt-2 tw:flex tw:gap-2">
+                <div className="tw:mt-2 tw:flex tw:flex-wrap tw:gap-2">
                   {
-                    sizeOptions.map((size) => (
-                      <button
+                    sizeOptions.map((size) => {
+                      const isUnavailable = productDetails.productVariants.every(
+                        (variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id
+                      );
+                      return (<button
                         key={size.id}
                         disabled={productDetails.productVariants.every((variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id)}
-                        className={`tw:px-4 tw:py-2 tw:rounded tw:border tw:cursor-pointer 
-                        ${selectedSize == size.value ? "tw:bg-black tw:text-white" : ""}
-                        ${productDetails.productVariants.every((variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id) ? "tw:opacity-30" : ""}`
-                        }
+                        className={`tw:min-w-9 tw:px-2 tw:py-1 tw:text-xs tw:md:min-w-0 tw:md:px-4 tw:md:py-2 tw:md:text-base tw:rounded tw:border tw:cursor-pointer ${selectedSize == size.value ? "tw:bg-black tw:text-white" : ""} ${isUnavailable ? "tw:opacity-30" : ""}`}
                         onClick={() => setSelectedSize(size.value)}
                       >
                         {size.label}
                       </button>
-                    ))
+                      );
+                    })
                   }
                 </div>
               </div>
