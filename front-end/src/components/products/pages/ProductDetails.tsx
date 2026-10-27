@@ -251,9 +251,11 @@ const ProductDetails = () => {
                 <div className="tw:mt-2 tw:flex tw:flex-wrap tw:gap-2">
                   {
                     sizeOptions.map((size) => {
+
                       const isUnavailable = productDetails.productVariants.every(
                         (variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id
                       );
+
                       return (<button
                         key={size.id}
                         disabled={productDetails.productVariants.every((variant) => variant.colorAspectId !== selectedColor || variant.sizeAspect.id !== size.id)}
