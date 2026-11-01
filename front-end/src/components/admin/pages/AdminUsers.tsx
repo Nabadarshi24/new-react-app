@@ -48,14 +48,14 @@ export const AdminUsers = () => {
 
       const response = await getAllUsers();
 
-      if (response.data && response.success) {
-        showSuccessMessage(response.successMessage);
+      if (response?.data && response?.success) {
+        showSuccessMessage(response.successMessage || "Failed to retrieved users");
         setUsers(response.data);
       } else {
-        throw new Error(response.errorMessage);
+        throw new Error(response?.errorMessage || "");
       }
 
-    } catch (error) {
+    } catch (error: Error) {
       console.error("Error loading users:", error);
       showErrorMessage(error.message);
     } finally {
@@ -93,9 +93,17 @@ export const AdminUsers = () => {
         <h2 className="tw:text-lg tw:font-semibold tw:mb-4">Add New User</h2>
         <Form methods={methods} onSubmit={onSubmit}>
           <div className="tw:grid tw:grid-cols-1 tw:md:grid-cols-2 tw:gap-4 tw:mb-4">
-            <Input name="name" label="Full Name" required />
-            <Input name="email" label="Email Address" type="email" required />
-            <Input name="password" label="Password" type="password" required />
+            <Input
+              name="name"
+              label="Full Name"
+              required
+            />
+            <Input
+              name="email"
+              label="Email Address"
+              type="email"
+              required
+            />
             <Select
               name="role"
               label="Role"
@@ -135,12 +143,12 @@ export const AdminUsers = () => {
                   </td>
                   <td className="tw:py-3 tw:px-4 tw:whitespace-nowrap">
                     <Button
-                      variant="outlined"
-                      color="error"
+                      // variant="outlined"
+                      // color="error"
                       size="small"
                       startIcon={<DeleteOutlineIcon />}
-                      onClick={() => handleDelete(user._id)}
-                      sx={{ textTransform: "none" }}
+                      onClick={() => handleDelete(user._id!)}
+                      // sx={{ textTransform: "none" }}
                     >
                       Delete
                     </Button>
