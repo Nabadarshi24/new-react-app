@@ -29,9 +29,8 @@ const OrderConfirmation = lazy(() => import("../cart/pages/OrderConfirmation"));
 const OrderDetails = lazy(() => import("../order/pages/OrderDetails"));
 const BkashError = lazy(() => import("../cart/pages/BkashError"));
 const MyOrders = lazy(() => import("../order/pages/MyOrders"));
-const AdminOrders = lazy(() =>
-  import("../admin/pages/AdminOrders").then(module => ({ default: module.AdminOrders }))
-);
+const AdminOrders = lazy(() => import("../admin/pages/AdminOrders").then(module => ({ default: module.AdminOrders })));
+const AdminUsers = lazy(() => import("../admin/pages/AdminUsers").then(module => ({ default: module.AdminUsers })));
 
 // const role = localStorage.getItem('role');
 
@@ -74,6 +73,10 @@ const adminRoutes = [
   {
     path: "/admin/dashboard",
     element: <AdminDashboard />,
+  },
+  {
+    path: "/admin/users",
+    element: <AdminUsers />,
   },
   {
     path: "/admin/orders",

@@ -1,9 +1,6 @@
 import { ComponentType, ReactNode, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAccountStore } from '../stores/GlobalStore';
-import { Header } from '../common/Header';
-import { Footer } from '../common/Footer';
-import Sidebar from '../admin/pages/Sidebar';
 
 type TypeProps = {
   children?: ReactNode;
@@ -27,15 +24,11 @@ const Private = ({ children }: TypeProps) => {
   // };
 
   useEffect(() => {
-    if (
-      isSignIn &&
-      (role === 'admin' || role === 'super_admin')
-      // && location.pathname.startsWith("/admin")
-    ) {
-      navigate("/admin/dashboard");
-    }
-
-    if (!isSignIn) {
+    if (isSignIn) {
+      if (role === 'admin' || role === 'super_admin') {
+        navigate(location.pathname);
+      }
+    } else {
       navigate("/login");
     }
   }, [isSignIn, role]);

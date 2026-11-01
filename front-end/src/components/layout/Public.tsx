@@ -31,7 +31,7 @@ const Public = ({ children }: TypeProps) => {
       if (location.state) {
         navigate(location.state.from);
       } else {
-        navigate("/dashboard");
+        navigate("/profile");
       }
     } else if (location.pathname == "/verify-otp") {
       navigate("/login");

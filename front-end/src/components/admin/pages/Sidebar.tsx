@@ -1,63 +1,103 @@
-import { NavLink } from "react-router";
-import {
-  Assignment,
-  Dashboard,
-  Group,
-  ShoppingBag,
-  Store,
-} from "@mui/icons-material";
+import { Link, NavLink, useNavigate } from "react-router";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import GroupIcon from "@mui/icons-material/Group";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import LogoutIcon from "@mui/icons-material/Logout";
+import CloseIcon from "@mui/icons-material/Close";
+import { Button, IconButton } from "@mui/material";
 
-const sidebarItems = [
-  { label: "Dashboard", icon: Dashboard, to: "/admin/dashboard" },
-  { label: "Users", icon: Group, to: "/admin/users" },
-  { label: "Products", icon: ShoppingBag, to: "/admin/products" },
-  { label: "Orders", icon: Assignment, to: "/admin/orders" },
-  { label: "Shop", icon: Store, to: "/collection/all" },
-];
+interface SidebarProps {
+  onClose?: () => void;
+}
 
-const linkBaseClasses =
-  "tw:flex tw:items-center tw:gap-3 tw:rounded-lg tw:px-3 tw:py-2 tw:text-sm tw:font-medium tw:transition-colors";
+const Sidebar = ({ onClose }: SidebarProps) => {
+  const navigate = useNavigate();
 
-const Sidebar = () => {
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/login";
+    navigate("/login");
   };
 
+  const sidebarItems = [
+    { name: "Dashboard", path: "/admin/dashboard", icon: <DashboardIcon fontSize="small" /> },
+    { name: "Users", path: "/admin/users", icon: <GroupIcon fontSize="small" /> },
+    { name: "Products", path: "/admin/products", icon: <Inventory2Icon fontSize="small" /> },
+    { name: "Orders", path: "/admin/orders", icon: <ListAltIcon fontSize="small" /> },
+    { name: "Shop", path: "/", icon: <StorefrontIcon fontSize="small" /> },
+  ];
+
   return (
-    <aside className="tw:flex tw:min-h-screen tw:w-60 tw:flex-col tw:justify-between tw:bg-slate-900 tw:px-4 tw:py-6">
+    <div className="tw:bg-gray-900 tw:text-white tw:w-64 tw:h-full tw:p-6 tw:flex tw:flex-col tw:justify-between tw:relative">
       <div>
-        <h1 className="tw:mb-8 tw:px-2 tw:text-xl tw:font-bold tw:text-white">Rabbit</h1>
+        {/* Cancel Icon (Only shows in responsive mode) */}
+        <div className="tw:md:hidden tw:absolute tw:top-3 tw:right-3">
+          <IconButton
+            onClick={onClose}
+            sx={{ color: "#9ca3af", "&:hover": { color: "white" } }}
+            aria-label="Close Sidebar"
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
 
-        <nav className="tw:flex tw:flex-col tw:gap-1">
-          {sidebarItems.map((item) => {
-            const Icon = item.icon;
+        {/* Brand */}
+        <div className="tw:mb-6">
+          <Link
+            to="/"
+            onClick={onClose}
+            className="tw:text-2xl tw:font-bold tw:text-white tw:no-underline"
+          >
+            Rabbit
+          </Link>
+        </div>
 
-            return (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                className={({ isActive }) =>
-                  `${linkBaseClasses} ${isActive
-                    ? "tw:bg-slate-800 tw:text-white"
-                    : "tw:text-slate-300 tw:hover:bg-slate-800 tw:hover:text-white"
-                  }`
-                }
-              >
-                <Icon fontSize="small" /> {item.label}
-              </NavLink>
-            );
-          })}
+        {/* <Link
+          to="/admin/dashboard"
+          onClick={onClose}
+          className="tw:no-underline tw:text-white"
+        >
+          <h2 className="tw:text-lg tw:font-semibold tw:mb-6 tw: hover:text-gray-300">
+            Admin Dashboard
+          </h2>
+        </Link> */}
+
+        {/* Navigation Links */}
+        <nav className="tw:flex tw:flex-col tw:space-y-2">
+          {sidebarItems.map((item) => (
+            <NavLink
+              key={item.name}
+              to={item.path}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `${isActive
+                  ? "tw:bg-gray-700 tw:text-white"
+                  : "tw:text-gray-300 tw:hover:bg-gray-800 tw:hover:text-white"
+                } tw:py-2.5 tw:px-4 tw:rounded tw:flex tw:items-center tw:gap-3 tw:no-underline tw:transition-colors`
+              }
+            >
+              {item.icon}
+              <span>{item.name}</span>
+            </NavLink>
+          ))}
         </nav>
       </div>
 
-      <button
-        onClick={handleLogout}
-        className="tw:cursor-pointer tw:rounded-lg tw:bg-red-500 tw:px-3 tw:py-2.5 tw:text-sm tw:font-semibold tw:text-white tw:transition-colors tw:hover:bg-red-600"
-      >
-        Logout
-      </button>
-    </aside>
+      {/* Logout Button */}
+      <div className="tw:mt-6">
+        <Button
+          onClick={handleLogout}
+          variant="contained"
+          color="error"
+          fullWidth
+          startIcon={<LogoutIcon />}
+          sx={{ textTransform: "none", py: 1 }}
+        >
+          Logout
+        </Button>
+      </div>
+    </div>
   );
 };
 

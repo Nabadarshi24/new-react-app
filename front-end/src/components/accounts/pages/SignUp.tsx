@@ -12,7 +12,7 @@ import { composeInitialState } from '../../utils/Helpers';
 import { useHookForm } from '../../libs/HookForm';
 import { Select, TypeDropdownOptions } from '../../form/Select';
 import { registration } from '../api';
-import { showErrorMessage, showSuccessMessage } from '../../helper/Helper';
+import { roleOptions, showErrorMessage, showSuccessMessage } from '../../helper/Helper';
 import { useAccountStore } from '../../stores/GlobalStore';
 
 const SignUp = () => {
@@ -23,19 +23,6 @@ const SignUp = () => {
 
   // const [userData, setUserData] = useState<TypeUserData[]>();
   // const [password, setPassword] = useState("");
-
-  const roles: TypeDropdownOptions[] = [
-    {
-      text: "Admin",
-      value: "admin",
-      isDisabled: false
-    },
-    {
-      text: "User",
-      value: "customer",
-      isDisabled: false
-    }
-  ];
 
   const { initialState, names, labels } = composeInitialState<TypeSignUp>({
     name: "",
@@ -124,7 +111,7 @@ const SignUp = () => {
               <Select
                 name={names.role}
                 label={labels.role}
-                options={roles}
+                options={roleOptions}
                 required
               />
             </div>

@@ -74,7 +74,12 @@ const Login = () => {
         setLocalStorageItem("accessToken", response.data.token);
         setLocalStorageItem("refreshToken", response.data.refreshToken);
         setIsSignIn(true);
-        navigate(location.state?.from || "/dashboard");
+        
+        // if (response.data.user.role === "super_admin") {
+        //   navigate("/admin/dashboard");
+        // } else {
+        //   navigate(location.state?.from || "/profile");
+        // }
         showSuccessMessage(response.successMessage);
       } else {
         throw new Error(response.errorMessage);

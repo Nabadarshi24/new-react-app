@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { TypeDropdownOptions } from "../form/Select";
 
 export const showSuccessMessage = (message: string) => {
   toast.success(message, { duration: 2000, style: { background: "green", color: "#fff" } });
@@ -30,3 +31,17 @@ export const formatColor = (color: string) => {
     .replace(/_/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
+
+
+export const roleOptions: TypeDropdownOptions[] = [
+  {
+    text: "Admin",
+    value: "admin",
+    isDisabled: false
+  },
+  {
+    text: "User",
+    value: "customer",
+    isDisabled: false
+  }
+];

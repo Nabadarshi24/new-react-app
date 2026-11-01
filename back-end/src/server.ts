@@ -12,21 +12,21 @@ import checkoutRoutes from "./routes/CheckoutRoutes";
 import orderRoutes from "./routes/OrderRoute";
 import uploadRoutes from "./routes/UploadRoutes";
 import subscribeRoutes from "./routes/SubscribeRoute";
-import userAdminRoutes from "./routes/UserAdminRoutes";
 import adminOrderRoutes from "./routes/AdminOrderRoutes";
 import bkashPaymentRoutes from "./routes/BkashPaymentRoutes";
 import paymentRoutes from "./routes/PaymentRoutes";
 import adminRoutes from "./routes/AdminRoutes";
+import AdminUserRoutes from "./routes/AdminUserRoutes";
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 // dotenv.config();
 dotenv.config({ quiet: true });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 connectDB();
 
@@ -46,7 +46,7 @@ app.use("/api/bkash", bkashPaymentRoutes);
 app.use("/api/payment", paymentRoutes);
 
 // Admin Routes
-app.use("/api/admin/user", userAdminRoutes);
+app.use("/api/admin/user", AdminUserRoutes);
 app.use("/api/admin/order", adminOrderRoutes);
 app.use("/api/admin", adminRoutes);
 

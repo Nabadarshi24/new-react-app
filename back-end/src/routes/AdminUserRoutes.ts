@@ -10,10 +10,19 @@ const router = express.Router();
 router.get("/all", protect, admin, async (req: Request, res: Response) => {
   try {
     const users = await User.find({});
-    res.status(200).json(users);
+
+    res.status(201).json({
+      success: true,
+      data: users,
+      successMessage: "Users retrieved successfully",
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+
+    res.status(500).json({
+      success: false,
+      errorMessage: "Internal server error"
+    });
   }
 });
 

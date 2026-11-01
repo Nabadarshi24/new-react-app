@@ -81,55 +81,57 @@ const AdminDashboard = () => {
           }
         </div>
 
-        <h2 className="tw:mb-3 tw:text-lg tw:font-bold tw:text-slate-900">Recent Orders</h2>
+        <div className="tw:bg-white tw:rounded-lg tw:shadow-sm tw:border tw:border-gray-200 tw:p-4 tw:md:p-6">
+          <h2 className="tw:mb-3 tw:text-lg tw:font-bold tw:text-slate-900">Recent Orders</h2>
 
-        {/* Wrapper chrome (border/bg) only on md+; on mobile each order is its own card */}
-        <div className="tw:md:overflow-x-auto tw:md:rounded-lg tw:md:border tw:md:border-slate-200 tw:md:bg-white">
-          <table className="tw:block tw:w-full tw:text-left tw:text-sm tw:md:table">
-            {/* Header row is hidden on mobile: each cell carries its own label instead */}
-            <thead className="tw:hidden tw:bg-slate-100 tw:text-xs tw:uppercase tw:tracking-wide tw:text-slate-500 tw:md:table-header-group">
-              <tr>
-                <th className="tw:px-5 tw:py-3 tw:font-semibold">Order ID</th>
-                <th className="tw:px-5 tw:py-3 tw:font-semibold">User</th>
-                <th className="tw:px-5 tw:py-3 tw:font-semibold">Total Price</th>
-                <th className="tw:px-5 tw:py-3 tw:font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody className="tw:block tw:md:table-row-group">
-              {dashboardDetails.recentOrders.length === 0 ? (
-                <tr className="tw:block tw:md:table-row">
-                  <td
-                    colSpan={4}
-                    className="tw:block tw:px-5 tw:py-8 tw:text-center tw:text-slate-500 tw:md:table-cell"
-                  >
-                    No orders yet.
-                  </td>
+          {/* Wrapper chrome (border/bg) only on md+; on mobile each order is its own card */}
+          <div className="tw:md:overflow-x-auto tw:md:rounded-lg tw:md:border tw:md:border-slate-200 tw:md:bg-white">
+            <table className="tw:block tw:w-full tw:text-left tw:text-sm tw:md:table">
+              {/* Header row is hidden on mobile: each cell carries its own label instead */}
+              <thead className="tw:hidden tw:bg-slate-100 tw:text-xs tw:uppercase tw:tracking-wide tw:text-slate-500 tw:md:table-header-group">
+                <tr>
+                  <th className="tw:px-5 tw:py-3 tw:font-semibold">Order ID</th>
+                  <th className="tw:px-5 tw:py-3 tw:font-semibold">User</th>
+                  <th className="tw:px-5 tw:py-3 tw:font-semibold">Total Price</th>
+                  <th className="tw:px-5 tw:py-3 tw:font-semibold">Status</th>
                 </tr>
-              ) : (
-                dashboardDetails.recentOrders.map((order) => (
-                  <tr
-                    key={order._id}
-                    className="tw:block tw:overflow-hidden tw:border-x tw:border-b tw:border-slate-200 tw:bg-white tw:first:rounded-t-lg tw:first:border-t tw:last:rounded-b-lg tw:md:table-row tw:md:overflow-visible tw:md:border-0 tw:md:border-t tw:md:border-slate-100 tw:md:first:rounded-none tw:md:last:rounded-none"
-                  >
-                    <Cell label="Order ID" className="tw:font-medium tw:text-slate-700">
-                      <Link to={`/admin/order/details/${order._id}`} className="tw:hover:underline">
-                        {order._id}
-                      </Link>
-                    </Cell>
-                    <Cell label="User" className="tw:text-slate-600">
-                      {order.user?.name ?? "—"}
-                    </Cell>
-                    <Cell label="Total Price" className="tw:text-slate-600">
-                      ${order.totalPrice.toFixed(2)}
-                    </Cell>
-                    <Cell label="Status" className="tw:text-slate-600">
-                      {order.status}
-                    </Cell>
+              </thead>
+              <tbody className="tw:block tw:md:table-row-group">
+                {dashboardDetails.recentOrders.length === 0 ? (
+                  <tr className="tw:block tw:md:table-row">
+                    <td
+                      colSpan={4}
+                      className="tw:block tw:px-5 tw:py-8 tw:text-center tw:text-slate-500 tw:md:table-cell"
+                    >
+                      No orders yet.
+                    </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  dashboardDetails.recentOrders.map((order) => (
+                    <tr
+                      key={order._id}
+                      className="tw:block tw:overflow-hidden tw:border-x tw:border-b tw:border-slate-200 tw:bg-white tw:first:rounded-t-lg tw:first:border-t tw:last:rounded-b-lg tw:md:table-row tw:md:overflow-visible tw:md:border-0 tw:md:border-t tw:md:border-slate-100 tw:md:first:rounded-none tw:md:last:rounded-none"
+                    >
+                      <Cell label="Order ID" className="tw:font-medium tw:text-slate-700">
+                        <Link to={`/admin/order/details/${order._id}`} className="tw:hover:underline">
+                          {order._id}
+                        </Link>
+                      </Cell>
+                      <Cell label="User" className="tw:text-slate-600">
+                        {order.user?.name ?? "—"}
+                      </Cell>
+                      <Cell label="Total Price" className="tw:text-slate-600">
+                        ${order.totalPrice.toFixed(2)}
+                      </Cell>
+                      <Cell label="Status" className="tw:text-slate-600">
+                        {order.status}
+                      </Cell>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     )
