@@ -55,7 +55,7 @@ export const Select = memo(({
       control={methods.control}
       render={({ field, fieldState }) => {
         return (
-          <FormControl required={rest.required ?? false}>
+          <FormControl required={rest.required ?? false} className={rest.className}>
             <InputLabel
               id={`${Math.random()}-label`}
               error={!!fieldState.error}

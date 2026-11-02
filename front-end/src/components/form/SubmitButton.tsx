@@ -40,25 +40,26 @@ export const SubmitButton = ({
   }, [errors]);
 
   return (
-    <Button
-      type="submit"
-      className={className}
-      onClick={async (e) => {
-        // const rep = await methods.trigger();
+    <div className={className}>
+      <Button
+        type="submit"
+        onClick={async (e) => {
+          // const rep = await methods.trigger();
 
-        // methods.formState.errors
-        // console.log({ rep, errors: methods.formState.errors });
-        console.log({
-          values: methods.getValues(),
-          // errors: methods.formState.errors
-          // errors: methods.control._formState.errors
-        });
-        onClick?.(e);
-      }}
-      ref={ref}
-      {...rest}
-    >
-      {children || label}
-    </Button>
+          // methods.formState.errors
+          // console.log({ rep, errors: methods.formState.errors });
+          console.log({
+            values: methods.getValues(),
+            // errors: methods.formState.errors
+            // errors: methods.control._formState.errors
+          });
+          onClick?.(e);
+        }}
+        ref={ref}
+        {...rest}
+      >
+        {children || label}
+      </Button>
+    </div>
   );
 };

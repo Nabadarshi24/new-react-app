@@ -30,7 +30,12 @@ router.get("/all", protect, admin, async (req: Request, res: Response) => {
 // @desc Add a new user(Admin only)
 // @access Private/Admin
 router.post("/create", protect, admin, async (req: Request, res: Response) => {
-  const { name, email, password, role } = req.body;
+  const {
+    name,
+    email,
+    password,
+    role
+  } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -41,15 +46,21 @@ router.post("/create", protect, admin, async (req: Request, res: Response) => {
     user = new User({
       name,
       email,
-      password,
+      password: password || crypto.randomUUID(),
       role: role || "customer"
     });
 
     await user.save();
-    res.status(201).json({ message: "User created successfully", user });
+    res.status(201).json({
+      success: true,
+      successMessage: "User created successfully"
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      errorMessage: "Internal server error",
+      success: false
+    });
   }
 });
 
@@ -82,18 +93,27 @@ router.put("/update/:id", protect, admin, async (req: Request, res: Response) =>
 // @route DELETE /api/admin/user/delete/:id
 // @desc Delete a user(Admin only)
 // @access Private/Admin
-router.delete("/delete/:id", protect, admin, async (req: Request, res: Response) => {
+router.post("/delete/:id", protect, admin, async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        errorMessage: "User not found"
+      });
     }
 
     await user.deleteOne();
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({
+      success: true,
+      successMessage: "User deleted successfully"
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      success: false,
+      errorMessage: "Internal server error"
+    });
   }
 });
 
